@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { LogOut, UserCircle, Menu } from 'lucide-react'; // Removed Leaf import
+import { LogOut, UserCircle, Menu } from 'lucide-react';
 import { useUser, useAuth } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import {
@@ -23,6 +23,7 @@ import {
 import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
+import Image from 'next/image'; // Re-import Image component
 
 const navLinks = [
   { href: '/#inicio', label: 'Início' },
@@ -81,7 +82,18 @@ export function SiteHeader() {
       scrolled ? "bg-primary/80 backdrop-blur-sm" : "bg-primary"
     )}>
       <div className="container flex h-20 items-center">
-        {/* Removed Link with Leaf icon and 'Livi Skov' text */}
+        <Link href="/" className="flex items-center gap-2 text-primary-foreground transition-colors hover:text-primary-foreground/70 mr-6">
+          <Image
+            src="/images/logo-branco.png"
+            alt="Livi Skov Logo"
+            width={40} // Adjusted width for better visibility
+            height={40} // Adjusted height for better visibility
+            className="h-8 w-auto" // Maintain aspect ratio, set height
+          />
+          <span className="text-xl font-bold">
+            Livi Skov
+          </span>
+        </Link>
         
         {/* Desktop Navigation */}
         <nav className="absolute left-1/2 -translate-x-1/2 hidden items-center gap-6 md:flex">
@@ -140,8 +152,14 @@ export function SiteHeader() {
                             <div className="p-6">
                                 <SheetClose asChild>
                                 <Link href="/" className="flex items-center gap-2 text-primary-foreground">
-                                    {/* Removed Leaf icon and 'Livi Skov' text */}
-                                    <span className="text-xl font-bold">Menu</span> {/* Added a simple 'Menu' title for mobile */}
+                                    <Image
+                                      src="/images/logo-branco.png"
+                                      alt="Livi Skov Logo"
+                                      width={40}
+                                      height={40}
+                                      className="h-8 w-auto"
+                                    />
+                                    <span className="text-xl font-bold">Livi Skov</span>
                                 </Link>
                                 </SheetClose>
                             </div>
