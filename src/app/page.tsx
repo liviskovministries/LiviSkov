@@ -69,7 +69,7 @@ export default function Home() {
                     <AvatarFallback>BL</AvatarFallback>
                   </Avatar>
                   <CardContent className="mt-4 p-0">
-                    <p className="italic text-muted-foreground">"Compartilho sobre a experiência no Curso Estações com Livi Skov onde aprendi a importância de viver cada etapa da vida de forma leve e com a mente aberta para aprender algo novo na jornada da vida,seja renunciar algo que te trouxe até esse ponto X da sua vida atual,sendo esse processo de renuncia e entrega uma jornada de  conhecimento  na base da confiança no processo de Deus na sua vida e saber que tudo é movido por estações e tempo ."</p>
+                    <p className="italic text-muted-foreground">"Compartilho sobre a experiência no Curso Estações com Livi Skov onde aprendi a importância de viver cada etapa da vida de forma leve e com a mente aberta para aprender algo novo na jornada da vida,seja renunciar algo que te trouxe até esse ponto X da sua vida atual,sendo esse processo de renuncia e entrega uma jornada de conhecimento na base da confiança no processo de Deus na sua vida e saber que tudo é movido por estações e tempo ."</p>
                     <p className="mt-4 font-semibold text-primary">- Bianca Lima</p>
                   </CardContent>
                 </Card>
@@ -79,7 +79,7 @@ export default function Home() {
                     <AvatarFallback>KR</AvatarFallback>
                   </Avatar>
                   <CardContent className="mt-4 p-0">
-                    <p className="italic text-muted-foreground">"Através do discipulado com a Livi, pude acessar ferramentas essenciais que foram fundamentais para alcançar um novo nível e uma nova estação em minha vida. Esse discipulado me conduziu a um lugar de cura, liberdade e transformação, destravando áreas da minha vida e me equipando para viver o propósito de Deus. As aulas da Livi são didáticas, profundas e repletas de chaves importantes que trazem consciência sobre as verdades do Reino de Deus. O discipulado é um espaço seguro para aprender, compartilhar a vida, ser vulnerável e crescer. A Livi transborda o amor de Deus, e todos que se sentam à mesa para aprender com ela desfrutam de uma mesa farta. Sou imensamente grata por esse discipulado e pelas sementes plantadas em minha vida através do transbordar da Livi. Caminhar ao lado dela é um privilégio. Posso afirmar que participar desse discipulado foi e tem sido essencial para o meu florescer. Sobre o curso “Estações” ele é completo. Além das aulas, você terá acesso a um livro incrível que trará clareza, discernimento e propósito para as diferentes fases da sua vida.  Compreender as estações e explorá-las à luz do Evangelho é indispensável para a jornada daqueles que escolheram se submeter ao processo de transformação.  Quero te incentivar a se inscrever neste curso! Esse é um convite de Deus para você mergulhar nessa jornada incrível chamada “Estações Espirituais” ."</p>
+                    <p className="italic text-muted-foreground">"Através do discipulado com a Livi, pude acessar ferramentas essenciais que foram fundamentais para alcançar um novo nível e uma nova estação em minha vida. Esse discipulado me conduziu a um lugar de cura, liberdade e transformação, destravando áreas da minha vida e me equipando para viver o propósito de Deus. As aulas da Livi são didáticas, profundas e repletas de chaves importantes que trazem consciência sobre as verdades do Reino de Deus. O discipulado é um espaço seguro para aprender, compartilhar a vida, ser vulnerável e crescer. A Livi transborda o amor de Deus, e todos que se sentam à mesa para aprender com ela desfrutam de uma mesa farta. Sou imensamente grata por esse discipulado e pelas sementes plantadas em minha vida através do transbordar da Livi. Caminhar ao lado dela é um privilégio. Posso afirmar que participar desse discipulado foi e tem sido essencial para o meu florescer. Sobre o curso 'Estações' ele é completo. Além das aulas, você terá acesso a um livro incrível que trará clareza, discernimento e propósito para as diferentes fases da sua vida. Compreender as estações e explorá-las à luz do Evangelho é indispensável para a jornada daqueles que escolheram se submeter ao processo de transformação. Quero te incentivar a se inscrever neste curso! Esse é um convite de Deus para você mergulhar nessa jornada incrível chamada 'Estações Espirituais'."</p>
                     <p className="mt-4 font-semibold text-primary">- Keteleen Rangel</p>
                   </CardContent>
                 </Card>
@@ -101,12 +101,12 @@ export default function Home() {
             </div>
             <div className="order-1 md:order-2">
               <Image
-                src="https://picsum.photos/seed/livi/600/600"
+                src="/images/livi-skov-profile.png"
                 alt="Livi Skov"
                 width={600}
                 height={600}
                 className="rounded-lg shadow-lg"
-                data-ai-hint="woman portrait"
+                data-ai-hint="Livi Skov portrait"
               />
             </div>
           </div>
@@ -163,7 +163,7 @@ export default function Home() {
           <div className="container relative z-10 flex h-full flex-col items-center justify-center text-center text-white">
             <h2 className="text-4xl font-bold md:text-5xl">Fale Conosco</h2>
             <p className="mt-4 max-w-2xl text-lg">
-              Estamos aqui para ajudar. Envie sua mensagem!
+              Estamos aqui para ajudar. Envi e sua mensagem!
             </p>
           </div>
         </section>
