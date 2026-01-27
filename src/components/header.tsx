@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Leaf, LogOut, UserCircle, Menu } from 'lucide-react';
+import { LogOut, UserCircle, Menu } from 'lucide-react'; // Removed Leaf import
 import { useUser, useAuth } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import {
@@ -23,8 +23,6 @@ import {
 import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
-// Removed Image import as it's no longer needed
-// import Image from 'next/image';
 
 const navLinks = [
   { href: '/#inicio', label: 'Início' },
@@ -83,12 +81,7 @@ export function SiteHeader() {
       scrolled ? "bg-primary/80 backdrop-blur-sm" : "bg-primary"
     )}>
       <div className="container flex h-20 items-center">
-        <Link href="/" className="flex items-center gap-2 text-primary-foreground transition-colors hover:text-primary-foreground/70 mr-6">
-          <Leaf className="h-6 w-6" /> {/* Reverted to Leaf icon */}
-          <span className="text-xl font-bold">
-            Livi Skov
-          </span>
-        </Link>
+        {/* Removed Link with Leaf icon and 'Livi Skov' text */}
         
         {/* Desktop Navigation */}
         <nav className="absolute left-1/2 -translate-x-1/2 hidden items-center gap-6 md:flex">
@@ -147,8 +140,8 @@ export function SiteHeader() {
                             <div className="p-6">
                                 <SheetClose asChild>
                                 <Link href="/" className="flex items-center gap-2 text-primary-foreground">
-                                    <Leaf className="h-6 w-6" /> {/* Reverted to Leaf icon */}
-                                    <span className="text-xl font-bold">Livi Skov</span>
+                                    {/* Removed Leaf icon and 'Livi Skov' text */}
+                                    <span className="text-xl font-bold">Menu</span> {/* Added a simple 'Menu' title for mobile */}
                                 </Link>
                                 </SheetClose>
                             </div>
