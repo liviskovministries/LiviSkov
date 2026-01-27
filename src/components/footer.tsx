@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Leaf } from 'lucide-react';
+import Image from 'next/image'; // Importar o componente Image
 
 export function SiteFooter() {
   const currentYear = new Date().getFullYear();
@@ -10,10 +10,13 @@ export function SiteFooter() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div className="flex flex-col gap-2">
             <Link href="/" className="flex items-center gap-2">
-              <Leaf className="h-6 w-6 text-primary" />
-              <span className="text-xl font-bold text-foreground">
-                Livi Skov
-              </span>
+              <Image
+                src="/images/logoverde2.fw.png" // Caminho para a nova logo
+                alt="Livi Skov Logo"
+                width={120} // Ajuste a largura conforme necessário
+                height={40} // Ajuste a altura conforme necessário
+                className="h-8 w-auto" // Mantém a proporção, define a altura
+              />
             </Link>
           </div>
           <div>
