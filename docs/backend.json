@@ -1,0 +1,168 @@
+{
+  "entities": {
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user of the Liviskov learning platform.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the User entity."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "The user's first name."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "The user's last name."
+        },
+        "email": {
+          "type": "string",
+          "description": "The user's email address.",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string",
+          "description": "The user's phone number."
+        }
+      },
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "email",
+        "phone"
+      ]
+    },
+    "Course": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Course",
+      "type": "object",
+      "description": "Represents a course offered on the Liviskov learning platform.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Course entity."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the course."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the course."
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "description"
+      ]
+    },
+    "Enrollment": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Enrollment",
+      "type": "object",
+      "description": "Represents a user's enrollment in a course.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Enrollment entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N Enrollment)"
+        },
+        "courseId": {
+          "type": "string",
+          "description": "Reference to Course. (Relationship: Course 1:N Enrollment)"
+        },
+        "enrollmentDate": {
+          "type": "string",
+          "description": "The date the user enrolled in the course.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "courseId",
+        "enrollmentDate"
+      ]
+    },
+    "CourseProgress": {
+      "title": "Course Progress",
+      "type": "object",
+      "description": "Tracks a user's progress within a specific course.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The ID of the course this progress belongs to."
+        },
+        "completedLessons": {
+          "type": "object",
+          "description": "A map of lesson IDs to their completion status (true/false).",
+          "additionalProperties": {
+            "type": "boolean"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "completedLessons"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores user profiles. Uses path-based ownership for private user data."
+        }
+      },
+      {
+        "path": "/courses/{courseId}",
+        "definition": {
+          "entityName": "Course",
+          "schema": {
+            "$ref": "#/backend/entities/Course"
+          },
+          "description": "Stores information about available courses."
+        }
+      },
+      {
+        "path": "/users/{userId}/enrollments/{enrollmentId}",
+        "definition": {
+          "entityName": "Enrollment",
+          "schema": {
+            "$ref": "#/backend/entities/Enrollment"
+          },
+          "description": "Stores enrollment records for users in courses.  Uses hierarchical paths to define the User 1:N Enrollment relationship."
+        }
+      },
+      {
+        "path": "/users/{userId}/courseProgress/{courseId}",
+        "definition": {
+          "entityName": "CourseProgress",
+          "schema": {
+            "$ref": "#/backend/entities/CourseProgress"
+          },
+          "description": "Stores user-specific progress for each course. Keyed by course ID."
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to be secure, scalable, and debuggable, following the principles of Authorization Independence, Clarity of Intent, DBAC (Database-Based Access Control), and QAPs (Rules are not Filters). It prioritizes denormalization for authorization independence, structural segregation for a homogeneous security posture, and consistent access modeling.\n\n1.  **Authorization Independence:** Authorization data is denormalized to avoid `get()` calls in security rules. This enables atomic operations (transactions/batches) and simplifies debugging.\n2.  **Structural Segregation:** Data with different access needs is stored in separate collections to simplify security rules.\n3.  **Access Modeling:** Consistent patterns are used for authorization:\n    *   Path-Based Ownership: The `/users/{userId}` collection uses path-based ownership for private user data.\n    *   Hierarchical Paths: The `/users/{userId}/enrollments/{enrollmentId}` collection is structured hierarchically to represent the User 1:N Enrollment relationship.\n\nSpecifically, the structure ensures Authorization Independence through the use of hierarchical paths where ownership can be simply derived. List operations are secured because each collection follows the homogeneous security posture enabled by Structural Segregation. For instance, listing courses is allowed without filtering because access to the `/courses` collection is assumed to be public or role-based, not requiring filtering of individual documents based on user-specific attributes. Similarly, enumerating enrollments within `/users/{userId}/enrollments` only returns the currently authenticated user's enrollments without needing complex filtering logic. This adherence to QAPs (Rules Are Not Filters) is achieved by ensuring that each collection only contains data that the user is authorized to list based on their role and the location of the collection."
+  }
+}

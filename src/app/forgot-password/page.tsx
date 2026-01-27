@@ -1,0 +1,107 @@
+'use client';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useToast } from '@/hooks/use-toast';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useAuth } from '@/firebase';
+import { SiteHeader } from '@/components/header';
+import { SiteFooter } from '@/components/footer';
+
+const formSchema = z.object({
+  email: z.string().email({ message: 'Por favor, insira um email válido.' }),
+});
+
+export default function ForgotPasswordPage() {
+  const { toast } = useToast();
+  const auth = useAuth();
+  const router = useRouter();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: '',
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!auth) {
+        toast({
+            variant: "destructive",
+            title: "Erro de autenticação",
+            description: "O serviço de autenticação não está disponível.",
+        });
+        return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, values.email);
+      toast({
+        title: "Email de redefinição enviado!",
+        description: "Verifique sua caixa de entrada para redefinir sua senha.",
+      });
+      router.push('/login');
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Erro ao enviar email",
+        description: "Não foi possível enviar o email de redefinição. Verifique o email informado.",
+      });
+      console.error(error);
+    }
+  }
+
+  return (
+    <div className="flex min-h-screen flex-col bg-background">
+      <SiteHeader />
+      <main className="flex-1 flex items-center justify-center p-4">
+        <Card className="w-full max-w-md shadow-lg">
+          <CardHeader>
+            <CardTitle className="text-center text-2xl text-primary">Redefinir Senha</CardTitle>
+            <CardDescription className="text-center">Digite seu email para receber o link de redefinição.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="seu@email.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" className="w-full transition-transform duration-200 hover:scale-105">Enviar Link</Button>
+              </form>
+            </Form>
+            <p className="mt-6 text-center text-sm text-muted-foreground">
+              Lembrou sua senha?{' '}
+              <Link href="/login" className="font-semibold text-primary hover:underline">
+                Faça login
+              </Link>
+            </p>
+          </CardContent>
+        </Card>
+      </main>
+      <SiteFooter />
+    </div>
+  );
+}

@@ -1,0 +1,126 @@
+/**
+ * @fileoverview Firestore Security Rules for the Liviskov learning platform.
+ *
+ * Core Philosophy:
+ * This ruleset enforces a strict user-ownership model for user profiles and enrollments.
+ * Courses are publicly readable, but write access is not defined in this prototype.
+ *
+ * Data Structure:
+ * - /users/{userId}: Stores user profile data, accessible only to the user themselves.
+ * - /courses/{courseId}: Stores course information, publicly readable.
+ * - /users/{userId}/enrollments/{enrollmentId}: Stores enrollment records, accessible only to the owning user.
+ * - /users/{userId}/courseProgress/{courseId}: Stores course progress for a user.
+ *
+ * Key Security Decisions:
+ * - User listing is disallowed to protect user privacy.
+ * - Courses are publicly readable to facilitate discovery.
+ * - All write operations (create, update, delete) require authentication.
+ *
+ * Denormalization for Authorization:
+ *  - Enrollment and progress documents are nested under the user's document to simplify ownership checks.
+ *
+ * Structural Segregation:
+ *  - Private user data (enrollments, progress) is stored under the /users/{userId} path, separate from public course data.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Rules for the /users collection. Enforces user-ownership.
+     * @path /users/{userId}
+     * @allow (create) - User can create their own profile if the userId matches their auth.uid.
+     * @allow (get, update, delete) - User can only access their own profile.
+     * @deny (create) - User cannot create a profile with a different userId.
+     * @deny (list) - Listing users is not allowed.
+     * @deny (update, delete) - User cannot update/delete another user's profile.
+     * @principle Enforces document ownership for all operations.
+     */
+    match /users/{userId} {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isSignedIn() && isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Rules for the /courses collection.  Courses are publicly readable.
+     * @path /courses/{courseId}
+     * @allow (get, list) - Anyone can read course information.
+     * @deny (create, update, delete) - Only admins (not defined) can modify courses.
+     * @principle Allows public read access to course information.
+     */
+    match /courses/{courseId} {
+      allow get, list: if true;
+      allow create, update, delete: if false;
+    }
+
+    /**
+     * @description Rules for the /users/{userId}/enrollments collection. Enforces user-ownership.
+     * @path /users/{userId}/enrollments/{enrollmentId}
+     * @allow (create) - User can create an enrollment record under their own user ID.
+     * @allow (get, list, update, delete) - User can only access their own enrollment records.
+     * @deny (create) - User cannot create an enrollment record for another user.
+     * @deny (update, delete) - User cannot update/delete another user's enrollment records.
+     * @principle Enforces document ownership for all operations.
+     */
+    match /users/{userId}/enrollments/{enrollmentId} {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+       function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isSignedIn() && isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Rules for the /users/{userId}/courseProgress collection. Enforces user-ownership.
+     * @path /users/{userId}/courseProgress/{courseId}
+     * @allow (get, list) - User can read their own progress records.
+     * @allow (create, update) - User can create or update their own progress record.
+     * @allow (delete) - User can delete their own progress record.
+     * @principle Enforces document ownership for all operations.
+     */
+    match /users/{userId}/courseProgress/{courseId} {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow get, list: if isOwner(userId);
+      allow create: if isSignedIn() && isOwner(userId) && request.resource.data.id == courseId;
+      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(userId);
+    }
+  }
+}
