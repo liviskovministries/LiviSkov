@@ -81,13 +81,13 @@ export default function LoginPage() {
       <SiteHeader />
       <main className="flex-1 flex items-center justify-center p-4">
         <Card className="w-full max-w-md shadow-lg">
-          <CardHeader className="flex flex-col items-center"> {/* Adicionado flexbox para centralizar */}
+          <CardHeader className="flex flex-col items-center">
             <Image
               src="/images/logoverde2.fw.png"
               alt="Livi Skov Logo"
-              width={150} // Ajuste a largura conforme necessário
-              height={50} // Ajuste a altura conforme necessário
-              className="mb-4 h-auto" // Adiciona margem inferior e mantém proporção
+              width={150}
+              height={50}
+              className="mb-6 h-auto" // Aumentei a margem inferior para criar mais espaço
             />
             <CardTitle className="text-center text-2xl text-primary">Acessar Plataforma</CardTitle>
             <CardDescription className="text-center">Bem-vindo(a) de volta!</CardDescription>
