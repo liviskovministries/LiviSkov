@@ -114,7 +114,7 @@ export default function SignupPage() {
               alt="Livi Skov Logo"
               width={150} // Ajuste a largura conforme necessário
               height={50} // Ajuste a altura conforme necessário
-              className="mb-12 h-auto" // Adiciona margem inferior para criar espaço
+              className="mb-6 h-auto" // Reduzido de mb-12 para mb-6
             />
             <CardTitle className="text-center text-2xl text-primary">Criar sua Conta</CardTitle>
             <CardDescription className="text-center">Junte-se à nossa comunidade de aprendizado.</CardDescription>
