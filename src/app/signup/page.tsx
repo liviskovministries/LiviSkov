@@ -23,6 +23,7 @@ import { useUser, useAuth, useFirestore } from '@/firebase';
 import { useEffect } from 'react';
 import { SiteHeader } from '@/components/header';
 import { SiteFooter } from '@/components/footer';
+import Image from 'next/image'; // Importar o componente Image
 
 const formSchema = z.object({
   firstName: z.string().min(2, { message: 'O nome deve ter pelo menos 2 caracteres.' }),
@@ -107,7 +108,14 @@ export default function SignupPage() {
       <SiteHeader />
       <main className="flex-1 flex items-center justify-center p-4">
         <Card className="w-full max-w-md shadow-lg">
-          <CardHeader>
+          <CardHeader className="flex flex-col items-center"> {/* Adicionado flexbox para centralizar */}
+            <Image
+              src="/images/logoverde2.fw.png"
+              alt="Livi Skov Logo"
+              width={150} // Ajuste a largura conforme necessário
+              height={50} // Ajuste a altura conforme necessário
+              className="mb-12 h-auto" // Adiciona margem inferior para criar espaço
+            />
             <CardTitle className="text-center text-2xl text-primary">Criar sua Conta</CardTitle>
             <CardDescription className="text-center">Junte-se à nossa comunidade de aprendizado.</CardDescription>
           </CardHeader>
