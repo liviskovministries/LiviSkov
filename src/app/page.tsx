@@ -41,7 +41,7 @@ export default function Home() {
               data-ai-hint={heroImage.imageHint}
             />
           )}
-          <div className="absolute inset-0 bg-white/50" />
+          {/* Removed the transparency overlay div */}
           <div className="container relative z-10 flex h-full flex-col items-center justify-center text-center">
             <h1 className="text-4xl font-bold md:text-6xl">
               Curso Estações Espirituais 2026
