@@ -23,7 +23,7 @@ import {
 import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
-import Image from 'next/image'; // Re-import Image component
+import Image from 'next/image';
 
 const navLinks = [
   { href: '/#inicio', label: 'Início' },
@@ -90,9 +90,7 @@ export function SiteHeader() {
             height={40} // Adjusted height for better visibility
             className="h-8 w-auto" // Maintain aspect ratio, set height
           />
-          <span className="text-xl font-bold">
-            Livi Skov
-          </span>
+          {/* Removed <span>Livi Skov</span> */}
         </Link>
         
         {/* Desktop Navigation */}
@@ -159,7 +157,7 @@ export function SiteHeader() {
                                       height={40}
                                       className="h-8 w-auto"
                                     />
-                                    <span className="text-xl font-bold">Livi Skov</span>
+                                    {/* Removed <span>Livi Skov</span> */}
                                 </Link>
                                 </SheetClose>
                             </div>
