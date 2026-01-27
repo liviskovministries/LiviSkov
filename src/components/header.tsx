@@ -86,11 +86,10 @@ export function SiteHeader() {
           <Image
             src="/images/logo-branco.png"
             alt="Livi Skov Logo"
-            width={40} // Adjusted width for better visibility
-            height={40} // Adjusted height for better visibility
+            width={120} // Adjusted width for the new logo
+            height={40} // Adjusted height for the new logo
             className="h-8 w-auto" // Maintain aspect ratio, set height
           />
-          {/* Removed <span>Livi Skov</span> */}
         </Link>
         
         {/* Desktop Navigation */}
@@ -153,11 +152,10 @@ export function SiteHeader() {
                                     <Image
                                       src="/images/logo-branco.png"
                                       alt="Livi Skov Logo"
-                                      width={40}
-                                      height={40}
+                                      width={120} // Adjusted width for the new logo
+                                      height={40} // Adjusted height for the new logo
                                       className="h-8 w-auto"
                                     />
-                                    {/* Removed <span>Livi Skov</span> */}
                                 </Link>
                                 </SheetClose>
                             </div>
