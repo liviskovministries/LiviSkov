@@ -23,6 +23,7 @@ import {
 import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
+import Image from 'next/image';
 
 const navLinks = [
   { href: '/#inicio', label: 'Início' },
@@ -82,7 +83,13 @@ export function SiteHeader() {
     )}>
       <div className="container flex h-20 items-center">
         <Link href="/" className="flex items-center gap-2 text-primary-foreground transition-colors hover:text-primary-foreground/70 mr-6">
-          <Leaf className="h-6 w-6" />
+          <Image
+            src="/images/logo-branco.png"
+            alt="Livi Skov Logo"
+            width={40}
+            height={40}
+            className="h-6 w-auto"
+          />
           <span className="text-xl font-bold">
             Livi Skov
           </span>
@@ -145,7 +152,13 @@ export function SiteHeader() {
                             <div className="p-6">
                                 <SheetClose asChild>
                                 <Link href="/" className="flex items-center gap-2 text-primary-foreground">
-                                    <Leaf className="h-6 w-6" />
+                                    <Image
+                                      src="/images/logo-branco.png"
+                                      alt="Livi Skov Logo"
+                                      width={40}
+                                      height={40}
+                                      className="h-6 w-auto"
+                                    />
                                     <span className="text-xl font-bold">Livi Skov</span>
                                 </Link>
                                 </SheetClose>
