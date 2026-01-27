@@ -4,8 +4,6 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { LogOut, UserCircle, Menu } from 'lucide-react';
-import { useUser, useAuth } from '@/firebase';
-import { signOut } from 'firebase/auth';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,6 +22,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
 import Image from 'next/image';
+import { useSupabaseAuth, useSupabaseUser } from '@/integrations/supabase/supabase-provider'; // Usar hooks Supabase
 
 const navLinks = [
   { href: '/#inicio', label: 'Início' },
@@ -33,8 +32,8 @@ const navLinks = [
 ];
 
 export function SiteHeader() {
-  const { user, isUserLoading } = useUser();
-  const auth = useAuth();
+  const { user, isUserLoading } = useSupabaseUser(); // Usar o hook de usuário Supabase
+  const supabaseAuth = useSupabaseAuth(); // Usar o hook de autenticação Supabase
   const router = useRouter();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -54,11 +53,13 @@ export function SiteHeader() {
   }, [scrolled]);
 
 
-  const handleLogout = () => {
-    if (!auth) return;
-    signOut(auth).then(() => {
+  const handleLogout = async () => {
+    const { error } = await supabaseAuth.signOut();
+    if (error) {
+      console.error("Erro ao fazer logout:", error.message);
+    } else {
       router.push('/');
-    });
+    }
   };
   
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -86,9 +87,9 @@ export function SiteHeader() {
           <Image
             src="/images/logo-branco.png"
             alt="Livi Skov Logo"
-            width={120} // Adjusted width for the new logo
-            height={40} // Adjusted height for the new logo
-            className="h-8 w-auto" // Maintain aspect ratio, set height
+            width={120}
+            height={40}
+            className="h-8 w-auto"
           />
         </Link>
         
@@ -152,8 +153,8 @@ export function SiteHeader() {
                                     <Image
                                       src="/images/logo-branco.png"
                                       alt="Livi Skov Logo"
-                                      width={120} // Adjusted width for the new logo
-                                      height={40} // Adjusted height for the new logo
+                                      width={120}
+                                      height={40}
                                       className="h-8 w-auto"
                                     />
                                 </Link>

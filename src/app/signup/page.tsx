@@ -15,15 +15,14 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useUser, useAuth, useFirestore } from '@/firebase';
 import { useEffect } from 'react';
 import { SiteHeader } from '@/components/header';
 import { SiteFooter } from '@/components/footer';
-import Image from 'next/image'; // Importar o componente Image
+import Image from 'next/image';
+import { useSupabaseAuth, useSupabaseUser } from '@/integrations/supabase/supabase-provider'; // Usar hooks Supabase
+import { supabase } from '@/integrations/supabase/client'; // Importar o cliente Supabase diretamente
 
 const formSchema = z.object({
   firstName: z.string().min(2, { message: 'O nome deve ter pelo menos 2 caracteres.' }),
@@ -39,10 +38,9 @@ const formSchema = z.object({
 
 export default function SignupPage() {
   const { toast } = useToast();
-  const auth = useAuth();
-  const firestore = useFirestore();
+  const supabaseAuth = useSupabaseAuth(); // Usar o hook de autenticação Supabase
   const router = useRouter();
-  const { user, isUserLoading } = useUser();
+  const { user, isUserLoading } = useSupabaseUser(); // Usar o hook de usuário Supabase
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -64,20 +62,24 @@ export default function SignupPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
-      const user = userCredential.user;
-      
-      await updateProfile(user, {
-        displayName: `${values.firstName} ${values.lastName}`
+      const { data, error } = await supabaseAuth.signUp({
+        email: values.email,
+        password: values.password,
+        options: {
+          data: {
+            first_name: values.firstName,
+            last_name: values.lastName,
+            phone: values.phone,
+          },
+        },
       });
 
-      await setDoc(doc(firestore, "users", user.uid), {
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        phone: values.phone,
-        id: user.uid,
-      });
+      if (error) {
+        throw error;
+      }
+
+      // The handle_new_user trigger will create the profile in public.profiles
+      // No need to manually insert into 'users' collection in Firestore anymore.
 
       toast({
         title: "Conta criada com sucesso!",
@@ -89,7 +91,7 @@ export default function SignupPage() {
       toast({
         variant: "destructive",
         title: "Erro ao criar conta",
-        description: error.message,
+        description: error.message || "Ocorreu um erro ao criar a conta.",
       });
       console.error(error);
     }
@@ -108,13 +110,13 @@ export default function SignupPage() {
       <SiteHeader />
       <main className="flex-1 flex items-center justify-center p-4">
         <Card className="w-full max-w-md shadow-lg">
-          <CardHeader className="flex flex-col items-center"> {/* Adicionado flexbox para centralizar */}
+          <CardHeader className="flex flex-col items-center">
             <Image
               src="/images/logoverde2.fw.png"
               alt="Livi Skov Logo"
-              width={150} // Ajuste a largura conforme necessário
-              height={50} // Ajuste a altura conforme necessário
-              className="mb-6 h-auto" // Reduzido de mb-12 para mb-6
+              width={150}
+              height={50}
+              className="mb-6 h-auto"
             />
             <CardTitle className="text-center text-2xl text-primary">Criar sua Conta</CardTitle>
             <CardDescription className="text-center">Junte-se à nossa comunidade de aprendizado.</CardDescription>

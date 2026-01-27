@@ -15,10 +15,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { sendPasswordResetEmail } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '@/firebase';
+import { useSupabaseAuth } from '@/integrations/supabase/supabase-provider'; // Usar hook Supabase
 import { SiteHeader } from '@/components/header';
 import { SiteFooter } from '@/components/footer';
 
@@ -28,7 +27,7 @@ const formSchema = z.object({
 
 export default function ForgotPasswordPage() {
   const { toast } = useToast();
-  const auth = useAuth();
+  const supabaseAuth = useSupabaseAuth(); // Usar o hook de autenticação Supabase
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -39,16 +38,15 @@ export default function ForgotPasswordPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!auth) {
-        toast({
-            variant: "destructive",
-            title: "Erro de autenticação",
-            description: "O serviço de autenticação não está disponível.",
-        });
-        return;
-    }
     try {
-      await sendPasswordResetEmail(auth, values.email);
+      const { error } = await supabaseAuth.resetPasswordForEmail(values.email, {
+        redirectTo: `${window.location.origin}/login?reset=true`, // Redirecionar para a página de login após redefinição
+      });
+
+      if (error) {
+        throw error;
+      }
+
       toast({
         title: "Email de redefinição enviado!",
         description: "Verifique sua caixa de entrada para redefinir sua senha.",
@@ -58,7 +56,7 @@ export default function ForgotPasswordPage() {
       toast({
         variant: "destructive",
         title: "Erro ao enviar email",
-        description: "Não foi possível enviar o email de redefinição. Verifique o email informado.",
+        description: error.message || "Não foi possível enviar o email de redefinição. Verifique o email informado.",
       });
       console.error(error);
     }

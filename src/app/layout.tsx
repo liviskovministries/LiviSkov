@@ -4,6 +4,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { SocialSidebar } from '@/components/social-sidebar';
+import { SupabaseProvider } from '@/integrations/supabase/supabase-provider';
 
 
 export const metadata: Metadata = {
@@ -22,9 +23,11 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <FirebaseClientProvider>
-          <SocialSidebar />
-          {children}
-          <Toaster />
+          <SupabaseProvider> {/* Adicionado SupabaseProvider aqui */}
+            <SocialSidebar />
+            {children}
+            <Toaster />
+          </SupabaseProvider>
         </FirebaseClientProvider>
         <Script id="crisp-widget" strategy="afterInteractive">
           {`

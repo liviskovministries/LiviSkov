@@ -11,18 +11,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useUser, useAuth } from '@/firebase';
 import { useEffect } from 'react';
 import { SiteHeader } from '@/components/header';
 import { SiteFooter } from '@/components/footer';
-import Image from 'next/image'; // Importar o componente Image
+import Image from 'next/image';
+import { useSupabaseAuth, useSupabaseUser } from '@/integrations/supabase/supabase-provider'; // Usar hooks Supabase
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Por favor, insira um email válido.' }),
@@ -31,9 +31,9 @@ const formSchema = z.object({
 
 export default function LoginPage() {
   const { toast } = useToast();
-  const auth = useAuth();
+  const supabaseAuth = useSupabaseAuth(); // Usar o hook de autenticação Supabase
   const router = useRouter();
-  const { user, isUserLoading } = useUser();
+  const { user, isUserLoading } = useSupabaseUser(); // Usar o hook de usuário Supabase
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,7 +52,15 @@ export default function LoginPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      await signInWithEmailAndPassword(auth, values.email, values.password);
+      const { error } = await supabaseAuth.signInWithPassword({
+        email: values.email,
+        password: values.password,
+      });
+
+      if (error) {
+        throw error;
+      }
+
       toast({
         title: "Login realizado com sucesso!",
         description: "Você será redirecionado em breve.",
@@ -62,7 +70,7 @@ export default function LoginPage() {
       toast({
         variant: "destructive",
         title: "Erro no login",
-        description: "Email ou senha incorretos.",
+        description: error.message || "Email ou senha incorretos.",
       });
       console.error(error);
     }
@@ -87,7 +95,7 @@ export default function LoginPage() {
               alt="Livi Skov Logo"
               width={150}
               height={50}
-              className="mb-6 h-auto" // Reduzido de mb-12 para mb-6
+              className="mb-6 h-auto"
             />
             <CardTitle className="text-center text-2xl text-primary">Acessar Plataforma</CardTitle>
             <CardDescription className="text-center">Bem-vindo(a) de volta!</CardDescription>

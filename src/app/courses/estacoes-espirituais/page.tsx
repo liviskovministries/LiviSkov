@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { useUser, useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking, useAuth, useCollection } from '@/firebase';
+import { useUser, useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking } from '@/firebase'; // Manter Firebase para Firestore
 import { collection, doc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import {
@@ -45,8 +45,8 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { signOut } from 'firebase/auth';
 import YouTube from 'react-youtube';
+import { useSupabaseAuth, useSupabaseUser } from '@/integrations/supabase/supabase-provider'; // Usar hooks Supabase
 
 type Lesson = {
   id: string;
@@ -122,10 +122,11 @@ const courseData = {
 };
 
 export default function CoursePage() {
-  const { user, isUserLoading } = useUser();
+  const { user: firebaseUser, isUserLoading: isFirebaseUserLoading } = useUser(); // Manter Firebase user para Firestore
+  const { user: supabaseUser, isUserLoading: isSupabaseUserLoading } = useSupabaseUser(); // Usar Supabase user para auth
+  const supabaseAuth = useSupabaseAuth(); // Usar Supabase auth para logout
   const firestore = useFirestore();
   const router = useRouter();
-  const auth = useAuth();
   const [selectedLesson, setSelectedLesson] = useState<Lesson>(courseData.modules[0].lessons[0]);
   const [completionStatus, setCompletionStatus] = useState<Record<string, boolean>>({});
   const now = new Date();
@@ -133,18 +134,18 @@ export default function CoursePage() {
 
   const courseId = 'estacoes-espirituais';
 
-  // Fetch enrollments to check for access
+  // Fetch enrollments to check for access (still using Firebase Firestore)
   const enrollmentsQuery = useMemoFirebase(() => {
-    if (!user || !firestore) return null;
-    return collection(firestore, 'users', user.uid, 'enrollments');
-  }, [user, firestore]);
+    if (!firebaseUser || !firestore) return null;
+    return collection(firestore, 'users', firebaseUser.uid, 'enrollments');
+  }, [firebaseUser, firestore]);
   const { data: enrollments, isLoading: enrollmentsLoading } = useCollection<{courseId: string}>(enrollmentsQuery);
   const isEnrolled = useMemo(() => enrollments?.some(e => e.courseId === courseId), [enrollments]);
 
   const progressDocRef = useMemoFirebase(() => {
-    if (!user || !firestore) return null;
-    return doc(firestore, 'users', user.uid, 'courseProgress', courseId);
-  }, [user, firestore]);
+    if (!firebaseUser || !firestore) return null;
+    return doc(firestore, 'users', firebaseUser.uid, 'courseProgress', courseId);
+  }, [firebaseUser, firestore]);
 
   const { data: progressData, isLoading: progressLoading } = useDoc<{ completedLessons: Record<string, boolean> }>(progressDocRef);
 
@@ -157,15 +158,15 @@ export default function CoursePage() {
 
 
   useEffect(() => {
-    // Redirect if not logged in
-    if (!isUserLoading && !user) {
+    // Redirect if not logged in (using Supabase user)
+    if (!isSupabaseUserLoading && !supabaseUser) {
       router.push('/login');
     }
     // After checking login, if user is not enrolled, redirect
-    if (!isUserLoading && user && !enrollmentsLoading && !isEnrolled) {
+    if (!isSupabaseUserLoading && supabaseUser && !enrollmentsLoading && !isEnrolled) {
         router.push('/courses');
     }
-  }, [user, isUserLoading, router, isEnrolled, enrollmentsLoading]);
+  }, [supabaseUser, isSupabaseUserLoading, router, isEnrolled, enrollmentsLoading]);
 
   const markLessonAsComplete = (lessonId: string) => {
     if (!progressDocRef || completionStatus[lessonId]) return;
@@ -190,7 +191,7 @@ export default function CoursePage() {
   };
 
 
-  if (isUserLoading || !user || enrollmentsLoading || progressLoading) {
+  if (isSupabaseUserLoading || !supabaseUser || enrollmentsLoading || progressLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <p>Carregando...</p>
@@ -207,10 +208,13 @@ export default function CoursePage() {
     );
   }
 
-  const handleLogout = () => {
-    signOut(auth).then(() => {
+  const handleLogout = async () => {
+    const { error } = await supabaseAuth.signOut();
+    if (error) {
+      console.error("Erro ao fazer logout:", error.message);
+    } else {
       router.push('/');
-    });
+    }
   };
 
   const renderLessonContent = () => {
@@ -347,7 +351,7 @@ export default function CoursePage() {
                 </div>
                 <div className="flex items-center gap-4">
                     <span className="text-sm text-muted-foreground hidden md:inline">
-                        {user.displayName}
+                        {supabaseUser?.user_metadata?.first_name || supabaseUser?.email}
                     </span>
                 </div>
             </header>
