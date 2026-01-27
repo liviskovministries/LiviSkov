@@ -74,7 +74,7 @@ export default function Home() {
                 </Card>
                  <Card className="flex flex-col items-center p-6 text-center">
                   <Avatar className="h-20 w-20">
-                    <AvatarImage src="https://picsum.photos/seed/keteleen/200/200" alt="Testemunho de Keteleen Rangel" />
+                    <AvatarImage src="/images/keteleen-rangel-testimonial.jpeg" alt="Testemunho de Keteleen Rangel" />
                     <AvatarFallback>KR</AvatarFallback>
                   </Avatar>
                   <CardContent className="mt-4 p-0">
