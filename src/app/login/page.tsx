@@ -87,7 +87,7 @@ export default function LoginPage() {
               alt="Livi Skov Logo"
               width={150}
               height={50}
-              className="mb-6 h-auto" // Aumentei a margem inferior para criar mais espaço
+              className="mb-12 h-auto"
             />
             <CardTitle className="text-center text-2xl text-primary">Acessar Plataforma</CardTitle>
             <CardDescription className="text-center">Bem-vindo(a) de volta!</CardDescription>
