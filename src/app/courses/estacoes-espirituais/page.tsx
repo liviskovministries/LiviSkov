@@ -48,6 +48,16 @@ import Link from 'next/link';
 import { signOut } from 'firebase/auth';
 import YouTube from 'react-youtube';
 
+type Lesson = {
+  id: string;
+  title: string;
+  type: 'video' | 'resource';
+  content?: string;
+  videoId?: string;
+  subtitle?: string;
+  description: string;
+};
+
 const courseData = {
   title: 'Curso Estações Espirituais',
   modules: [
@@ -55,9 +65,9 @@ const courseData = {
       id: 'modulo-0',
       title: 'Introdução',
       lessons: [
-        { id: 'intro-1', title: 'Boas-vindas', type: 'video', videoId: 'Dc4EBMJXQgg', subtitle: 'Boas-vindas ao Curso!', description: 'Bem-vinda ao curso Estações Espirituais! 🌿\n\nNeste módulo introdutório, você entenderá como as diferentes fases da vida refletem as estações do ano e como Deus trabalha em cada uma delas. Vou compartilhar minha jornada e como fui moldada por cada estação. Prepare-se para uma experiência de aprendizado e transformação. 🚀✨' },
-        { id: 'intro-2', title: 'O que são as Estações Espirituais?', type: 'video', videoId: 'Dc4EBMJXQgg', subtitle: 'Entendendo o Conceito', description: 'Este curso é uma jornada espiritual através das estações da minha vida. Assim como a natureza passa por mudanças, nossa caminhada com Deus também é marcada por períodos de crescimento, renúncia, desafios e renovações.\n\n🔍 O que você vai aprender?\n\n✔️ Como reconhecer a estação espiritual que está vivendo.\n✔️ Como abraçar cada fase com confiança.\n✔️ Como permitir que Deus fortaleça seu coração.\n\nQue esta caminhada traga clareza, esperança e transformação para sua vida! 🙏' },
-        { id: 'intro-3', title: 'Livro Estações Espirituais', type: 'resource', content: '', subtitle: 'Sobre o Livro de Apoio', description: 'Acesse e baixe o material de apoio principal do curso. Este livro é a base da nossa jornada, aprofundando os temas abordados nas aulas e oferecendo exercícios práticos para cada estação.' },
+        { id: 'intro-1', title: 'Boas-vindas', type: 'video' as const, videoId: 'Dc4EBMJXQgg', subtitle: 'Boas-vindas ao Curso!', description: 'Bem-vinda ao curso Estações Espirituais! 🌿\n\nNeste módulo introdutório, você entenderá como as diferentes fases da vida refletem as estações do ano e como Deus trabalha em cada uma delas. Vou compartilhar minha jornada e como fui moldada por cada estação. Prepare-se para uma experiência de aprendizado e transformação. 🚀✨' },
+        { id: 'intro-2', title: 'O que são as Estações Espirituais?', type: 'video' as const, videoId: 'Dc4EBMJXQgg', subtitle: 'Entendendo o Conceito', description: 'Este curso é uma jornada espiritual através das estações da minha vida. Assim como a natureza passa por mudanças, nossa caminhada com Deus também é marcada por períodos de crescimento, renúncia, desafios e renovações.\n\n🔍 O que você vai aprender?\n\n✔️ Como reconhecer a estação espiritual que está vivendo.\n✔️ Como abraçar cada fase com confiança.\n✔️ Como permitir que Deus fortaleça seu coração.\n\nQue esta caminhada traga clareza, esperança e transformação para sua vida! 🙏' },
+        { id: 'intro-3', title: 'Livro Estações Espirituais', type: 'resource' as const, content: 'https://storage.googleapis.com/aifire.co/documents/Estacoes-Espirituais-Livi-Skov.pdf', subtitle: 'Sobre o Livro de Apoio', description: 'Acesse e baixe o material de apoio principal do curso. Este livro é a base da nossa jornada, aprofundando os temas abordados nas aulas e oferecendo exercícios práticos para cada estação.' },
       ],
     },
     {
@@ -65,7 +75,7 @@ const courseData = {
         title: '🍂 Outono',
         releaseDate: '2026-02-04',
         lessons: [
-            { id: 'outono-1', title: 'Aula 1: Outono', type: 'video', videoId: 'QEx5SiEROtg', subtitle: '🍂 Outono – O Tempo de Soltar e Confiar', description: 'O outono é um tempo de transição e desapego. Algumas coisas que carregamos já não fazem sentido e precisamos confiar em Deus para deixá-las ir.\n\n💡 Reflexões para este módulo:\n\n🔸 O que Deus está me pedindo para abrir mão?\n🔸 Como posso confiar mais nele neste tempo?\n🔸 Quais mudanças preciso aceitar para crescer?\n\nO outono nos ensina que, para viver o novo, é preciso soltar o velho. Confie no processo! 🍁' },
+            { id: 'outono-1', title: 'Aula 1: Outono', type: 'video' as const, videoId: 'QEx5SiEROtg', subtitle: '🍂 Outono – O Tempo de Soltar e Confiar', description: 'O outono é um tempo de transição e desapego. Algumas coisas que carregamos já não fazem sentido e precisamos confiar em Deus para deixá-las ir.\n\n💡 Reflexões para este módulo:\n\n🔸 O que Deus está me pedindo para abrir mão?\n🔸 Como posso confiar mais nele neste tempo?\n🔸 Quais mudanças preciso aceitar para crescer.\n\nO outono nos ensina que, para viver o novo, é preciso soltar o velho. Confie no processo! 🍁' },
         ],
     },
     {
@@ -73,7 +83,7 @@ const courseData = {
         title: '❄️ Inverno',
         releaseDate: '2026-02-09',
         lessons: [
-            { id: 'inverno-1', title: 'Aula 2: Inverno', type: 'video', videoId: '1CZvtjsZ8_M', subtitle: '❄️ Inverno – Fortalecendo Raízes na Espera', description: 'O inverno espiritual é um tempo de espera, paciência e profundidade. Muitas vezes, nos sentimos isoladas, mas é nesse silêncio que Deus nos leva a um nível mais profundo com Ele.\n\n🔎 Dicas para enfrentar o inverno espiritual:\n\n✔️ Confie no tempo de Deus.\n✔️ Busque forças na oração e na Palavra.\n✔️ Entenda que a preparação acontece no silêncio.\n\nO inverno pode parecer longo, mas ele sempre precede um novo florescer. 🌨️' },
+            { id: 'inverno-1', title: 'Aula 2: Inverno', type: 'video' as const, videoId: '1CZvtjsZ8_M', subtitle: '❄️ Inverno – Fortalecendo Raízes na Espera', description: 'O inverno espiritual é um tempo de espera, paciência e profundidade. Muitas vezes, nos sentimos isoladas, mas é nesse silêncio que Deus nos leva a um nível mais profundo com Ele.\n\n🔎 Dicas para enfrentar o inverno espiritual:\n\n✔️ Confie no tempo de Deus.\n✔️ Busque forças na oração e na Palavra.\n✔️ Entenda que a preparação acontece no silêncio.\n\nO inverno pode parecer longo, mas ele sempre precede um novo florescer. 🌨️' },
         ],
     },
     {
@@ -81,7 +91,7 @@ const courseData = {
         title: '🌱 Primavera',
         releaseDate: '2026-02-11',
         lessons: [
-            { id: 'prim-1', title: 'Aula 3: Primavera', type: 'video', videoId: 'w4fnk9onusU', subtitle: '🌸 Primavera – O Florescer de uma Nova Temporada', description: 'A primavera espiritual é tempo de novidade e transformação! 🌷 Após uma longa fase de silêncio, Deus nos chama a despertar e crescer.\n\n🎯 Desafios da primavera:\n\n🌱 Sair da zona de conforto.\n🌱 Abraçar as novas oportunidades.\n🌱 Celebrar os pequenos avanços.\n\nNem sempre é fácil crescer, mas Deus nos fortalece para cada etapa. Abrace esse tempo de renovação! ✨' },
+            { id: 'prim-1', title: 'Aula 3: Primavera', type: 'video' as const, videoId: 'w4fnk9onusU', subtitle: '🌸 Primavera – O Florescer de uma Nova Temporada', description: 'A primavera espiritual é tempo de novidade e transformação! 🌷 Após uma longa fase de silêncio, Deus nos chama a despertar e crescer.\n\n🎯 Desafios da primavera:\n\n🌱 Sair da zona de conforto.\n🌱 Abraçar as novas oportunidades.\n🌱 Celebrar os pequenos avanços.\n\nNem sempre é fácil crescer, mas Deus nos fortalece para cada etapa. Abrace esse tempo de renovação! ✨' },
         ],
     },
     {
@@ -89,7 +99,7 @@ const courseData = {
         title: '🔄 Transição',
         releaseDate: '2026-02-16',
         lessons: [
-            { id: 'trans-1', title: 'Aula 4: Transição', type: 'video', videoId: '5rt6pkMFD2E', subtitle: '🔄 Transição – Abraçando Mudanças e Novos Começos', description: 'A transição pode ser desafiadora, pois o antigo já não serve mais, mas o novo ainda não chegou completamente. É o momento de confiar que Deus está no controle e nos guiará para a próxima fase.\n\n🌟 Como lidar com a transição?\n\n✨ Mantenha a calma e confie em Deus.\n✨ Não tenha medo do novo.\n✨ Use esse tempo para se fortalecer.\n\nA transição pode parecer incerta, mas Deus já preparou o caminho para você! 💖' },
+            { id: 'trans-1', title: 'Aula 4: Transição', type: 'video' as const, videoId: '5rt6pkMFD2E', subtitle: '🔄 Transição – Abraçando Mudanças e Novos Começos', description: 'A transição pode ser desafiadora, pois o antigo já não serve mais, mas o novo ainda não chegou completamente. É o momento de confiar que Deus está no controle e nos guiará para a próxima fase.\n\n🌟 Como lidar com a transição?\n\n✨ Mantenha a calma e confie em Deus.\n✨ Não tenha medo do novo.\n✨ Use esse tempo para se fortalecer.\n\nA transição pode parecer incerta, mas Deus já preparou o caminho para você! 💖' },
         ],
     },
     {
@@ -97,7 +107,7 @@ const courseData = {
         title: '☀️ Verão',
         releaseDate: '2026-02-18',
         lessons: [
-            { id: 'verao-1', title: 'Aula 5: Verão', type: 'video', videoId: 'DewkwZFGMXY', subtitle: '☀️ Verão – A Colheita e o Impacto do Propósito', description: 'O verão espiritual é tempo de colheita e abundância! 🌻 Após um longo processo de aprendizado, Deus nos leva a frutificar. É a hora de compartilhar, abençoar e viver a plenitude do chamado dele para nós.\n\n📌 O que aprender com o verão?\n\n✔️ Desfrutar dos frutos do esforço.\n✔️ Usar a bênção para abençoar outros.\n✔️ Permanecer firme no propósito de Deus.\n\nO verão é uma estação de alegria e responsabilidade. Que possamos viver esse tempo com gratidão e sabedoria! 🌞' },
+            { id: 'verao-1', title: 'Aula 5: Verão', type: 'video' as const, videoId: 'DewkwZFGMXY', subtitle: '☀️ Verão – A Colheita e o Impacto do Propósito', description: 'O verão espiritual é tempo de colheita e abundância! 🌻 Após um longo processo de aprendizado, Deus nos leva a frutificar. É a hora de compartilhar, abençoar e viver a plenitude do chamado dele para nós.\n\n📌 O que aprender com o verão?\n\n✔️ Desfrutar dos frutos do esforço.\n✔️ Usar a bênção para abençoar outros.\n✔️ Permanecer firme no propósito de Deus.\n\nO verão é uma estação de alegria e responsabilidade. Que possamos viver esse tempo com gratidão e sabedoria! 🌞' },
         ],
     },
     {
@@ -105,13 +115,11 @@ const courseData = {
         title: '🎉 Encerramento',
         releaseDate: '2026-02-23',
         lessons: [
-            { id: 'enc-1', title: 'Live de Encerramento', type: 'video', videoId: 'hfQRwqcqsxU', subtitle: 'GRANDE ENCONTRO FINAL – Aulão ao Vivo no Zoom! (Gravação)', description: 'Este foi o nosso último encontro, um momento de conexão e reflexão sobre tudo o que vivemos.\n\n💡 O que tivemos?\n\n✅ Compartilhamento de experiências.\n✅ Reflexões sobre cada estação.\n✅ Direcionamentos para o futuro.\n✅ Um tempo de comunhão e gratidão.\n\n🚀 Prepare-se para um GRANDE encerramento numa reunião maravilhosa no Zoom! 🎓🎊' },
+            { id: 'enc-1', title: 'Live de Encerramento', type: 'video' as const, videoId: 'hfQRwqcqsxU', subtitle: 'GRANDE ENCONTRO FINAL – Aulão ao Vivo no Zoom! (Gravação)', description: 'Este foi o nosso último encontro, um momento de conexão e reflexão sobre tudo o que vivemos.\n\n💡 O que tivemos?\n\n✅ Compartilhamento de experiências.\n✅ Reflexões sobre cada estação.\n✅ Direcionamentos para o futuro.\n✅ Um tempo de comunhão e gratidão.\n\n🚀 Prepare-se para um GRANDE encerramento numa reunião maravilhosa no Zoom! 🎓🎊' },
         ],
     },
   ],
 };
-
-type Lesson = (typeof courseData.modules)[0]['lessons'][0] & { videoId?: string; subtitle?: string; };
 
 export default function CoursePage() {
   const { user, isUserLoading } = useUser();
@@ -233,7 +241,7 @@ export default function CoursePage() {
                     <h3 className="text-2xl font-bold text-foreground">{selectedLesson.title}</h3>
                     <p className="text-muted-foreground mt-2">Material de Apoio Principal</p>
                     <Button asChild size="lg" className="mt-4">
-                        <a href={selectedLesson.content} target="_blank" rel="noopener noreferrer">Baixar Livro em PDF</a>
+                        <a href={selectedLesson.content || '#'} target="_blank" rel="noopener noreferrer">Baixar Livro em PDF</a>
                     </Button>
                 </div>
              </CardContent>
@@ -269,7 +277,7 @@ export default function CoursePage() {
                             </AccordionTrigger>
                             <AccordionContent className="pb-0 pl-3">
                                 <ul className="flex flex-col gap-1 py-2 border-l border-sidebar-border ml-3">
-                                    {module.lessons.map(lesson => {
+                                    {module.lessons.map((lesson) => {
                                         const isLocked = !isModuleUnlocked;
                                         const releaseDateFormatted = releaseDate ? new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC' }).format(releaseDate) : '';
 
