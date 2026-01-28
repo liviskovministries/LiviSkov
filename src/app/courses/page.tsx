@@ -145,6 +145,13 @@ function CoursesPageContent() {
     );
   }
 
+  // Determine the display name
+  const displayName = supabaseUser?.user_metadata?.first_name && supabaseUser?.user_metadata?.last_name
+    ? `${supabaseUser.user_metadata.first_name} ${supabaseUser.user_metadata.last_name}`
+    : supabaseUser?.user_metadata?.first_name
+      ? supabaseUser.user_metadata.first_name
+      : supabaseUser?.email || 'Aluno(a)';
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <SiteHeader />
@@ -165,7 +172,7 @@ function CoursesPageContent() {
               Área de Membros
             </h1>
             <p className="mt-4 max-w-2xl text-lg text-foreground/80 md:text-xl">
-              {supabaseUser ? `Bem-vindo(a), ${supabaseUser.user_metadata?.first_name || supabaseUser.email || 'Aluno(a)'}! ` : ''}
+              {supabaseUser ? `Bem-vindo(a), ${displayName}! ` : ''}
               Sua jornada de crescimento começa aqui.
             </p>
           </div>
