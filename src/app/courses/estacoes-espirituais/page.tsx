@@ -343,7 +343,7 @@ export default function CoursePage() {
           <SidebarHeader>
             <div className="flex items-center justify-center gap-2 p-2">
               <Image 
-                src="https://picsum.photos/seed/logo/40/40" 
+                src="/images/logo4branco.fw.png" 
                 alt="Logo Livi Skov" 
                 width={40} 
                 height={40} 
