@@ -54,9 +54,8 @@ const courseData = {
           id: 'intro-3',
           title: 'Livro Estações Espirituais',
           type: 'resource' as const,
-          content: 'https://rxvcxqfnkvqfxwzbujka.supabase.co/storage/v1/object/public/Estacoes%20Espirituais/Livi-Skov-Estacoes-Espirituais.pdf',
           subtitle: 'Sobre o Livro de Apoio',
-          description: 'Acesse e baixar o material de apoio principal do curso. Este livro é a base da nossa jornada, aprofundando os temas abordados nas aulas e oferecendo exercícios práticos para cada estação.'
+          description: 'Acesse e baixar o material de apoio principal do curso. Este livro è base da nossa jornada, aprofundando os temas abordados nas aulas e oferecendo exercícios práticos para cada estação.'
         },
       ],
     },
@@ -71,7 +70,7 @@ const courseData = {
           type: 'video' as const,
           videoId: 'QEx5SiEROtg',
           subtitle: '🍂 Outono – O Tempo de Soltar e Confiar',
-          description: 'O outono é um tempo de transição e desapego. Algumas coisas que carregamos já no fazem sentido e precisamos confiar em Deus para deixá-las ir.\n\n💡 Reflexões para este módulo:\n\n🔸 O que Deus está me pedindo para abrir mão?\n🔸 Como posso confiar mais nele neste tempo?\n🔸 Quais mudanças preciso aceitar para crescer.\n\nO outono nos ensina que, para viver o novo, é preciso soltar o velho. Confie no processo! 🍁'
+          description: 'O outono é um tempo de transição e desapego. Algumas coisas que carregamos já não fazem sentido e precisamos confiar em Deus para deixá-las ir.\n\n💡 Reflexões para este módulo:\n\n🔸 O que Deus está me pedindo para abrir mão?\n🔸 Como posso confiar mais nele neste tempo?\n🔸 Quais mudanças preciso aceitar para crescer.\n\nO outono nos ensina que, para viver o novo, é preciso soltar o velho. Confie no processo! 🍁'
         },
       ],
     },
@@ -152,6 +151,9 @@ const courseData = {
     },
   ],
 };
+
+// URL assinada do PDF com token válido
+const PDF_URL_SIGNED = 'https://rxvcxqfnkvqfxwzbujka.supabase.co/storage/v1/object/sign/Estacoes%20Espirituais/Livi-Skov-Estacoes-Espirituais.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80ODZlMTgxYy1kOWI4LTRkNTctYjY1ZS1iZWFkNzUxM2Q0ZTIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJFc3RhY29lcyBFc3Bpcml0dWFpcy9MaXZpLVNrb3YtRXN0YWNvZXMtRXNwaXJpdHVhaXMucGRmIiwiaWF0IjoxNzY5NjEwNDEzLCJleHAiOjE4MDExNDY0MTN9.TqJJIDxZGw_hBF5lOEJaabbCoSnG8DOPphfDis6JvhQ';
 
 export default function CoursePage() {
   const { user: firebaseUser, isUserLoading: isFirebaseUserLoading } = useUser();
@@ -260,7 +262,7 @@ export default function CoursePage() {
     }
   };
 
-  const handleDownloadWatermarkedPdf = async (originalPdfUrl: string) => {
+  const handleDownloadWatermarkedPdf = async () => {
     if (!supabaseUser) {
       toast({
         variant: "destructive",
@@ -282,57 +284,32 @@ export default function CoursePage() {
       const lastName = supabaseUser.user_metadata?.last_name || '';
       const email = supabaseUser.email || '';
 
-      // URLs alternativas caso a principal falhe
-      const alternativeUrls = [
-        originalPdfUrl,
-        'https://rxvcxqfnkvqfxwzbujka.supabase.co/storage/v1/object/sign/Estacoes%20Espirituais/Livi-Skov-Estacoes-Espirituais.pdf?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJFc3RhY29lcyBFc3Bpcml0dWFpcy9MaXZpLVNrb3YtRXN0YWNvZXMtRXNwaXJpdHVhaXMucGRmIiwiaWF0IjoxNzQ4NDAxMDAwLCJleHAiOjE3Nzk5MzcwMDB9.TEST_TOKEN'
-      ];
+      console.log("[CoursePage] Downloading watermarked PDF for:", { firstName, lastName, email });
+      console.log("[CoursePage] PDF URL:", PDF_URL_SIGNED);
 
-      let pdfBlob;
-      let errorDetails = '';
+      const response = await fetch('https://rxvcxqfnkvqfxwzbujka.supabase.co/functions/v1/watermark-pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          pdfUrl: PDF_URL_SIGNED,
+          firstName,
+          lastName,
+          email,
+        }),
+      });
 
-      // Tentar com URLs alternativas
-      for (const url of alternativeUrls) {
-        try {
-          console.log("[CoursePage] Trying URL:", url);
-          const response = await fetch('https://rxvcxqfnkvqfxwzbujka.supabase.co/functions/v1/watermark-pdf', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              pdfUrl: url,
-              firstName,
-              lastName,
-              email,
-            }),
-          });
-
-          if (!response.ok) {
-            const errorText = await response.text();
-            errorDetails = `URL: ${url}\nStatus: ${response.status}\nError: ${errorText}`;
-            console.error("[CoursePage] Error response:", errorDetails);
-            continue; // Tentar próxima URL
-          }
-
-          pdfBlob = await response.blob();
-          break; // Sucesso, sair do loop
-
-        } catch (fetchError: any) {
-          errorDetails = `URL: ${url}\nError: ${fetchError.message}`;
-          console.error("[CoursePage] Fetch error:", fetchError);
-          continue; // Tentar próxima URL
-        }
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP ${response.status}: ${errorText}`);
       }
 
-      if (!pdfBlob) {
-        throw new Error(`Não foi possível baixar o livro de nenhuma das URLs:\n${errorDetails}`);
-      }
-
+      const pdfBlob = await response.blob();
       const url = window.URL.createObjectURL(pdfBlob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'Livi-Skov-Estacoes-Espirituais-Watermarked.pdf';
+      a.download = `Livi-Skov-Estacoes-Espirituais-${firstName}-${lastName}.pdf`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -340,15 +317,15 @@ export default function CoursePage() {
 
       toast({
         title: "Download concluído!",
-        description: "Seu livro foi baixado com sucesso."
+        description: "Seu livro com marca d'água foi baixado com sucesso."
       });
 
     } catch (error: any) {
       console.error("[CoursePage] Error downloading watermarked PDF:", error);
       
-      // Tente fornecer o PDF original como fallback
+      // Tentar fallback para download direto se a marca d'água falhar
       try {
-        const directResponse = await fetch(originalPdfUrl);
+        const directResponse = await fetch(PDF_URL_SIGNED);
         if (directResponse.ok) {
           const pdfBlob = await directResponse.blob();
           const url = window.URL.createObjectURL(pdfBlob);
@@ -440,18 +417,16 @@ export default function CoursePage() {
                 <h3 className="text-2xl font-bold text-foreground">{selectedLesson.title}</h3>
                 <p className="text-muted-foreground mt-2">Material de Apoio Principal</p>
                 <Button 
-                  onClick={() => selectedLesson.content && handleDownloadWatermarkedPdf(selectedLesson.content)} 
+                  onClick={handleDownloadWatermarkedPdf} 
                   size="lg" 
                   className="mt-4"
                   disabled={isDownloading}
                 >
                   {isDownloading ? 'Gerando...' : 'Baixar Livro em PDF'}
                 </Button>
-                {!selectedLesson.content && (
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Link para download indisponível.
-                  </p>
-                )}
+                <p className="text-sm text-muted-foreground mt-4">
+                  O livro será baixado com uma marca d'água personalizada com seu nome e email.
+                </p>
               </div>
             </CardContent>
           </Card>
