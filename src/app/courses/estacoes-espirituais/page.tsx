@@ -208,18 +208,31 @@ export default function CoursePage() {
           return;
         }
         
-        // Check Supabase enrollment
+        // Check Supabase enrollment in the new user_courses table
         const { data: supabaseEnrollments, error } = await supabase
-          .from('enrollments')
-          .select('course_id')
+          .from('user_courses')
+          .select('is_enrolled')
           .eq('user_id', supabaseUser.id)
-          .eq('course_id', courseId);
+          .eq('course_id', courseId)
+          .single();
         
         if (error) {
           console.error('Error checking Supabase enrollment:', error);
-          setIsEnrolled(false);
+          // Check legacy enrollments table as fallback
+          const { data: legacyEnrollments, error: legacyError } = await supabase
+            .from('enrollments')
+            .select('course_id')
+            .eq('user_id', supabaseUser.id)
+            .eq('course_id', courseId);
+          
+          if (legacyError) {
+            console.error('Error checking legacy enrollments:', legacyError);
+            setIsEnrolled(false);
+          } else {
+            setIsEnrolled(legacyEnrollments && legacyEnrollments.length > 0);
+          }
         } else {
-          setIsEnrolled(supabaseEnrollments && supabaseEnrollments.length > 0);
+          setIsEnrolled(supabaseEnrollments?.is_enrolled || false);
         }
       } catch (error) {
         console.error('Error checking enrollment status:', error);

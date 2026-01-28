@@ -13,6 +13,7 @@ import { collection, doc } from 'firebase/firestore';
 import { createCheckoutSession, getSessionStatus } from '@/app/actions/checkout';
 import { useToast } from '@/hooks/use-toast';
 import { useSupabaseUser } from '@/integrations/supabase/supabase-provider';
+import { supabase } from '@/integrations/supabase/client';
 
 const courses = [
   {
@@ -61,6 +62,20 @@ function CheckoutHandler() {
                 courseId: courseId,
                 enrollmentDate: new Date().toISOString(),
               }, { merge: true });
+              
+              // Atualizar também no Supabase
+              const { error } = await supabase
+                .from('user_courses')
+                .update({ 
+                  is_enrolled: true, 
+                  enrolled_at: new Date().toISOString() 
+                })
+                .eq('user_id', supabaseUser.id)
+                .eq('course_id', courseId);
+              
+              if (error) {
+                console.error('Error updating Supabase enrollment:', error);
+              }
               
               toast({
                 title: "Compra confirmada!",

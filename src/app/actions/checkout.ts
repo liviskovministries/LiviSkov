@@ -3,6 +3,7 @@
 import { stripe } from '@/lib/stripe';
 import { redirect } from 'next/navigation';
 import Stripe from 'stripe';
+import { supabase } from '@/integrations/supabase/client';
 
 // IMPORTANT: Replace this with your actual Stripe Price ID for the course.
 // You can find this in your Stripe Dashboard under Products.
@@ -47,5 +48,43 @@ export async function getSessionStatus(sessionId: string): Promise<{ status: Str
       client_reference_id: null, 
       metadata: null 
     };
+  }
+}
+
+// Função para registrar o acesso ao curso após pagamento
+export async function registerCourseAccess(userId: string, courseId: string) {
+  try {
+    // Atualizar o status na tabela user_courses
+    const { error } = await supabase
+      .from('user_courses')
+      .update({ 
+        is_enrolled: true,
+        enrolled_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      })
+      .eq('user_id', userId)
+      .eq('course_id', courseId);
+    
+    if (error) throw error;
+    
+    // Também criar registro na tabela de inscrições para compatibilidade
+    const { error: enrollmentError } = await supabase
+      .from('enrollments')
+      .insert({
+        user_id: userId,
+        course_id: courseId,
+        granted_by: 'Payment',
+        notes: 'Acesso concedido após pagamento confirmado'
+      });
+    
+    if (enrollmentError) {
+      console.error('Error creating enrollment record:', enrollmentError);
+      // Não vamos lançar erro aqui pois o acesso já foi registrado na user_courses
+    }
+    
+    return { success: true };
+  } catch (error) {
+    console.error('Error registering course access:', error);
+    return { success: false, error: 'Falha ao registrar acesso ao curso' };
   }
 }
