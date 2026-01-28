@@ -15,7 +15,7 @@ import Link from 'next/link';
 import YouTube from 'react-youtube';
 import { useSupabaseAuth, useSupabaseUser } from '@/integrations/supabase/supabase-provider';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast'; // Import useToast
+import { useToast } from '@/hooks/use-toast';
 
 type Lesson = {
   id: string;
@@ -54,10 +54,9 @@ const courseData = {
           id: 'intro-3',
           title: 'Livro Estações Espirituais',
           type: 'resource' as const,
-          // NOVO LINK DO PDF NO SUPABASE STORAGE
           content: 'https://rxvcxqfnkvqfxwzbujka.supabase.co/storage/v1/object/public/Estacoes%20Espirituais/Livi-Skov-Estacoes-Espirituais.pdf',
           subtitle: 'Sobre o Livro de Apoio',
-          description: 'Acesse e baixe o material de apoio principal do curso. Este livro é a base da nossa jornada, aprofundando os temas abordados nas aulas e oferecendo exercícios práticos para cada estação.'
+          description: 'Acesse e baixar o material de apoio principal do curso. Este livro é a base da nossa jornada, aprofundando os temas abordados nas aulas e oferecendo exercícios práticos para cada estação.'
         },
       ],
     },
@@ -155,22 +154,21 @@ const courseData = {
 };
 
 export default function CoursePage() {
-  const { user: firebaseUser, isUserLoading: isFirebaseUserLoading } = useUser(); // Mantido para o progresso do curso no Firestore
+  const { user: firebaseUser, isUserLoading: isFirebaseUserLoading } = useUser();
   const { user: supabaseUser, isUserLoading: isSupabaseUserLoading } = useSupabaseUser();
   const supabaseAuth = useSupabaseAuth();
   const firestore = useFirestore();
   const router = useRouter();
-  const { toast } = useToast(); // Usar o hook de toast
+  const { toast } = useToast();
   const [selectedLesson, setSelectedLesson] = useState<Lesson>(courseData.modules[0].lessons[0]);
   const [completionStatus, setCompletionStatus] = useState<Record<string, boolean>>({});
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [isDownloading, setIsDownloading] = useState(false); // Novo estado para o carregamento do download
+  const [isDownloading, setIsDownloading] = useState(false);
   const [currentTime, setCurrentTime] = useState<Date>(new Date());
   
   const courseId = 'estacoes-espirituais';
 
-  // Atualizar o tempo a cada segundo para verificar se os módulos foram desbloqueados
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
@@ -179,7 +177,6 @@ export default function CoursePage() {
     return () => clearInterval(timer);
   }, []);
 
-  // Progress tracking still uses Firebase Firestore
   const progressDocRef = useMemoFirebase(() => {
     if (!firebaseUser || !firestore) return null;
     return doc(firestore, 'users', firebaseUser.uid, 'courseProgress', courseId);
@@ -187,14 +184,12 @@ export default function CoursePage() {
 
   const { data: progressData, isLoading: progressLoading } = useDoc<{ completedLessons: Record<string, boolean> }>(progressDocRef);
 
-  // Load progress from Firestore
   useEffect(() => {
     if (progressData?.completedLessons) {
       setCompletionStatus(progressData.completedLessons);
     }
   }, [progressData]);
 
-  // Check enrollment status from Supabase public.users table
   useEffect(() => {
     const checkEnrollmentStatus = async () => {
       if (!supabaseUser) {
@@ -227,12 +222,10 @@ export default function CoursePage() {
   }, [supabaseUser]);
 
   useEffect(() => {
-    // Redirect if not logged in
     if (!isSupabaseUserLoading && !supabaseUser) {
       router.push('/login');
     }
     
-    // After checking login, if user is not enrolled, redirect
     if (!isSupabaseUserLoading && supabaseUser && !isLoading && !isEnrolled) {
       router.push('/courses');
     }
@@ -248,7 +241,6 @@ export default function CoursePage() {
     
     setCompletionStatus(newStatus);
     
-    // Optimistic UI update
     setDocumentNonBlocking(progressDocRef, {
       id: courseId,
       completedLessons: newStatus
@@ -290,22 +282,28 @@ export default function CoursePage() {
       const lastName = supabaseUser.user_metadata?.last_name || '';
       const email = supabaseUser.email || '';
 
-      const { data, error } = await supabase.functions.invoke('watermark-pdf', {
-        body: {
+      // Chamada corrigida usando fetch direto com cabeçalhos CORS
+      const response = await fetch('https://rxvcxqfnkvqfxwzbujka.supabase.co/functions/v1/watermark-pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${supabase.auth.getSession()}`,
+        },
+        body: JSON.stringify({
           pdfUrl: originalPdfUrl,
           firstName,
           lastName,
           email,
-        },
+        }),
       });
 
-      if (error) {
-        throw error;
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP ${response.status}: ${errorText}`);
       }
 
-      // O `data` da invocação é um ArrayBuffer se a função retornar uma resposta binária
-      const blob = new Blob([data], { type: 'application/pdf' });
-      const url = window.URL.createObjectURL(blob);
+      const pdfBlob = await response.blob();
+      const url = window.URL.createObjectURL(pdfBlob);
       const a = document.createElement('a');
       a.href = url;
       a.download = 'Livi-Skov-Estacoes-Espirituais-Watermarked.pdf';
@@ -331,7 +329,7 @@ export default function CoursePage() {
     }
   };
 
-  if (isSupabaseUserLoading || !supabaseUser || isLoading) { // Removed firebaseUser from loading check for initial access
+  if (isSupabaseUserLoading || !supabaseUser || isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <p>Carregando...</p>
@@ -339,7 +337,6 @@ export default function CoursePage() {
     );
   }
 
-  // If still checking or not enrolled, show loading/redirecting state
   if (!isEnrolled) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
@@ -428,7 +425,6 @@ export default function CoursePage() {
           <SidebarContent className="p-0">
             <Accordion type="multiple" defaultValue={['modulo-0']} className="w-full">
               {courseData.modules.map((module) => {
-                // @ts-ignore
                 const releaseDate = module.releaseDate ? new Date(module.releaseDate) : null;
                 const isModuleUnlocked = !releaseDate || currentTime >= releaseDate;
                 

@@ -15,7 +15,7 @@ serve(async (req: Request) => {
   }
 
   try {
-    console.log("[watermark-pdf] Request received.");
+    console.log("[watermark-pdf] POST request received.");
     let requestBody;
     try {
       requestBody = await req.json();
@@ -48,7 +48,7 @@ serve(async (req: Request) => {
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const watermarkText = `${firstName} ${lastName} - ${email}`;
     const fontSize = 10;
-    const textColor = rgb(0.5, 0.5, 0.5); // Cinza claro
+    const textColor = rgb(0.5, 0.5, 0.5);
     console.log("[watermark-pdf] Font embedded. Applying watermark to pages.");
 
     const pages = pdfDoc.getPages();
@@ -66,7 +66,7 @@ serve(async (req: Request) => {
         font,
         size: fontSize,
         color: textColor,
-        opacity: 0.5, // Semi-transparente
+        opacity: 0.5,
       });
     }
     console.log("[watermark-pdf] Watermark applied to all pages. Saving PDF.");
