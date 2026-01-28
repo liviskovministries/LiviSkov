@@ -1,16 +1,14 @@
 'use client';
 
-import { useFirestore, useCollection, useMemoFirebase, setDocumentNonBlocking, useUser } from '@/firebase';
-import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useState, useTransition } from 'react';
+import { useEffect, useState, useTransition, Suspense } from 'react';
+import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import { SiteHeader } from '@/components/header';
 import { SiteFooter } from '@/components/footer';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { collection, doc } from 'firebase/firestore';
-import { createCheckoutSession, getSessionStatus } from '@/app/actions/checkout';
 import { useToast } from '@/hooks/use-toast';
 import { useSupabaseUser } from '@/integrations/supabase/supabase-provider';
 import { supabase } from '@/integrations/supabase/client';
@@ -20,85 +18,16 @@ const courses = [
     id: 'estacoes-espirituais',
     title: 'Curso Estações Espirituais',
     description: 'Aprenda a reconhecer e a viver plenamente cada estação da sua vida com Deus.',
-    imageUrl: '/images/logo-curso-estacoes-espirituais.jpg', // Updated to the new logo
+    imageUrl: '/images/logo-curso-estacoes-espirituais.jpg',
     imageHint: 'spiritual journey',
   }
 ];
 
-function CheckoutHandler() {
-  const { user: supabaseUser } = useSupabaseUser();
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const { toast } = useToast();
-  
-  // Não precisamos mais de Firebase enrollments aqui, pois o acesso será verificado na tabela users do Supabase.
-
-  useEffect(() => {
-    const paymentSuccess = searchParams.get('payment_success');
-    const sessionId = searchParams.get('session_id');
-    
-    if (paymentSuccess === 'true' && sessionId && supabaseUser) {
-      const verifyAndEnroll = async () => {
-        try {
-          toast({ title: "Verificando pagamento..." });
-          
-          const session = await getSessionStatus(sessionId);
-          
-          // No novo fluxo, a verificação real do pagamento e a atualização do acesso
-          // ocorreriam via webhook do Stripe ou uma API mais robusta.
-          // Por enquanto, simulamos o sucesso e atualizamos o acesso.
-          if (session.status === 'complete' && supabaseUser.id) {
-            const courseId = 'estacoes-espirituais'; // Hardcoded para o curso atual
-            
-            // Atualizar o status de acesso na tabela public.users
-            const { error } = await supabase
-              .from('users')
-              .update({ 
-                estacoes_espirituais_access: true, 
-                updated_at: new Date().toISOString() 
-              })
-              .eq('id', supabaseUser.id);
-            
-            if (error) {
-              console.error('Error updating Supabase user course access:', error);
-              toast({
-                variant: "destructive",
-                title: "Erro ao conceder acesso",
-                description: `Não foi possível conceder acesso ao curso: ${error.message}`
-              });
-            } else {
-              toast({
-                title: "Compra confirmada!",
-                description: "Sua inscrição no curso foi realizada com sucesso."
-              });
-            }
-            
-            router.replace('/courses', { scroll: false });
-          } else {
-            toast({
-              variant: "destructive",
-              title: "Falha na Verificação",
-              description: "Não foi possível confirmar seu pagamento."
-            });
-            router.replace('/courses', { scroll: false });
-          }
-        } catch (e: any) {
-          console.error("Error verifying payment session", e);
-          toast({
-            variant: "destructive",
-            title: "Erro na Verificação",
-            description: e.message || "Ocorreu um erro ao verificar seu pagamento."
-          });
-          router.replace('/courses', { scroll: false });
-        }
-      };
-      
-      verifyAndEnroll();
-    }
-  }, [searchParams, supabaseUser, router, toast]);
-
-  return null;
-}
+// Componente suspensível que usa useSearchParams
+const CheckoutHandler = dynamic(() => import('./CheckoutHandler'), {
+  ssr: false,
+  loading: () => null,
+});
 
 function CoursesPageContent() {
   const { user: supabaseUser, isUserLoading: isSupabaseUserLoading } = useSupabaseUser();
@@ -194,7 +123,7 @@ function CoursesPageContent() {
         <div className="container py-12 md:py-20">
           <div className="mt-12 flex flex-col items-center gap-8">
             {courses.map((course) => {
-              const isEnrolled = userCourseAccess; // Verifica o acesso do usuário
+              const isEnrolled = userCourseAccess;
               
               return (
                 <Card key={course.id} className="w-full max-w-4xl overflow-hidden shadow-lg transition-transform duration-300 hover:scale-[1.02] hover:shadow-2xl md:flex">
@@ -239,9 +168,17 @@ function CoursesPageContent() {
 
 export default function CoursesPage() {
   return (
-    <>
+    <Suspense fallback={
+      <div className="flex min-h-screen flex-col bg-background">
+        <SiteHeader />
+        <div className="flex-1 flex items-center justify-center">
+          <p>Carregando...</p>
+        </div>
+        <SiteFooter />
+      </div>
+    }>
       <CoursesPageContent />
       <CheckoutHandler />
-    </>
+    </Suspense>
   );
 }
