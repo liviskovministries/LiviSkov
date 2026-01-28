@@ -15,6 +15,7 @@ import Link from 'next/link';
 import YouTube from 'react-youtube';
 import { useSupabaseAuth, useSupabaseUser } from '@/integrations/supabase/supabase-provider';
 import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast'; // Import useToast
 
 type Lesson = {
   id: string;
@@ -53,7 +54,8 @@ const courseData = {
           id: 'intro-3',
           title: 'Livro Estações Espirituais',
           type: 'resource' as const,
-          content: 'https://storage.googleapis.com/aifire.co/documents/Estacoes-Espirituais-Livi-Skov.pdf',
+          // NOVO LINK DO PDF NO SUPABASE STORAGE
+          content: 'https://rxvcxqfnkvqfxwzbujka.supabase.co/storage/v1/object/public/Estacoes%20Espirituais/Livi-Skov-Estacoes-Espirituais.pdf',
           subtitle: 'Sobre o Livro de Apoio',
           description: 'Acesse e baixe o material de apoio principal do curso. Este livro é a base da nossa jornada, aprofundando os temas abordados nas aulas e oferecendo exercícios práticos para cada estação.'
         },
@@ -158,10 +160,12 @@ export default function CoursePage() {
   const supabaseAuth = useSupabaseAuth();
   const firestore = useFirestore();
   const router = useRouter();
+  const { toast } = useToast(); // Usar o hook de toast
   const [selectedLesson, setSelectedLesson] = useState<Lesson>(courseData.modules[0].lessons[0]);
   const [completionStatus, setCompletionStatus] = useState<Record<string, boolean>>({});
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDownloading, setIsDownloading] = useState(false); // Novo estado para o carregamento do download
   const [currentTime, setCurrentTime] = useState<Date>(new Date());
   
   const courseId = 'estacoes-espirituais';
@@ -264,6 +268,69 @@ export default function CoursePage() {
     }
   };
 
+  const handleDownloadWatermarkedPdf = async (originalPdfUrl: string) => {
+    if (!supabaseUser) {
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: "Você precisa estar logado para baixar o livro."
+      });
+      router.push('/login');
+      return;
+    }
+
+    setIsDownloading(true);
+    toast({
+      title: "Preparando download...",
+      description: "Seu livro com marca d'água está sendo gerado."
+    });
+
+    try {
+      const firstName = supabaseUser.user_metadata?.first_name || '';
+      const lastName = supabaseUser.user_metadata?.last_name || '';
+      const email = supabaseUser.email || '';
+
+      const { data, error } = await supabase.functions.invoke('watermark-pdf', {
+        body: {
+          pdfUrl: originalPdfUrl,
+          firstName,
+          lastName,
+          email,
+        },
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      // O `data` da invocação é um ArrayBuffer se a função retornar uma resposta binária
+      const blob = new Blob([data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Livi-Skov-Estacoes-Espirituais-Watermarked.pdf';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+
+      toast({
+        title: "Download concluído!",
+        description: "Seu livro foi baixado com sucesso."
+      });
+
+    } catch (error: any) {
+      console.error("[CoursePage] Error downloading watermarked PDF:", error);
+      toast({
+        variant: "destructive",
+        title: "Erro no download",
+        description: error.message || "Não foi possível baixar o livro com marca d'água."
+      });
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   if (isSupabaseUserLoading || !supabaseUser || isLoading) { // Removed firebaseUser from loading check for initial access
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
@@ -324,8 +391,13 @@ export default function CoursePage() {
               <div className="flex flex-col items-center md:items-start">
                 <h3 className="text-2xl font-bold text-foreground">{selectedLesson.title}</h3>
                 <p className="text-muted-foreground mt-2">Material de Apoio Principal</p>
-                <Button asChild size="lg" className="mt-4">
-                  <a href={selectedLesson.content || '#'} target="_blank" rel="noopener noreferrer">Baixar Livro em PDF</a>
+                <Button 
+                  onClick={() => selectedLesson.content && handleDownloadWatermarkedPdf(selectedLesson.content)} 
+                  size="lg" 
+                  className="mt-4"
+                  disabled={isDownloading}
+                >
+                  {isDownloading ? 'Gerando...' : 'Baixar Livro em PDF'}
                 </Button>
               </div>
             </CardContent>
@@ -341,7 +413,7 @@ export default function CoursePage() {
       <div className="flex min-h-screen bg-background">
         <Sidebar collapsible="icon" className="border-r">
           <SidebarHeader>
-            <div className="flex items-center justify-center gap-4 p-2"> {/* Changed gap-2 to gap-4 */}
+            <div className="flex items-center justify-center gap-4 p-2">
               <Image 
                 src="/images/logo4branco.fw.png" 
                 alt="Logo Livi Skov" 
