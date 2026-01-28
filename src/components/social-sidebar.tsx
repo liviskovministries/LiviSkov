@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { Instagram, Facebook, Youtube } from 'lucide-react';
 import { Button } from './ui/button';

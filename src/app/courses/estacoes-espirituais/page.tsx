@@ -163,10 +163,18 @@ export default function CoursePage() {
   const [completionStatus, setCompletionStatus] = useState<Record<string, boolean>>({});
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentTime, setCurrentTime] = useState<Date>(new Date());
   
-  const now = new Date();
-  now.setHours(0, 0, 0, 0);
   const courseId = 'estacoes-espirituais';
+
+  // Atualizar o tempo a cada segundo para verificar se os módulos foram desbloqueados
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+    
+    return () => clearInterval(timer);
+  }, []);
 
   // Fetch enrollments to check for access (using Firebase Firestore with Firebase user)
   const enrollmentsQuery = useMemoFirebase(() => {
@@ -381,7 +389,7 @@ export default function CoursePage() {
               {courseData.modules.map((module) => {
                 // @ts-ignore
                 const releaseDate = module.releaseDate ? new Date(module.releaseDate) : null;
-                const isModuleUnlocked = !releaseDate || now >= releaseDate;
+                const isModuleUnlocked = !releaseDate || currentTime >= releaseDate;
                 
                 return (
                   <AccordionItem value={module.id} key={module.id} className="border-none">
