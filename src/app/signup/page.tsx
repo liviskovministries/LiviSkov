@@ -55,7 +55,7 @@ export default function SignupPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      // Fazer o cadastro básico sem dados adicionais primeiro
+      // Fazer o cadastro básico
       const { data, error } = await supabaseAuth.signUp({
         email: values.email,
         password: values.password,
@@ -65,21 +65,24 @@ export default function SignupPage() {
         throw error;
       }
 
-      // Se o usuário foi criado com sucesso, criar o perfil manualmente
+      // Se o usuário foi criado com sucesso, criar/atualizar o perfil
       if (data.user) {
-        // Criar perfil do usuário após o cadastro
         const { error: profileError } = await supabase
           .from('profiles')
-          .insert({
+          .upsert({
             id: data.user.id,
             first_name: values.firstName,
             last_name: values.lastName,
             phone: values.phone,
-          });
+          }, { onConflict: 'id' }); // Usa 'id' como chave de conflito para upsert
 
         if (profileError) {
-          console.warn('Erro ao criar perfil:', profileError);
-          // Não vamos falhar o cadastro por causa do perfil, apenas logar o erro
+          console.error('Erro ao criar/atualizar perfil:', profileError);
+          toast({
+            variant: "destructive",
+            title: "Erro no perfil",
+            description: `Não foi possível salvar suas informações de perfil: ${profileError.message}`,
+          });
         }
 
         // Registrar usuário para o curso com acesso bloqueado
@@ -94,7 +97,12 @@ export default function SignupPage() {
           });
 
         if (courseError) {
-          console.warn('Erro ao registrar curso:', courseError);
+          console.error('Erro ao registrar curso:', courseError);
+          toast({
+            variant: "destructive",
+            title: "Erro no curso",
+            description: `Não foi possível registrar seu acesso ao curso: ${courseError.message}`,
+          });
         }
       }
 
