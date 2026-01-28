@@ -1,7 +1,7 @@
 // @ts-ignore
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 // @ts-ignore
-import { PDFDocument, rgb, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
+// import { PDFDocument, rgb, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1"; // Comentado para depuração
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -14,13 +14,21 @@ serve(async (req: Request) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  console.log("[watermark-pdf] Function started, returning simple response for debugging.");
+  return new Response(JSON.stringify({ message: "Hello from watermark-pdf function! (Debugging mode)" }), {
+    status: 200,
+    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+  });
+
+  // O código original da marca d'água está temporariamente desativado para depuração.
+  /*
   try {
     console.log("[watermark-pdf] Request received.");
     let requestBody;
     try {
       requestBody = await req.json();
       console.log("[watermark-pdf] Request body parsed successfully.", { body: requestBody });
-    } catch (jsonError: any) { // Explicitly type jsonError as 'any' for now to avoid TS error on .message
+    } catch (jsonError: any) {
       console.error("[watermark-pdf] Error parsing request JSON:", { error: jsonError.message, stack: jsonError.stack });
       return new Response(JSON.stringify({ error: 'Invalid JSON in request body.' }), {
         status: 400,
@@ -48,7 +56,7 @@ serve(async (req: Request) => {
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const watermarkText = `${firstName} ${lastName} - ${email}`;
     const fontSize = 10;
-    const textColor = rgb(0.5, 0.5, 0.5); // Cinza claro
+    const textColor = rgb(0.5, 0.5, 0.5);
     console.log("[watermark-pdf] Font embedded. Applying watermark to pages.");
 
     const pages = pdfDoc.getPages();
@@ -56,7 +64,6 @@ serve(async (req: Request) => {
       const { width, height } = page.getSize();
       const textWidth = font.widthOfTextAtSize(watermarkText, fontSize);
       
-      // Posicionar no canto inferior direito, com um pouco de preenchimento
       const x = width - textWidth - 20;
       const y = 20;
 
@@ -66,7 +73,7 @@ serve(async (req: Request) => {
         font,
         size: fontSize,
         color: textColor,
-        opacity: 0.5, // Semi-transparente
+        opacity: 0.5,
       });
     }
     console.log("[watermark-pdf] Watermark applied to all pages. Saving PDF.");
@@ -100,4 +107,5 @@ serve(async (req: Request) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }
+  */
 });
