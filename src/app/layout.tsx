@@ -6,7 +6,6 @@ import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { SocialSidebar } from '@/components/social-sidebar';
 import { SupabaseProvider } from '@/integrations/supabase/supabase-provider';
 
-
 export const metadata: Metadata = {
   title: 'Livi Skov - Estações Espirituais',
   description: 'Descubra as estações da sua jornada com Deus',
@@ -20,10 +19,14 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="!scroll-smooth">
       <head>
+        <Script 
+          src="https://js.stripe.com/clover/stripe.js" 
+          strategy="beforeInteractive" 
+        />
       </head>
       <body className="antialiased">
         <FirebaseClientProvider>
-          <SupabaseProvider> {/* Adicionado SupabaseProvider aqui */}
+          <SupabaseProvider>
             <SocialSidebar />
             {children}
             <Toaster />
