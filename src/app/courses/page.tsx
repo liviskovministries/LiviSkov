@@ -2,7 +2,7 @@
 
 import { useFirestore, useCollection, useMemoFirebase, setDocumentNonBlocking, useUser } from '@/firebase';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, Suspense, useState, useTransition } from 'react';
+import React, { useEffect, useState, useTransition } from 'react';
 import { SiteHeader } from '@/components/header';
 import { SiteFooter } from '@/components/footer';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -219,9 +219,9 @@ function CoursesPageContent() {
 
 export default function CoursesPage() {
   return (
-    <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-background"><p>Carregando...</p></div>}>
+    <>
       <CoursesPageContent />
       <CheckoutHandler />
-    </Suspense>
+    </>
   );
 }
