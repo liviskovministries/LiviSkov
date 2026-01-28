@@ -56,40 +56,42 @@ export default function SignupPage() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       // 1. Fazer o cadastro de autenticação no Supabase
+      // Passamos first_name e last_name como metadata para que o trigger possa usá-los
       const { data: authData, error: authError } = await supabaseAuth.signUp({
         email: values.email,
         password: values.password,
+        options: {
+          data: {
+            first_name: values.firstName,
+            last_name: values.lastName,
+          },
+        },
       });
 
       if (authError) {
         throw authError;
       }
 
-      // 2. Se o usuário de autenticação foi criado, inserir os dados na tabela public.users
+      // 2. Se o usuário de autenticação foi criado, o trigger já inseriu o registro em public.users.
+      // Agora, vamos atualizar o campo 'phone' na tabela public.users.
       if (authData.user) {
-        const { error: userInsertError } = await supabase
+        const { error: userUpdateError } = await supabase
           .from('users')
-          .insert({
-            id: authData.user.id,
-            first_name: values.firstName,
-            last_name: values.lastName,
-            email: values.email,
+          .update({
             phone: values.phone,
-            estacoes_espirituais_access: false, // Acesso bloqueado por padrão
-            created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
-          });
+          })
+          .eq('id', authData.user.id); // Atualiza o registro do usuário recém-criado
 
-        if (userInsertError) {
-          console.error('Erro ao inserir dados na tabela users:', JSON.stringify(userInsertError, null, 2));
+        if (userUpdateError) {
+          console.error('Erro ao atualizar telefone do usuário:', JSON.stringify(userUpdateError, null, 2));
           toast({
             variant: "destructive",
             title: "Erro no cadastro",
-            description: `Não foi possível salvar suas informações de usuário: ${userInsertError?.message || JSON.stringify(userInsertError)}`,
+            description: `Não foi possível salvar seu telefone: ${userUpdateError?.message || JSON.stringify(userUpdateError)}`,
           });
-          // Opcional: Se a inserção do perfil falhar, você pode querer deletar o usuário de auth.users
-          // await supabaseAuth.admin.deleteUser(authData.user.id); 
-          return;
+          // Se a atualização do telefone falhar, o usuário ainda terá uma conta e um registro básico.
+          // Podemos decidir se queremos reverter o cadastro ou apenas logar o erro.
         }
       }
 
