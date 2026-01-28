@@ -57,32 +57,32 @@ export default function Home() {
         {/* Testimonials Section */}
         <section id="testimonials" className="bg-secondary py-20">
           <div className="container text-center">
-             <h2 className="text-3xl font-bold text-primary">O que dizem sobre o curso Estações Espirituais</h2>
-              <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-                Veja o impacto da jornada das Estações Espirituais na vida de outras pessoas.
-              </p>
-              <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
-                <Card className="flex flex-col items-center p-6 text-center">
-                  <Avatar className="h-20 w-20">
-                    {testimonialImage && <AvatarImage src={testimonialImage.imageUrl} alt="Testemunho de Bianca Lima" />}
-                    <AvatarFallback>BL</AvatarFallback>
-                  </Avatar>
-                  <CardContent className="mt-4 p-0">
-                    <p className="italic text-muted-foreground">"Compartilho sobre a experiência no Curso Estações com Livi Skov onde aprendi a importância de viver cada etapa da vida de forma leve e com a mente aberta para aprender algo novo na jornada da vida,seja renunciar algo que te trouxe até esse ponto X da sua vida atual,sendo esse processo de renuncia e entrega uma jornada de conhecimento na base da confiança no processo de Deus na sua vida e saber que tudo é movido por estações e tempo ."</p>
-                    <p className="mt-4 font-semibold text-primary">- Bianca Lima</p>
-                  </CardContent>
-                </Card>
-                 <Card className="flex flex-col items-center p-6 text-center">
-                  <Avatar className="h-20 w-20">
-                    <AvatarImage src="/images/keteleen-rangel-testimonial.jpeg" alt="Testemunho de Keteleen Rangel" />
-                    <AvatarFallback>KR</AvatarFallback>
-                  </Avatar>
-                  <CardContent className="mt-4 p-0">
-                    <p className="italic text-muted-foreground">"Através do discipulado com a Livi, pude acessar ferramentas essenciais que foram fundamentais para alcançar um novo nível e uma nova estação em minha vida. Esse discipulado me conduziu a um lugar de cura, liberdade e transformação, destravando áreas da minha vida e me equipando para viver o propósito de Deus. As aulas da Livi são didáticas, profundas e repletas de chaves importantes que trazem consciência sobre as verdades do Reino de Deus. O discipulado é um espaço seguro para aprender, compartilhar a vida, ser vulnerável e crescer. A Livi transborda o amor de Deus, e todos que se sentam à mesa para aprender com ela desfrutam de uma mesa farta. Sou imensamente grata por esse discipulado e pelas sementes plantadas em minha vida através do transbordar da Livi. Caminhar ao lado dela é um privilégio. Posso afirmar que participar desse discipulado foi e tem sido essencial para o meu florescer. Sobre o curso 'Estações' ele é completo. Além das aulas, você terá acesso a um livro incrível que trará clareza, discernimento e propósito para as diferentes fases da sua vida. Compreender as estações e explorá-las à luz do Evangelho é indispensável para a jornada daqueles que escolheram se submeter ao processo de transformação. Quero te incentivar a se inscrever neste curso! Esse é um convite de Deus para você mergulhar nessa jornada incrível chamada 'Estações Espirituais'."</p>
-                    <p className="mt-4 font-semibold text-primary">- Keteleen Rangel</p>
-                  </CardContent>
-                </Card>
-              </div>
+            <h2 className="text-3xl font-bold text-primary">O que dizem sobre o curso Estações Espirituais</h2>
+            <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
+              Veja o impacto da jornada das Estações Espirituais na vida de outras pessoas.
+            </p>
+            <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
+              <Card className="flex flex-col items-center p-6 text-center">
+                <Avatar className="h-20 w-20">
+                  {testimonialImage && <AvatarImage src={testimonialImage.imageUrl} alt="Testemunho de Bianca Lima" />}
+                  <AvatarFallback>BL</AvatarFallback>
+                </Avatar>
+                <CardContent className="mt-4 p-0">
+                  <p className="italic text-muted-foreground">"Compartilho sobre a experiência no Curso Estações com Livi Skov onde aprendi a importância de viver cada etapa da vida de forma leve e com a mente aberta para aprender algo novo na jornada da vida,seja renunciar algo que te trouxe até esse ponto X da sua vida atual,sendo esse processo de renuncia e entrega uma jornada de conhecimento na base da confiança no processo de Deus na sua vida e saber que tudo é movido por estações e tempo ."</p>
+                  <p className="mt-4 font-semibold text-primary">- Bianca Lima</p>
+                </CardContent>
+              </Card>
+              <Card className="flex flex-col items-center p-6 text-center">
+                <Avatar className="h-20 w-20">
+                  <AvatarImage src="/images/keteleen-rangel-testimonial.jpeg" alt="Testemunho de Keteleen Rangel" />
+                  <AvatarFallback>KR</AvatarFallback>
+                </Avatar>
+                <CardContent className="mt-4 p-0">
+                  <p className="italic text-muted-foreground">"Através do discipulado com a Livi, pude acessar ferramentas essenciais que foram fundamentais para alcançar um novo nível e uma nova estação em minha vida. Esse discipulado me conduziu a um lugar de cura, liberdade e transformação, destravando áreas da minha vida e me equipando para viver o propósito de Deus. As aulas da Livi são didáticas, profundas e repletas de chaves importantes que trazem consciência sobre as verdades do Reino de Deus. O discipulado é um espaço seguro para aprender, compartilhar a vida, ser vulnerável e crescer. A Livi transborda o amor de Deus, e todos que se sentam à mesa para aprender com ela desfrutam de uma mesa farta. Sou imensamente grata por esse discipulado e pelas sementes plantadas em minha vida através do transbordar da Livi. Caminhar ao lado dela é um privilégio. Posso afirmar que participar desse discipulado foi e tem sido essencial para o meu florescer. Sobre o curso 'Estações' ele é completo. Além das aulas, você terá acesso a um livro incrível que trará clareza, discernimento e propósito para as diferentes fases da sua vida. Compreender as estações e explorá-las à luz do Evangelho é indispensável para a jornada daqueles que escolheram se submeter ao processo de transformação. Quero te incentivar a se inscrever neste curso! Esse é um convite de Deus para você mergulhar nessa jornada incrível chamada 'Estações Espirituais'."</p>
+                  <p className="mt-4 font-semibold text-primary">- Keteleen Rangel</p>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </section>
 
@@ -162,7 +162,7 @@ export default function Home() {
           <div className="container relative z-10 flex h-full flex-col items-center justify-center text-center text-white">
             <h2 className="text-4xl font-bold md:text-5xl">Fale Conosco</h2>
             <p className="mt-4 max-w-2xl text-lg">
-              Estamos aqui para ajudar. Envi e sua mensagem!
+              Estamos aqui para ajudar. Envie sua mensagem!
             </p>
           </div>
         </section>
@@ -180,10 +180,7 @@ export default function Home() {
                 <p className="text-muted-foreground">
                   Para dúvidas, sugestões ou suporte, envie um email para:
                 </p>
-                <a
-                  href="mailto:contato@liviskov.com"
-                  className="mt-2 inline-block font-semibold text-primary hover:underline"
-                >
+                <a href="mailto:contato@liviskov.com" className="mt-2 inline-block font-semibold text-primary hover:underline">
                   contato@liviskov.com
                 </a>
               </CardContent>
@@ -197,14 +194,12 @@ export default function Home() {
               </CardHeader>
               <CardContent className="pt-0">
                 <p className="text-muted-foreground">
-                  Precisa de uma resposta rápida? Inicie uma conversa no chat ao
-                  vivo clicando no ícone no canto da tela.
+                  Precisa de uma resposta rápida? Inicie uma conversa no chat ao vivo clicando no ícone no canto da tela.
                 </p>
               </CardContent>
             </Card>
           </div>
         </section>
-
       </main>
       <SiteFooter />
     </div>
