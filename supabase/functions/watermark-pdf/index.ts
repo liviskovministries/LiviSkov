@@ -88,9 +88,8 @@ serve(async (req: Request) => {
     console.log("[watermark-pdf] PDF document loaded. Embedding font.");
 
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-    const watermarkText = `${firstName} ${lastName}\n${email}\nLiviskov.com`;
+    const watermarkText = `${firstName} ${lastName} - ${email} - Liviskov.com`;
     const fontSize = 10;
-    const lineHeight = fontSize * 1.5;
     const textColor = rgb(0.6, 0.6, 0.6);
     console.log("[watermark-pdf] Font embedded. Applying watermark to pages.");
 
@@ -98,25 +97,15 @@ serve(async (req: Request) => {
     for (const page of pages) {
       const { width, height } = page.getSize();
       
-      // Dividir o texto em linhas para posicionamento vertical
-      const lines = watermarkText.split('\n');
-      
-      // Posicionar na lateral esquerda, começando do topo
-      const x = 20; // Margem da esquerda
-      const startY = height - 50; // Começar do topo com margem
-
-      // Adicionar cada linha do texto
-      lines.forEach((line, index) => {
-        const y = startY - (index * lineHeight);
-        
-        page.drawText(line, {
-          x,
-          y,
-          font,
-          size: fontSize,
-          color: textColor,
-          opacity: 0.4,
-        });
+      // Desenhar a marca d'água rotacionada 90 graus na lateral esquerda
+      page.drawText(watermarkText, {
+        x: 25, // Posição X na lateral esquerda
+        y: height / 2, // Posição Y no meio da página
+        font,
+        size: fontSize,
+        color: textColor,
+        opacity: 0.4,
+        rotate: { type: 'degrees', angle: -90 }, // Rotacionar -90 graus (vertical para cima)
       });
     }
     console.log("[watermark-pdf] Watermark applied to all pages. Saving PDF.");
