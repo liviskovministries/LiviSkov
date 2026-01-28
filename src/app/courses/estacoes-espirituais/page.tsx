@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking } from '@/firebase'; // Removido useUser do Firebase
+import { useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking, useUser } from '@/firebase'; // Adicionado useUser do Firebase
 import { collection, doc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import {
@@ -123,7 +123,8 @@ const courseData = {
 };
 
 export default function CoursePage() {
-  const { user: supabaseUser, isUserLoading: isSupabaseUserLoading } = useSupabaseUser(); // Usar Supabase user para auth
+  const { user: firebaseUser, isUserLoading: isFirebaseUserLoading } = useUser(); // Usar Firebase user para Firestore auth
+  const { user: supabaseUser, isUserLoading: isSupabaseUserLoading } = useSupabaseUser(); // Usar Supabase user para UI e logout
   const supabaseAuth = useSupabaseAuth(); // Usar Supabase auth para logout
   const firestore = useFirestore();
   const router = useRouter();
@@ -134,18 +135,18 @@ export default function CoursePage() {
 
   const courseId = 'estacoes-espirituais';
 
-  // Fetch enrollments to check for access (still using Firebase Firestore)
+  // Fetch enrollments to check for access (using Firebase Firestore with Firebase user)
   const enrollmentsQuery = useMemoFirebase(() => {
-    if (!supabaseUser || !firestore) return null; // Usar supabaseUser.id
-    return collection(firestore, 'users', supabaseUser.id, 'enrollments');
-  }, [supabaseUser, firestore]); // Depende de supabaseUser
+    if (!firebaseUser || !firestore) return null; // Usar firebaseUser.uid para Firestore
+    return collection(firestore, 'users', firebaseUser.uid, 'enrollments');
+  }, [firebaseUser, firestore]); // Depende de firebaseUser
   const { data: enrollments, isLoading: enrollmentsLoading } = useCollection<{courseId: string}>(enrollmentsQuery);
   const isEnrolled = useMemo(() => enrollments?.some(e => e.courseId === courseId), [enrollments]);
 
   const progressDocRef = useMemoFirebase(() => {
-    if (!supabaseUser || !firestore) return null; // Usar supabaseUser.id
-    return doc(firestore, 'users', supabaseUser.id, 'courseProgress', courseId);
-  }, [supabaseUser, firestore]); // Depende de supabaseUser
+    if (!firebaseUser || !firestore) return null; // Usar firebaseUser.uid para Firestore
+    return doc(firestore, 'users', firebaseUser.uid, 'courseProgress', courseId);
+  }, [firebaseUser, firestore]); // Depende de firebaseUser
 
   const { data: progressData, isLoading: progressLoading } = useDoc<{ completedLessons: Record<string, boolean> }>(progressDocRef);
 
@@ -158,7 +159,7 @@ export default function CoursePage() {
 
 
   useEffect(() => {
-    // Redirect if not logged in (using Supabase user)
+    // Redirect if not logged in (using Supabase user for UI auth)
     if (!isSupabaseUserLoading && !supabaseUser) {
       router.push('/login');
     }
@@ -191,7 +192,7 @@ export default function CoursePage() {
   };
 
 
-  if (isSupabaseUserLoading || !supabaseUser || enrollmentsLoading || progressLoading) {
+  if (isSupabaseUserLoading || !supabaseUser || isFirebaseUserLoading || enrollmentsLoading || progressLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <p>Carregando...</p>

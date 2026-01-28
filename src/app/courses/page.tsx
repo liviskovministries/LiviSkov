@@ -1,6 +1,6 @@
 'use client';
 
-import { useFirestore, useCollection, useMemoFirebase, setDocumentNonBlocking } from '@/firebase'; // Removido useUser do Firebase
+import { useFirestore, useCollection, useMemoFirebase, setDocumentNonBlocking, useUser } from '@/firebase';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, Suspense, useState, useTransition } from 'react';
 import { SiteHeader } from '@/components/header';
@@ -12,9 +12,8 @@ import Link from 'next/link';
 import { collection, doc } from 'firebase/firestore';
 import { createCheckoutSession, getSessionStatus } from '@/app/actions/checkout';
 import { useToast } from '@/hooks/use-toast';
-import { useSupabaseUser } from '@/integrations/supabase/supabase-provider'; // Usar hook Supabase
+import { useSupabaseUser } from '@/integrations/supabase/supabase-provider';
 
-// Mock data for courses
 const courses = [
   {
     id: 'estacoes-espirituais',
@@ -25,37 +24,37 @@ const courses = [
   }
 ];
 
-
 function CheckoutHandler() {
-  const { user: supabaseUser } = useSupabaseUser(); // Usar Supabase user
-  const firestore = useFirestore(); // Manter Firestore para enrollments
+  const { user: supabaseUser } = useSupabaseUser();
+  const { user: firebaseUser } = useUser();
+  const firestore = useFirestore();
   const searchParams = useSearchParams();
   const router = useRouter();
   const { toast } = useToast();
   const enrollmentsQuery = useMemoFirebase(() => {
-    if (!supabaseUser || !firestore) return null; // Usar supabaseUser.id para o caminho do Firestore
-    return collection(firestore, 'users', supabaseUser.id, 'enrollments');
-  }, [supabaseUser, firestore]);
+    if (!firebaseUser || !firestore) return null;
+    return collection(firestore, 'users', firebaseUser.uid, 'enrollments');
+  }, [firebaseUser, firestore]);
   const { data: enrollments } = useCollection<{courseId: string}>(enrollmentsQuery);
 
   useEffect(() => {
     const sessionId = searchParams.get('payment_success') === 'true' ? searchParams.get('session_id') : null;
 
-    if (sessionId && supabaseUser && firestore) { // Usar supabaseUser
+    if (sessionId && supabaseUser && firebaseUser && firestore) {
       const verifyAndEnroll = async () => {
         try {
           toast({ title: "Verificando pagamento..." });
           const session = await getSessionStatus(sessionId);
           
-          if (session.status === 'complete' && session.client_reference_id === supabaseUser.id && session.metadata) { // Usar supabaseUser.id
+          if (session.status === 'complete' && session.client_reference_id === supabaseUser.id && session.metadata) {
             const courseId = session.metadata.courseId;
             const isAlreadyEnrolled = enrollments?.some(e => e.courseId === courseId);
             
             if (!isAlreadyEnrolled) {
-              const enrollmentRef = doc(collection(firestore, 'users', supabaseUser.id, 'enrollments')); // Usar supabaseUser.id
+              const enrollmentRef = doc(collection(firestore, 'users', firebaseUser.uid, 'enrollments'));
               setDocumentNonBlocking(enrollmentRef, {
                 id: enrollmentRef.id,
-                userId: supabaseUser.id, // Usar supabaseUser.id
+                userId: firebaseUser.uid,
                 courseId: courseId,
                 enrollmentDate: new Date().toISOString(),
               }, { merge: true });
@@ -77,33 +76,37 @@ function CheckoutHandler() {
       };
       verifyAndEnroll();
     }
-  }, [searchParams, supabaseUser, firestore, enrollments, router, toast]); // Adicionar supabaseUser às dependências
+  }, [searchParams, supabaseUser, firebaseUser, firestore, enrollments, router, toast]);
 
   return null;
 }
 
-
 function CoursesPageContent() {
-  const { user: supabaseUser, isUserLoading: isSupabaseUserLoading } = useSupabaseUser(); // Usar Supabase user
+  const { user: supabaseUser, isUserLoading: isSupabaseUserLoading } = useSupabaseUser();
+  const { user: firebaseUser, isUserLoading: isFirebaseUserLoading } = useUser();
   const router = useRouter();
-  const firestore = useFirestore(); // Manter Firestore para enrollments
+  const firestore = useFirestore();
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
 
   const enrollmentsQuery = useMemoFirebase(() => {
-    if (!supabaseUser || !firestore) return null; // Usar supabaseUser.id para o caminho do Firestore
-    return collection(firestore, 'users', supabaseUser.id, 'enrollments');
-  }, [supabaseUser, firestore]); // Adicionar supabaseUser às dependências
+    if (!firebaseUser || !firestore) return null;
+    return collection(firestore, 'users', firebaseUser.uid, 'enrollments');
+  }, [firebaseUser, firestore]);
 
   const { data: enrollments, isLoading: enrollmentsLoading } = useCollection<{courseId: string}>(enrollmentsQuery);
 
   const handlePurchase = (courseId: string) => {
-    if (!supabaseUser) { // Usar supabaseUser
+    if (!supabaseUser) {
       router.push('/login?redirect=/courses');
       return;
     }
     startTransition(async () => {
-      const result = await createCheckoutSession(supabaseUser.id, courseId, supabaseUser.email); // Usar supabaseUser.id e email
+      const result = await createCheckoutSession(
+        supabaseUser.id, 
+        courseId, 
+        supabaseUser.email || null // Handle undefined email case
+      );
       if(result?.error) {
         toast({
           variant: "destructive",
@@ -114,7 +117,7 @@ function CoursesPageContent() {
     });
   }
 
-  if (isSupabaseUserLoading || (supabaseUser && enrollmentsLoading)) { // Usar isSupabaseUserLoading e supabaseUser
+  if (isSupabaseUserLoading || isFirebaseUserLoading || (supabaseUser && enrollmentsLoading)) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <p>Carregando...</p>
@@ -149,7 +152,7 @@ function CoursesPageContent() {
         <div className="container py-12 md:py-20">
           <div className="mt-12 flex flex-col items-center gap-8">
             {courses.map((course) => {
-              const isEnrolled = !!supabaseUser && enrollments?.some(e => e.courseId === course.id); // Usar supabaseUser
+              const isEnrolled = !!firebaseUser && enrollments?.some(e => e.courseId === course.id);
 
               return (
               <Card key={course.id} className="w-full max-w-4xl overflow-hidden shadow-lg transition-transform duration-300 hover:scale-[1.02] hover:shadow-2xl md:flex">
