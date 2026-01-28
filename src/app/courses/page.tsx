@@ -1,6 +1,6 @@
 'use client';
 
-import { useUser, useFirestore, useCollection, useMemoFirebase, setDocumentNonBlocking } from '@/firebase'; // Manter Firebase para Firestore
+import { useFirestore, useCollection, useMemoFirebase, setDocumentNonBlocking } from '@/firebase'; // Removido useUser do Firebase
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, Suspense, useState, useTransition } from 'react';
 import { SiteHeader } from '@/components/header';

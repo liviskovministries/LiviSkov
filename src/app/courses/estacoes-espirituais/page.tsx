@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { useUser, useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking } from '@/firebase'; // Manter Firebase para Firestore
+import { useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking } from '@/firebase'; // Removido useUser do Firebase
 import { collection, doc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import {
@@ -47,6 +47,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import YouTube from 'react-youtube';
 import { useSupabaseAuth, useSupabaseUser } from '@/integrations/supabase/supabase-provider'; // Usar hooks Supabase
+import { useCollection } from '@/firebase/firestore/use-collection'; // Importar useCollection
 
 type Lesson = {
   id: string;
@@ -122,7 +123,6 @@ const courseData = {
 };
 
 export default function CoursePage() {
-  const { user: firebaseUser, isUserLoading: isFirebaseUserLoading } = useUser(); // Manter Firebase user para Firestore
   const { user: supabaseUser, isUserLoading: isSupabaseUserLoading } = useSupabaseUser(); // Usar Supabase user para auth
   const supabaseAuth = useSupabaseAuth(); // Usar Supabase auth para logout
   const firestore = useFirestore();
@@ -136,16 +136,16 @@ export default function CoursePage() {
 
   // Fetch enrollments to check for access (still using Firebase Firestore)
   const enrollmentsQuery = useMemoFirebase(() => {
-    if (!firebaseUser || !firestore) return null;
-    return collection(firestore, 'users', firebaseUser.uid, 'enrollments');
-  }, [firebaseUser, firestore]);
+    if (!supabaseUser || !firestore) return null; // Usar supabaseUser.id
+    return collection(firestore, 'users', supabaseUser.id, 'enrollments');
+  }, [supabaseUser, firestore]); // Depende de supabaseUser
   const { data: enrollments, isLoading: enrollmentsLoading } = useCollection<{courseId: string}>(enrollmentsQuery);
   const isEnrolled = useMemo(() => enrollments?.some(e => e.courseId === courseId), [enrollments]);
 
   const progressDocRef = useMemoFirebase(() => {
-    if (!firebaseUser || !firestore) return null;
-    return doc(firestore, 'users', firebaseUser.uid, 'courseProgress', courseId);
-  }, [firebaseUser, firestore]);
+    if (!supabaseUser || !firestore) return null; // Usar supabaseUser.id
+    return doc(firestore, 'users', supabaseUser.id, 'courseProgress', courseId);
+  }, [supabaseUser, firestore]); // Depende de supabaseUser
 
   const { data: progressData, isLoading: progressLoading } = useDoc<{ completedLessons: Record<string, boolean> }>(progressDocRef);
 
