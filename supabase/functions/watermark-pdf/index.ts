@@ -97,11 +97,18 @@ serve(async (req: Request) => {
     for (const page of pages) {
       const { width, height } = page.getSize();
       
+      // Calcular a largura aproximada do texto rotacionado
+      const textWidth = watermarkText.length * fontSize * 0.6; // Aproximação da largura do texto
+      
+      // Posicionar no centro vertical da página considerando o comprimento do texto
+      const yPosition = (height / 2) + (textWidth / 2); // Centralizar considerando o comprimento
+      
+      console.log("[watermark-pdf] Page dimensions:", { width, height, textWidth, yPosition });
+      
       // Desenhar a marca d'água rotacionada 90 graus na lateral esquerda
-      // Posicionar para que seja legível quando virar o livro de lado
       page.drawText(watermarkText, {
         x: 15, // Posição X muito próxima da borda esquerda
-        y: height / 2, // Posição Y no meio da página
+        y: yPosition, // Posição Y centralizada verticalmente
         font,
         size: fontSize,
         color: textColor,
