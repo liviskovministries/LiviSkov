@@ -1,7 +1,7 @@
 // @ts-ignore
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 // @ts-ignore
-// import { PDFDocument, rgb, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1"; // Comentado para depuração
+import { PDFDocument, rgb, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -14,14 +14,6 @@ serve(async (req: Request) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  console.log("[watermark-pdf] Function started, returning simple response for debugging.");
-  return new Response(JSON.stringify({ message: "Hello from watermark-pdf function! (Debugging mode)" }), {
-    status: 200,
-    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-  });
-
-  // O código original da marca d'água está temporariamente desativado para depuração.
-  /*
   try {
     console.log("[watermark-pdf] Request received.");
     let requestBody;
@@ -56,7 +48,7 @@ serve(async (req: Request) => {
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const watermarkText = `${firstName} ${lastName} - ${email}`;
     const fontSize = 10;
-    const textColor = rgb(0.5, 0.5, 0.5);
+    const textColor = rgb(0.5, 0.5, 0.5); // Cinza claro
     console.log("[watermark-pdf] Font embedded. Applying watermark to pages.");
 
     const pages = pdfDoc.getPages();
@@ -64,6 +56,7 @@ serve(async (req: Request) => {
       const { width, height } = page.getSize();
       const textWidth = font.widthOfTextAtSize(watermarkText, fontSize);
       
+      // Posicionar no canto inferior direito, com um pouco de preenchimento
       const x = width - textWidth - 20;
       const y = 20;
 
@@ -73,7 +66,7 @@ serve(async (req: Request) => {
         font,
         size: fontSize,
         color: textColor,
-        opacity: 0.5,
+        opacity: 0.5, // Semi-transparente
       });
     }
     console.log("[watermark-pdf] Watermark applied to all pages. Saving PDF.");
@@ -107,5 +100,4 @@ serve(async (req: Request) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }
-  */
 });
