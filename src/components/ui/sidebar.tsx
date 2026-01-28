@@ -320,7 +320,7 @@ const SidebarMenuAction = React.forwardRef<
     ref={ref}
     data-sidebar="menu-action"
     className={cn(
-      "text-sidebar-foreground/70 hover:text-sidebar-foreground ml-auto rounded-md p-1 text-xs transition-colors",
+      "text-sidebar-foreground/70 hover:text-sidebar-foreground text-sidebar-foreground/70 focus:bg-sidebar-accent focus:text-sidebar-accent-foreground ml-auto rounded-md p-1 text-xs transition-colors",
       className
     )}
     {...props}
@@ -417,7 +417,6 @@ export {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarMenuAction,
   SidebarMenuSub,
   SidebarMenuSubItem,
   SidebarMenuSubButton,
@@ -425,7 +424,7 @@ export {
   SidebarInset,
   SidebarGroup,
   SidebarGroupLabel,
-  SidebarGroupAction,
+  SidebarGroupAction, // Exporting SidebarGroupAction
   SidebarProvider,
   SidebarFooter,
 };

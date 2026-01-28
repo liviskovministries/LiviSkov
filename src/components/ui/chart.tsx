@@ -15,11 +15,11 @@ const ChartContext = React.createContext<{
 const ChartContainer = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
-    id?: string; // Explicitly define id as an optional prop
+    id?: string; // Adicionado 'id' às props
   }
->(({ id: propId, className, children, ...props }, ref) => { // Renomeado 'id' para 'propId'
-  const uniqueId = React.useId(); // Usando React.useId para gerar um ID único
-  const chartId = `chart-${propId || uniqueId}`; // Usando 'propId'
+>(({ id, className, children, ...props }, ref) => { // 'id' agora é desestruturado das props
+  const uniqueId = Math.random().toString(36).substr(2, 9);
+  const chartId = `chart-${id || uniqueId}`; // Usando 'id' das props
 
   return (
     <ChartContext.Provider value={{}}>
@@ -65,6 +65,8 @@ const ChartTooltipContent = React.forwardRef<
     indicator?: "line" | "dot" | "dashed";
     nameKey?: string;
     labelKey?: string;
+    className?: string; // Adicionado className às props do ChartTooltipContent
+    color?: string; // Adicionado color às props do ChartTooltipContent
   }
 >(
   (
@@ -72,16 +74,17 @@ const ChartTooltipContent = React.forwardRef<
       active,
       payload,
       label,
-      className,
+      className, // Removido de RechartsPrimitive.Tooltip props, usado aqui
       indicator = "dot",
       hideLabel = false,
       hideIndicator = false,
       labelFormatter,
       labelClassName,
       formatter,
-      color,
+      color, // Removido de RechartsPrimitive.Tooltip props, usado aqui
       nameKey,
       labelKey,
+      ...props // Captura as props restantes para RechartsPrimitive.Tooltip
     },
     ref
   ) => {
@@ -119,8 +122,9 @@ const ChartTooltipContent = React.forwardRef<
         ref={ref}
         className={cn(
           "border-border/50 bg-background/95 grid min-w-[8rem] overflow-hidden rounded-md border p-1.5 text-xs shadow-md",
-          className
+          className // Aplicando className ao div raiz
         )}
+        {...props} // Passando props restantes para o div raiz
       >
         {!nestLabel && tooltipLabel}
         <div className="grid gap-1.5">
@@ -165,7 +169,7 @@ const ChartTooltipContent = React.forwardRef<
                       </span>
                     )}
                     <span className="font-mono font-medium tabular-nums text-foreground">
-                      {formatter && item.value !== undefined
+                      {formatter && item.value !== undefined && item.name !== undefined // Adicionada verificação para item.name
                         ? formatter(item.value, item.name, item, index, item.payload)
                         : item.value}
                     </span>
@@ -190,17 +194,26 @@ const hasValue = (payload: Payload<ValueType, NameType>): payload is {
 
 const ChartLegend = RechartsPrimitive.Legend;
 
+// Completando a declaração e exportação do componente Chart
 const Chart = {
-  ...RechartsPrimitive,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  ChartLegend,
+  Container: ChartContainer,
+  Style: ChartStyle,
+  Tooltip: ChartTooltip,
+  TooltipContent: ChartTooltipContent,
+  Legend: ChartLegend,
+  // Adicione outros componentes Recharts que você usa aqui, por exemplo:
+  // Line: RechartsPrimitive.Line,
+  // Bar: RechartsPrimitive.Bar,
+  // XAxis: RechartsPrimitive.XAxis,
+  // YAxis: RechartsPrimitive.YAxis,
+  // CartesianGrid: RechartsPrimitive.CartesianGrid,
+  // ResponsiveContainer: RechartsPrimitive.ResponsiveContainer,
 };
 
 export {
   Chart,
   ChartContainer,
+  ChartStyle,
   ChartTooltip,
   ChartTooltipContent,
   ChartLegend,
