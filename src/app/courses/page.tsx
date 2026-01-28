@@ -1,6 +1,5 @@
 'use client';
 
-import { useFirestore, useCollection, useMemoFirebase, setDocumentNonBlocking, useUser } from '@/firebase';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { SiteHeader } from '@/components/header';
@@ -9,7 +8,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { createCheckoutSession, getSessionStatus } from '@/app/actions/checkout';
+import { registerCourseAccess } from '@/app/actions/checkout';
 import { useToast } from '@/hooks/use-toast';
 import { useSupabaseUser } from '@/integrations/supabase/supabase-provider';
 import { supabase } from '@/integrations/supabase/client';
@@ -21,10 +20,11 @@ const courses = [
     description: 'Aprenda a reconhecer e a viver plenamente cada estação da sua vida com Deus.',
     imageUrl: '/images/logo-curso-estacoes-espirituais.jpg',
     imageHint: 'spiritual journey',
+    stripeCheckoutUrl: 'https://buy.stripe.com/6oEbJ37bDbe46U0fbM5ZC00'
   }
 ];
 
-function CheckoutHandler() {
+function PaymentSuccessHandler() {
   const { user: supabaseUser } = useSupabaseUser();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -32,16 +32,14 @@ function CheckoutHandler() {
   
   useEffect(() => {
     const paymentSuccess = searchParams.get('payment_success');
-    const sessionId = searchParams.get('session_id');
     
-    if (paymentSuccess === 'true' && sessionId && supabaseUser) {
+    if (paymentSuccess === 'true' && supabaseUser?.id) {
       const verifyAndEnroll = async () => {
         try {
           toast({ title: "Verificando pagamento..." });
           
-          const session = await getSessionStatus(sessionId);
-          
-          if (session.status === 'complete' && supabaseUser.id) {
+          // Dá um tempo para o Stripe processar e depois concede acesso
+          setTimeout(async () => {
             const courseId = 'estacoes-espirituais';
             
             // Atualizar o status de acesso na tabela public.users
@@ -68,20 +66,14 @@ function CheckoutHandler() {
             }
             
             router.replace('/courses', { scroll: false });
-          } else {
-            toast({
-              variant: "destructive",
-              title: "Falha na Verificação",
-              description: "Não foi possível confirmar seu pagamento."
-            });
-            router.replace('/courses', { scroll: false });
-          }
+          }, 3000); // Aguarda 3 segundos após o redirecionamento
+          
         } catch (e: any) {
-          console.error("Error verifying payment session", e);
+          console.error("Error processing payment success", e);
           toast({
             variant: "destructive",
-            title: "Erro na Verificação",
-            description: e.message || "Ocorreu um erro ao verificar seu pagamento."
+            title: "Erro na Confirmação",
+            description: e.message || "Ocorreu um erro ao confirmar seu pagamento."
           });
           router.replace('/courses', { scroll: false });
         }
@@ -98,7 +90,6 @@ function CoursesPageContent() {
   const { user: supabaseUser, isUserLoading: isSupabaseUserLoading } = useSupabaseUser();
   const router = useRouter();
   const { toast } = useToast();
-  const [isPending, setIsPending] = useState(false); // Corrigido: usando useState em vez de useTransition
   const [userCourseAccess, setUserCourseAccess] = useState<boolean | null>(null);
   const [isAccessLoading, setIsAccessLoading] = useState(true);
 
@@ -135,23 +126,29 @@ function CoursesPageContent() {
     }
     
     try {
-      setIsPending(true); // Agora funciona corretamente
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:9002';
+      const course = courses.find(c => c.id === courseId);
       
-      // Usar checkout integrado do Stripe
-      const result = await createCheckoutSession(
-        supabaseUser.id,
-        courseId,
-        supabaseUser.email || null
-      );
-      
-      if ('error' in result) {
+      if (!course) {
         toast({
           variant: 'destructive',
-          title: 'Erro no checkout',
-          description: result.error
+          title: 'Erro',
+          description: 'Curso não encontrado.'
         });
+        return;
       }
-      // A função createCheckoutSession já faz o redirect automaticamente
+
+      // Preparar parâmetros para passar para o Stripe
+      const redirectUrl = new URL(course.stripeCheckoutUrl);
+      
+      // Adicionar parâmetros para identificação
+      redirectUrl.searchParams.set('client_reference_id', supabaseUser.id);
+      redirectUrl.searchParams.set('prefilled_email', supabaseUser.email || '');
+      redirectUrl.searchParams.set('success_url', `${appUrl}/courses?payment_success=true`);
+      redirectUrl.searchParams.set('cancel_url', `${appUrl}/courses`);
+      
+      // Redirecionar para o Stripe
+      window.location.href = redirectUrl.toString();
       
     } catch (error: any) {
       console.error('Checkout error:', error);
@@ -160,8 +157,6 @@ function CoursesPageContent() {
         title: 'Erro no checkout',
         description: error.message || 'Ocorreu um erro ao processar o pagamento.'
       });
-    } finally {
-      setIsPending(false); // Agora funciona corretamente
     }
   }
 
@@ -236,10 +231,9 @@ function CoursesPageContent() {
                         <Button 
                           onClick={() => handlePurchase(course.id)} 
                           size="lg" 
-                          className="w-full" 
-                          disabled={isPending}
+                          className="w-full"
                         >
-                          {isPending ? 'Aguarde...' : 'Comprar Curso'}
+                          Comprar Curso
                         </Button>
                       )}
                     </CardFooter>
@@ -259,7 +253,7 @@ export default function CoursesPage() {
   return (
     <>
       <CoursesPageContent />
-      <CheckoutHandler />
+      <PaymentSuccessHandler />
     </>
   );
 }
