@@ -19,7 +19,7 @@ const courses = [
     id: 'estacoes-espirituais',
     title: 'Curso Estações Espirituais',
     description: 'Aprenda a reconhecer e a viver plenamente cada estação da sua vida com Deus.',
-    imageUrl: 'https://picsum.photos/seed/course1/800/450',
+    imageUrl: '/images/c8dcb5a5-a264-4fbe-a8c2-16e426a325c1.png',
     imageHint: 'spiritual journey',
   }
 ];
@@ -31,19 +31,22 @@ function CheckoutHandler() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { toast } = useToast();
+  
   const enrollmentsQuery = useMemoFirebase(() => {
     if (!firebaseUser || !firestore) return null;
     return collection(firestore, 'users', firebaseUser.uid, 'enrollments');
   }, [firebaseUser, firestore]);
+  
   const { data: enrollments } = useCollection<{courseId: string}>(enrollmentsQuery);
 
   useEffect(() => {
     const sessionId = searchParams.get('payment_success') === 'true' ? searchParams.get('session_id') : null;
-
+    
     if (sessionId && supabaseUser && firebaseUser && firestore) {
       const verifyAndEnroll = async () => {
         try {
           toast({ title: "Verificando pagamento..." });
+          
           const session = await getSessionStatus(sessionId);
           
           if (session.status === 'complete' && session.client_reference_id === supabaseUser.id && session.metadata) {
@@ -58,22 +61,35 @@ function CheckoutHandler() {
                 courseId: courseId,
                 enrollmentDate: new Date().toISOString(),
               }, { merge: true });
-
-              toast({ title: "Compra confirmada!", description: "Sua inscrição no curso foi realizada com sucesso." });
+              
+              toast({
+                title: "Compra confirmada!",
+                description: "Sua inscrição no curso foi realizada com sucesso."
+              });
+              
               router.replace('/courses', { scroll: false });
             } else {
               router.replace('/courses', { scroll: false });
             }
           } else {
-             toast({ variant: "destructive", title: "Falha na Verificação", description: "Não foi possível confirmar seu pagamento." });
-             router.replace('/courses', { scroll: false });
+            toast({
+              variant: "destructive",
+              title: "Falha na Verificação",
+              description: "Não foi possível confirmar seu pagamento."
+            });
+            router.replace('/courses', { scroll: false });
           }
         } catch (e) {
           console.error("Error verifying payment session", e);
-          toast({ variant: "destructive", title: "Erro na Verificação", description: "Ocorreu um erro ao verificar seu pagamento." });
+          toast({
+            variant: "destructive",
+            title: "Erro na Verificação",
+            description: "Ocorreu um erro ao verificar seu pagamento."
+          });
           router.replace('/courses', { scroll: false });
         }
       };
+      
       verifyAndEnroll();
     }
   }, [searchParams, supabaseUser, firebaseUser, firestore, enrollments, router, toast]);
@@ -88,12 +104,12 @@ function CoursesPageContent() {
   const firestore = useFirestore();
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
-
+  
   const enrollmentsQuery = useMemoFirebase(() => {
     if (!firebaseUser || !firestore) return null;
     return collection(firestore, 'users', firebaseUser.uid, 'enrollments');
   }, [firebaseUser, firestore]);
-
+  
   const { data: enrollments, isLoading: enrollmentsLoading } = useCollection<{courseId: string}>(enrollmentsQuery);
 
   const handlePurchase = (courseId: string) => {
@@ -101,20 +117,9 @@ function CoursesPageContent() {
       router.push('/login?redirect=/courses');
       return;
     }
-    startTransition(async () => {
-      const result = await createCheckoutSession(
-        supabaseUser.id, 
-        courseId, 
-        supabaseUser.email || null // Handle undefined email case
-      );
-      if(result?.error) {
-        toast({
-          variant: "destructive",
-          title: "Erro ao iniciar compra",
-          description: result.error,
-        });
-      }
-    });
+    
+    // Redirecionar diretamente para o link do Stripe
+    window.location.href = 'https://buy.stripe.com/6oUbJ37bDbe46U0fbM5ZC00';
   }
 
   if (isSupabaseUserLoading || isFirebaseUserLoading || (supabaseUser && enrollmentsLoading)) {
@@ -129,13 +134,14 @@ function CoursesPageContent() {
     <div className="flex min-h-screen flex-col bg-background">
       <SiteHeader />
       <main className="flex-1">
+        {/* Updated banner with the attached image */}
         <section className="relative h-[40vh] min-h-[300px] w-full bg-secondary text-foreground">
-          <Image
-            src="https://picsum.photos/seed/learning/1800/600"
-            alt="Ambiente de aprendizado inspirador"
-            fill
-            className="object-cover"
-            priority
+          <Image 
+            src="/images/c8dcb5a5-a264-4fbe-a8c2-16e426a325c1.png" 
+            alt="Ambiente de aprendizado inspirador" 
+            fill 
+            className="object-cover" 
+            priority 
             data-ai-hint="learning environment"
           />
           <div className="absolute inset-0 bg-background/60" />
@@ -144,48 +150,49 @@ function CoursesPageContent() {
               Área de Membros
             </h1>
             <p className="mt-4 max-w-2xl text-lg text-foreground/80 md:text-xl">
-              {supabaseUser ? `Bem-vindo(a), ${supabaseUser.user_metadata?.first_name || supabaseUser.email || 'Aluno(a)'}! ` : ''}Sua jornada de crescimento começa aqui.
+              {supabaseUser ? `Bem-vindo(a), ${supabaseUser.user_metadata?.first_name || supabaseUser.email || 'Aluno(a)'}! ` : ''}
+              Sua jornada de crescimento começa aqui.
             </p>
           </div>
         </section>
-
+        
         <div className="container py-12 md:py-20">
           <div className="mt-12 flex flex-col items-center gap-8">
             {courses.map((course) => {
               const isEnrolled = !!firebaseUser && enrollments?.some(e => e.courseId === course.id);
-
+              
               return (
-              <Card key={course.id} className="w-full max-w-4xl overflow-hidden shadow-lg transition-transform duration-300 hover:scale-[1.02] hover:shadow-2xl md:flex">
-                <div className="relative h-60 w-full md:h-auto md:w-1/2 flex-shrink-0">
-                    <Image
-                        src={course.imageUrl}
-                        alt={`Imagem do curso ${course.title}`}
-                        fill
-                        className="object-cover"
-                        data-ai-hint={course.imageHint}
+                <Card key={course.id} className="w-full max-w-4xl overflow-hidden shadow-lg transition-transform duration-300 hover:scale-[1.02] hover:shadow-2xl md:flex">
+                  <div className="relative h-60 w-full md:h-auto md:w-1/2 flex-shrink-0">
+                    <Image 
+                      src={course.imageUrl} 
+                      alt={`Imagem do curso ${course.title}`} 
+                      fill 
+                      className="object-cover" 
+                      data-ai-hint={course.imageHint}
                     />
-                </div>
-                <div className="flex flex-col p-6 md:p-8">
-                  <CardHeader className="p-0">
-                    <CardTitle className="text-2xl font-bold text-primary">{course.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex-1 p-0 mt-4">
-                    <CardDescription className="text-lg text-muted-foreground">{course.description}</CardDescription>
-                  </CardContent>
-                  <CardFooter className="p-0 mt-6">
-                    {isEnrolled ? (
-                      <Link href={`/courses/${course.id}`} className="w-full md:w-auto">
-                        <Button size="lg" className="w-full">Acessar Curso</Button>
-                      </Link>
-                    ) : (
-                      <Button onClick={() => handlePurchase(course.id)} size="lg" className="w-full" disabled={isPending}>
-                        {isPending ? 'Aguarde...' : 'Comprar Curso'}
-                      </Button>
-                    )}
-                  </CardFooter>
-                </div>
-              </Card>
-            );
+                  </div>
+                  <div className="flex flex-col p-6 md:p-8">
+                    <CardHeader className="p-0">
+                      <CardTitle className="text-2xl font-bold text-primary">{course.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="flex-1 p-0 mt-4">
+                      <CardDescription className="text-lg text-muted-foreground">{course.description}</CardDescription>
+                    </CardContent>
+                    <CardFooter className="p-0 mt-6">
+                      {isEnrolled ? (
+                        <Link href={`/courses/${course.id}`} className="w-full md:w-auto">
+                          <Button size="lg" className="w-full">Acessar Curso</Button>
+                        </Link>
+                      ) : (
+                        <Button onClick={() => handlePurchase(course.id)} size="lg" className="w-full" disabled={isPending}>
+                          {isPending ? 'Aguarde...' : 'Comprar Curso'}
+                        </Button>
+                      )}
+                    </CardFooter>
+                  </div>
+                </Card>
+              );
             })}
           </div>
         </div>
@@ -196,10 +203,10 @@ function CoursesPageContent() {
 }
 
 export default function CoursesPage() {
-    return (
-        <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-background"><p>Carregando...</p></div>}>
-            <CoursesPageContent />
-            <CheckoutHandler />
-        </Suspense>
-    );
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-background"><p>Carregando...</p></div>}>
+      <CoursesPageContent />
+      <CheckoutHandler />
+    </Suspense>
+  );
 }
