@@ -50,27 +50,29 @@ const ChartWrapper = React.forwardRef<HTMLDivElement, ChartWrapperProps>(
 )
 ChartWrapper.displayName = "ChartWrapper"
 
-function Chart({
-  id,
-  className,
-  config,
-  children,
-  ...props
-}: React.ComponentProps<typeof RechartsPrimitive.ResponsiveContainer> & {
+interface ChartProps extends React.ComponentProps<typeof RechartsPrimitive.ResponsiveContainer> {
   config: ChartConfig
-}) {
-  const uniqueId = React.useId()
-  const chartId = `chart-${id || uniqueId.replace(/:/g, "")}`
-  
-  // Handle className prop that might be string | number | undefined
-  const chartClassName = typeof className === 'string' ? className : undefined
-
-  return (
-    <ChartWrapper config={config} chartId={chartId} className={chartClassName} {...props}>
-      {children}
-    </ChartWrapper>
-  )
 }
+
+const Chart = React.forwardRef<HTMLDivElement, ChartProps>(
+  ({ id, className, config, children, ...props }, ref) => {
+    const uniqueId = React.useId()
+    const chartId = `chart-${id || uniqueId.replace(/:/g, "")}`
+    
+    // Handle className prop that might be string | number | undefined
+    const chartClassName = typeof className === 'string' ? className : undefined
+
+    // Filter out incompatible props that are specific to Recharts but not HTML div elements
+    const { onResize, ...divProps } = props
+
+    return (
+      <ChartWrapper ref={ref} config={config} chartId={chartId} className={chartClassName} {...divProps}>
+        {children}
+      </ChartWrapper>
+    )
+  }
+)
+Chart.displayName = "Chart"
 
 const ChartTooltip = RechartsPrimitive.Tooltip
 

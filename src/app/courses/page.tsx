@@ -20,7 +20,7 @@ const courses = [
     description: 'Aprenda a reconhecer e a viver plenamente cada estação da sua vida com Deus.',
     imageUrl: '/images/logo-curso-estacoes-espirituais.jpg',
     imageHint: 'spiritual journey',
-    stripeCheckoutUrl: 'https://buy.stripe.com/6oEbJ37bDbe46U0fbM5ZC00'
+    stripeCheckoutUrl: 'https://buy.stripe.com/6oUbJ37bDbe46U0fbM5ZC00'
   }
 ];
 
@@ -126,7 +126,6 @@ function CoursesPageContent() {
     }
     
     try {
-      const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:9002';
       const course = courses.find(c => c.id === courseId);
       
       if (!course) {
@@ -138,17 +137,8 @@ function CoursesPageContent() {
         return;
       }
 
-      // Preparar parâmetros para passar para o Stripe
-      const redirectUrl = new URL(course.stripeCheckoutUrl);
-      
-      // Adicionar parâmetros para identificação
-      redirectUrl.searchParams.set('client_reference_id', supabaseUser.id);
-      redirectUrl.searchParams.set('prefilled_email', supabaseUser.email || '');
-      redirectUrl.searchParams.set('success_url', `${appUrl}/courses?payment_success=true`);
-      redirectUrl.searchParams.set('cancel_url', `${appUrl}/courses`);
-      
-      // Redirecionar para o Stripe
-      window.location.href = redirectUrl.toString();
+      // Abrir o link do Stripe em uma nova janela
+      window.open(course.stripeCheckoutUrl, '_blank', 'noopener,noreferrer');
       
     } catch (error: any) {
       console.error('Checkout error:', error);
