@@ -88,27 +88,35 @@ serve(async (req: Request) => {
     console.log("[watermark-pdf] PDF document loaded. Embedding font.");
 
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-    const watermarkText = `${firstName} ${lastName} - ${email}`;
+    const watermarkText = `${firstName} ${lastName}\n${email}\nLiviskov.com`;
     const fontSize = 10;
-    const textColor = rgb(0.5, 0.5, 0.5);
+    const lineHeight = fontSize * 1.5;
+    const textColor = rgb(0.6, 0.6, 0.6);
     console.log("[watermark-pdf] Font embedded. Applying watermark to pages.");
 
     const pages = pdfDoc.getPages();
     for (const page of pages) {
       const { width, height } = page.getSize();
-      const textWidth = font.widthOfTextAtSize(watermarkText, fontSize);
       
-      // Posicionar no canto inferior direito, com um pouco de preenchimento
-      const x = width - textWidth - 20;
-      const y = 20;
+      // Dividir o texto em linhas para posicionamento vertical
+      const lines = watermarkText.split('\n');
+      
+      // Posicionar na lateral esquerda, começando do topo
+      const x = 20; // Margem da esquerda
+      const startY = height - 50; // Começar do topo com margem
 
-      page.drawText(watermarkText, {
-        x,
-        y,
-        font,
-        size: fontSize,
-        color: textColor,
-        opacity: 0.5,
+      // Adicionar cada linha do texto
+      lines.forEach((line, index) => {
+        const y = startY - (index * lineHeight);
+        
+        page.drawText(line, {
+          x,
+          y,
+          font,
+          size: fontSize,
+          color: textColor,
+          opacity: 0.4,
+        });
       });
     }
     console.log("[watermark-pdf] Watermark applied to all pages. Saving PDF.");
