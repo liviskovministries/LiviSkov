@@ -55,61 +55,41 @@ export default function SignupPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      // Fazer o cadastro básico, passando nome e sobrenome como user_metadata
-      const { data, error } = await supabaseAuth.signUp({
+      // 1. Fazer o cadastro de autenticação no Supabase
+      const { data: authData, error: authError } = await supabaseAuth.signUp({
         email: values.email,
         password: values.password,
-        options: {
-          data: {
-            first_name: values.firstName,
-            last_name: values.lastName,
-          },
-        },
       });
 
-      if (error) {
-        throw error;
+      if (authError) {
+        throw authError;
       }
 
-      // Se o usuário foi criado com sucesso, criar/atualizar o perfil com todas as informações
-      if (data.user) {
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .upsert({
-            id: data.user.id,
+      // 2. Se o usuário de autenticação foi criado, inserir os dados na tabela public.users
+      if (authData.user) {
+        const { error: userInsertError } = await supabase
+          .from('users')
+          .insert({
+            id: authData.user.id,
             first_name: values.firstName,
             last_name: values.lastName,
+            email: values.email,
             phone: values.phone,
-            updated_at: new Date().toISOString(),
-          }, { onConflict: 'id' }); // Usa 'id' como chave de conflito para upsert
-
-        if (profileError) {
-          console.error('Erro ao criar/atualizar perfil:', JSON.stringify(profileError, null, 2));
-          toast({
-            variant: "destructive",
-            title: "Erro no perfil",
-            description: `Não foi possível salvar suas informações de perfil: ${profileError?.message || JSON.stringify(profileError)}`,
-          });
-        }
-
-        // Registrar usuário para o curso com acesso bloqueado
-        const { error: courseError } = await supabase
-          .from('user_courses')
-          .insert({
-            user_id: data.user.id,
-            course_id: 'estacoes-espirituais',
-            is_enrolled: false,
+            estacoes_espirituais_access: false, // Acesso bloqueado por padrão
             created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
+            updated_at: new Date().toISOString(),
           });
 
-        if (courseError) {
-          console.error('Erro ao registrar curso:', JSON.stringify(courseError, null, 2));
+        if (userInsertError) {
+          console.error('Erro ao inserir dados na tabela users:', JSON.stringify(userInsertError, null, 2));
           toast({
             variant: "destructive",
-            title: "Erro no curso",
-            description: `Não foi possível registrar seu acesso ao curso: ${courseError?.message || JSON.stringify(courseError)}`,
+            title: "Erro no cadastro",
+            description: `Não foi possível salvar suas informações de usuário: ${userInsertError?.message || JSON.stringify(userInsertError)}`,
           });
+          // Opcional: Se a inserção do perfil falhar, você pode querer deletar o usuário de auth.users
+          // await supabaseAuth.admin.deleteUser(authData.user.id); 
+          return;
         }
       }
 

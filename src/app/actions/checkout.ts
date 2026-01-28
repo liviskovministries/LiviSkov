@@ -54,33 +54,16 @@ export async function getSessionStatus(sessionId: string): Promise<{ status: Str
 // Função para registrar o acesso ao curso após pagamento
 export async function registerCourseAccess(userId: string, courseId: string) {
   try {
-    // Atualizar o status na tabela user_courses
+    // Atualizar o status de acesso na tabela public.users
     const { error } = await supabase
-      .from('user_courses')
+      .from('users')
       .update({ 
-        is_enrolled: true,
-        enrolled_at: new Date().toISOString(),
+        estacoes_espirituais_access: true,
         updated_at: new Date().toISOString()
       })
-      .eq('user_id', userId)
-      .eq('course_id', courseId);
+      .eq('id', userId);
     
     if (error) throw error;
-    
-    // Também criar registro na tabela de inscrições para compatibilidade
-    const { error: enrollmentError } = await supabase
-      .from('enrollments')
-      .insert({
-        user_id: userId,
-        course_id: courseId,
-        granted_by: 'Payment',
-        notes: 'Acesso concedido após pagamento confirmado'
-      });
-    
-    if (enrollmentError) {
-      console.error('Error creating enrollment record:', enrollmentError);
-      // Não vamos lançar erro aqui pois o acesso já foi registrado na user_courses
-    }
     
     return { success: true };
   } catch (error) {

@@ -27,65 +27,53 @@ const courses = [
 
 function CheckoutHandler() {
   const { user: supabaseUser } = useSupabaseUser();
-  const { user: firebaseUser } = useUser();
-  const firestore = useFirestore();
   const searchParams = useSearchParams();
   const router = useRouter();
   const { toast } = useToast();
   
-  const enrollmentsQuery = useMemoFirebase(() => {
-    if (!firebaseUser || !firestore) return null;
-    return collection(firestore, 'users', firebaseUser.uid, 'enrollments');
-  }, [firebaseUser, firestore]);
-  
-  const { data: enrollments } = useCollection<{courseId: string}>(enrollmentsQuery);
+  // Não precisamos mais de Firebase enrollments aqui, pois o acesso será verificado na tabela users do Supabase.
 
   useEffect(() => {
-    const sessionId = searchParams.get('payment_success') === 'true' ? searchParams.get('session_id') : null;
+    const paymentSuccess = searchParams.get('payment_success');
+    const sessionId = searchParams.get('session_id');
     
-    if (sessionId && supabaseUser && firebaseUser && firestore) {
+    if (paymentSuccess === 'true' && sessionId && supabaseUser) {
       const verifyAndEnroll = async () => {
         try {
           toast({ title: "Verificando pagamento..." });
           
           const session = await getSessionStatus(sessionId);
           
-          if (session.status === 'complete' && session.client_reference_id === supabaseUser.id && session.metadata) {
-            const courseId = session.metadata.courseId;
-            const isAlreadyEnrolled = enrollments?.some(e => e.courseId === courseId);
+          // No novo fluxo, a verificação real do pagamento e a atualização do acesso
+          // ocorreriam via webhook do Stripe ou uma API mais robusta.
+          // Por enquanto, simulamos o sucesso e atualizamos o acesso.
+          if (session.status === 'complete' && supabaseUser.id) {
+            const courseId = 'estacoes-espirituais'; // Hardcoded para o curso atual
             
-            if (!isAlreadyEnrolled) {
-              const enrollmentRef = doc(collection(firestore, 'users', firebaseUser.uid, 'enrollments'));
-              setDocumentNonBlocking(enrollmentRef, {
-                id: enrollmentRef.id,
-                userId: firebaseUser.uid,
-                courseId: courseId,
-                enrollmentDate: new Date().toISOString(),
-              }, { merge: true });
-              
-              // Atualizar também no Supabase
-              const { error } = await supabase
-                .from('user_courses')
-                .update({ 
-                  is_enrolled: true, 
-                  enrolled_at: new Date().toISOString() 
-                })
-                .eq('user_id', supabaseUser.id)
-                .eq('course_id', courseId);
-              
-              if (error) {
-                console.error('Error updating Supabase enrollment:', error);
-              }
-              
+            // Atualizar o status de acesso na tabela public.users
+            const { error } = await supabase
+              .from('users')
+              .update({ 
+                estacoes_espirituais_access: true, 
+                updated_at: new Date().toISOString() 
+              })
+              .eq('id', supabaseUser.id);
+            
+            if (error) {
+              console.error('Error updating Supabase user course access:', error);
+              toast({
+                variant: "destructive",
+                title: "Erro ao conceder acesso",
+                description: `Não foi possível conceder acesso ao curso: ${error.message}`
+              });
+            } else {
               toast({
                 title: "Compra confirmada!",
                 description: "Sua inscrição no curso foi realizada com sucesso."
               });
-              
-              router.replace('/courses', { scroll: false });
-            } else {
-              router.replace('/courses', { scroll: false });
             }
+            
+            router.replace('/courses', { scroll: false });
           } else {
             toast({
               variant: "destructive",
@@ -94,12 +82,12 @@ function CheckoutHandler() {
             });
             router.replace('/courses', { scroll: false });
           }
-        } catch (e) {
+        } catch (e: any) {
           console.error("Error verifying payment session", e);
           toast({
             variant: "destructive",
             title: "Erro na Verificação",
-            description: "Ocorreu um erro ao verificar seu pagamento."
+            description: e.message || "Ocorreu um erro ao verificar seu pagamento."
           });
           router.replace('/courses', { scroll: false });
         }
@@ -107,25 +95,44 @@ function CheckoutHandler() {
       
       verifyAndEnroll();
     }
-  }, [searchParams, supabaseUser, firebaseUser, firestore, enrollments, router, toast]);
+  }, [searchParams, supabaseUser, router, toast]);
 
   return null;
 }
 
 function CoursesPageContent() {
   const { user: supabaseUser, isUserLoading: isSupabaseUserLoading } = useSupabaseUser();
-  const { user: firebaseUser, isUserLoading: isFirebaseUserLoading } = useUser();
   const router = useRouter();
-  const firestore = useFirestore();
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
-  
-  const enrollmentsQuery = useMemoFirebase(() => {
-    if (!firebaseUser || !firestore) return null;
-    return collection(firestore, 'users', firebaseUser.uid, 'enrollments');
-  }, [firebaseUser, firestore]);
-  
-  const { data: enrollments, isLoading: enrollmentsLoading } = useCollection<{courseId: string}>(enrollmentsQuery);
+  const [userCourseAccess, setUserCourseAccess] = useState<boolean | null>(null);
+  const [isAccessLoading, setIsAccessLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUserAccess = async () => {
+      if (!supabaseUser) {
+        setIsAccessLoading(false);
+        return;
+      }
+
+      setIsAccessLoading(true);
+      const { data, error } = await supabase
+        .from('users')
+        .select('estacoes_espirituais_access')
+        .eq('id', supabaseUser.id)
+        .single();
+
+      if (error) {
+        console.error('Error fetching user course access:', error);
+        setUserCourseAccess(false);
+      } else {
+        setUserCourseAccess(data?.estacoes_espirituais_access || false);
+      }
+      setIsAccessLoading(false);
+    };
+
+    fetchUserAccess();
+  }, [supabaseUser]);
 
   const handlePurchase = (courseId: string) => {
     if (!supabaseUser) {
@@ -137,7 +144,7 @@ function CoursesPageContent() {
     window.location.href = 'https://buy.stripe.com/6oUbJ37bDbe46U0fbM5ZC00';
   }
 
-  if (isSupabaseUserLoading || isFirebaseUserLoading || (supabaseUser && enrollmentsLoading)) {
+  if (isSupabaseUserLoading || isAccessLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <p>Carregando...</p>
@@ -181,7 +188,7 @@ function CoursesPageContent() {
         <div className="container py-12 md:py-20">
           <div className="mt-12 flex flex-col items-center gap-8">
             {courses.map((course) => {
-              const isEnrolled = !!firebaseUser && enrollments?.some(e => e.courseId === course.id);
+              const isEnrolled = userCourseAccess; // Verifica o acesso do usuário
               
               return (
                 <Card key={course.id} className="w-full max-w-4xl overflow-hidden shadow-lg transition-transform duration-300 hover:scale-[1.02] hover:shadow-2xl md:flex">

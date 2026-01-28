@@ -14,7 +14,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import YouTube from 'react-youtube';
 import { useSupabaseAuth, useSupabaseUser } from '@/integrations/supabase/supabase-provider';
-import { useCollection } from '@/firebase/firestore/use-collection';
 import { supabase } from '@/integrations/supabase/client';
 
 type Lesson = {
@@ -131,7 +130,7 @@ const courseData = {
           type: 'video' as const,
           videoId: 'DewkwZFGMXY',
           subtitle: '☀️ Verão – A Colheita e o Impacto do Propósito',
-          description: 'O verão espiritual é tempo de colheita e abundância! 🌻 Após um longo processo de aprendizado, Deus nos leva a frutificar. É a hora de compartilhar, abençoar e viver a plenitude do chamado dele para nós.\n\n📌 O que aprender com o verão?\n\n✔️ Desfrutar dos frutos do esforço.\n✔️ Usar a bênção para abençoar outros.\n✔️ Permanecer firme no propósito de Deus.\n\nO verão é uma estação de alegria e responsabilidade. Que possamos viver esse tempo com gratidão e sabedoria! 🌞'
+          description: 'O verão espiritual é tempo de colheita e abundância!🌻 Após um longo processo de aprendizado, Deus nos leva a frutificar. É a hora de compartilhar, abençoar e viver a plenitude do chamado dele para nós.\n\n📌 O que aprender com o verão?\n\n✔️ Desfrutar dos frutos do esforço.\n✔️ Usar a bênção para abençoar outros.\n✔️ Permanecer firme no propósito de Deus.\n\nO verão é uma estação de alegria e responsabilidade. Que possamos viver esse tempo com gratidão e sabedoria! 🌞'
         },
       ],
     },
@@ -154,7 +153,7 @@ const courseData = {
 };
 
 export default function CoursePage() {
-  const { user: firebaseUser, isUserLoading: isFirebaseUserLoading } = useUser();
+  const { user: firebaseUser, isUserLoading: isFirebaseUserLoading } = useUser(); // Mantido para o progresso do curso no Firestore
   const { user: supabaseUser, isUserLoading: isSupabaseUserLoading } = useSupabaseUser();
   const supabaseAuth = useSupabaseAuth();
   const firestore = useFirestore();
@@ -176,14 +175,7 @@ export default function CoursePage() {
     return () => clearInterval(timer);
   }, []);
 
-  // Fetch enrollments to check for access (using Firebase Firestore with Firebase user)
-  const enrollmentsQuery = useMemoFirebase(() => {
-    if (!firebaseUser || !firestore) return null;
-    return collection(firestore, 'users', firebaseUser.uid, 'enrollments');
-  }, [firebaseUser, firestore]);
-
-  const { data: firebaseEnrollments, isLoading: firebaseEnrollmentsLoading } = useCollection<{courseId: string}>(enrollmentsQuery);
-  
+  // Progress tracking still uses Firebase Firestore
   const progressDocRef = useMemoFirebase(() => {
     if (!firebaseUser || !firestore) return null;
     return doc(firestore, 'users', firebaseUser.uid, 'courseProgress', courseId);
@@ -198,49 +190,26 @@ export default function CoursePage() {
     }
   }, [progressData]);
 
-  // Check enrollment status from both Firebase and Supabase
+  // Check enrollment status from Supabase public.users table
   useEffect(() => {
     const checkEnrollmentStatus = async () => {
-      if (!supabaseUser || !firebaseUser) {
+      if (!supabaseUser) {
         setIsLoading(false);
         return;
       }
 
       try {
-        // Check Firebase enrollment
-        const isFirebaseEnrolled = firebaseEnrollments?.some(e => e.courseId === courseId);
-        
-        if (isFirebaseEnrolled) {
-          setIsEnrolled(true);
-          setIsLoading(false);
-          return;
-        }
-        
-        // Check Supabase enrollment in the new user_courses table
-        const { data: supabaseEnrollments, error } = await supabase
-          .from('user_courses')
-          .select('is_enrolled')
-          .eq('user_id', supabaseUser.id)
-          .eq('course_id', courseId)
+        const { data, error } = await supabase
+          .from('users')
+          .select('estacoes_espirituais_access')
+          .eq('id', supabaseUser.id)
           .single();
         
         if (error) {
-          console.error('Error checking Supabase enrollment:', error);
-          // Check legacy enrollments table as fallback
-          const { data: legacyEnrollments, error: legacyError } = await supabase
-            .from('enrollments')
-            .select('course_id')
-            .eq('user_id', supabaseUser.id)
-            .eq('course_id', courseId);
-          
-          if (legacyError) {
-            console.error('Error checking legacy enrollments:', legacyError);
-            setIsEnrolled(false);
-          } else {
-            setIsEnrolled(legacyEnrollments && legacyEnrollments.length > 0);
-          }
+          console.error('Error checking Supabase user access:', error);
+          setIsEnrolled(false);
         } else {
-          setIsEnrolled(supabaseEnrollments?.is_enrolled || false);
+          setIsEnrolled(data?.estacoes_espirituais_access || false);
         }
       } catch (error) {
         console.error('Error checking enrollment status:', error);
@@ -251,7 +220,7 @@ export default function CoursePage() {
     };
 
     checkEnrollmentStatus();
-  }, [supabaseUser, firebaseUser, firebaseEnrollments]);
+  }, [supabaseUser]);
 
   useEffect(() => {
     // Redirect if not logged in
@@ -295,7 +264,7 @@ export default function CoursePage() {
     }
   };
 
-  if (isSupabaseUserLoading || !supabaseUser || isFirebaseUserLoading || isLoading) {
+  if (isSupabaseUserLoading || !supabaseUser || isLoading) { // Removed firebaseUser from loading check for initial access
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <p>Carregando...</p>
