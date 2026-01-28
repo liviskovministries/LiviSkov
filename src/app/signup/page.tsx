@@ -55,33 +55,38 @@ export default function SignupPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      // Fazer o cadastro básico
+      // Fazer o cadastro básico, passando nome e sobrenome como user_metadata
       const { data, error } = await supabaseAuth.signUp({
         email: values.email,
         password: values.password,
+        options: {
+          data: {
+            first_name: values.firstName,
+            last_name: values.lastName,
+          },
+        },
       });
 
       if (error) {
         throw error;
       }
 
-      // Se o usuário foi criado com sucesso, criar/atualizar o perfil
+      // Se o usuário foi criado com sucesso, atualizar o perfil com o telefone
       if (data.user) {
         const { error: profileError } = await supabase
           .from('profiles')
-          .upsert({
-            id: data.user.id,
-            first_name: values.firstName,
-            last_name: values.lastName,
+          .update({
             phone: values.phone,
-          }, { onConflict: 'id' }); // Usa 'id' como chave de conflito para upsert
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', data.user.id); // Atualiza o perfil do usuário recém-criado
 
         if (profileError) {
-          console.error('Erro ao criar/atualizar perfil:', profileError);
+          console.error('Erro ao atualizar perfil:', JSON.stringify(profileError, null, 2));
           toast({
             variant: "destructive",
             title: "Erro no perfil",
-            description: `Não foi possível salvar suas informações de perfil: ${profileError.message}`,
+            description: `Não foi possível salvar suas informações de perfil: ${profileError?.message || JSON.stringify(profileError)}`,
           });
         }
 
@@ -97,11 +102,11 @@ export default function SignupPage() {
           });
 
         if (courseError) {
-          console.error('Erro ao registrar curso:', courseError);
+          console.error('Erro ao registrar curso:', JSON.stringify(courseError, null, 2));
           toast({
             variant: "destructive",
             title: "Erro no curso",
-            description: `Não foi possível registrar seu acesso ao curso: ${courseError.message}`,
+            description: `Não foi possível registrar seu acesso ao curso: ${courseError?.message || JSON.stringify(courseError)}`,
           });
         }
       }
