@@ -95,7 +95,7 @@ export default function Home() {
                 A jornada de Livi Skov começou na adolescência, na Igreja Batista da Lagoinha, onde frequentou seu primeiro seminário (CTMDT) e serviu em ministérios como Diante do Trono e Joyce Meyer. Em 2018, concluiu o seminário da Bethel School of Supernatural Ministry (BSSM) na Califórnia e, no mesmo ano, foi consagrada pastora.
               </p>
               <p className="mt-4 text-muted-foreground">
-                Desde então, sua jornada a levou a pregar em diversas igrejas pelo Brasil, Europa, EUA e Japão. Livi também serviu por 4 anos como Assistente Pastoral no departamento internacional da BSSM. Hoje, de volta ao Brasil, ela segue o chamado de Deus, ministrando de forma ousada e criativa sobre o Reino e ajudando pessoas a florescerem em sua dependência d'Ele.
+                Desde então, sua jornada a levou a pregar em diversas igrejas pelo Brasil, Europa, EUA e Japão. Livi também serviu por 4 anos como Assistente Pastoral no departamento internacional da BSSM. Hoje, de volta ao Brasil, ela segue o chamado de Deus, ministrando de forma ousada e criativa sobre o Reino e ajudando pessoas a florescerem na dependência d'Ele.
               </p>
             </div>
             <div className="order-1 md:order-2">
