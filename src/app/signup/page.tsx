@@ -55,20 +55,47 @@ export default function SignupPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      // Fazer o cadastro básico sem dados adicionais primeiro
       const { data, error } = await supabaseAuth.signUp({
         email: values.email,
         password: values.password,
-        options: {
-          data: {
-            first_name: values.firstName,
-            last_name: values.lastName,
-            phone: values.phone,
-          },
-        },
       });
 
       if (error) {
         throw error;
+      }
+
+      // Se o usuário foi criado com sucesso, criar o perfil manualmente
+      if (data.user) {
+        // Criar perfil do usuário após o cadastro
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .insert({
+            id: data.user.id,
+            first_name: values.firstName,
+            last_name: values.lastName,
+            phone: values.phone,
+          });
+
+        if (profileError) {
+          console.warn('Erro ao criar perfil:', profileError);
+          // Não vamos falhar o cadastro por causa do perfil, apenas logar o erro
+        }
+
+        // Registrar usuário para o curso com acesso bloqueado
+        const { error: courseError } = await supabase
+          .from('user_courses')
+          .insert({
+            user_id: data.user.id,
+            course_id: 'estacoes-espirituais',
+            is_enrolled: false,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          });
+
+        if (courseError) {
+          console.warn('Erro ao registrar curso:', courseError);
+        }
       }
 
       toast({
