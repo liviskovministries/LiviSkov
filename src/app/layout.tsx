@@ -18,13 +18,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className="!scroll-smooth">
-      <head>
+      <body className="antialiased">
+        {/* Stripe script moved to body, Next.js handles beforeInteractive placement */}
         <Script 
           src="https://js.stripe.com/clover/stripe.js" 
           strategy="beforeInteractive" 
         />
-      </head>
-      <body className="antialiased">
         <FirebaseClientProvider>
           <SupabaseProvider>
             <SocialSidebar />
