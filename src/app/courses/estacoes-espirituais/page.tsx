@@ -70,7 +70,7 @@ const courseData = {
           type: 'video' as const,
           videoId: 'QEx5SiEROtg',
           subtitle: '🍂 Outono – O Tempo de Soltar e Confiar',
-          description: 'O outono é um tempo de transição e desapego. Algumas coisas que carregamos já não fazem sentido e precisamos confiar em Deus para deixá-las ir.\n\n💡 Reflexões para este módulo:\n\n🔸 O que Deus está me pedindo para abrir mão?\n🔸 Como posso confiar mais nele neste tempo?\n🔸 Quais mudanças preciso aceitar para crescer.\n\nO outono nos ensina que, para viver o novo, é preciso soltar o velho. Confie no processo! 🍁'
+          description: 'O outono é um tempo de transição e desapego. Algumas coisas que carregamos já no fazem sentido e precisamos confiar em Deus para deixá-las ir.\n\n💡 Reflexões para este módulo:\n\n🔸 O que Deus está me pedindo para abrir mão?\n🔸 Como posso confiar mais nele neste tempo?\n🔸 Quais mudanças preciso aceitar para crescer.\n\nO outono nos ensina que, para viver o novo, é preciso soltar o velho. Confie no processo! 🍁'
         },
       ],
     },
@@ -313,7 +313,7 @@ export default function CoursePage() {
             <CardContent className="p-6 flex flex-col md:flex-row items-center justify-center gap-6 text-center md:text-left">
               <div className="w-48 flex-shrink-0">
                 <Image 
-                  src="https://storage.googleapis.com/aifire.co/images/AEprB85_t-SjB785G2fA8_J9T-Q1.jpeg" 
+                  src="/images/capa_livro_estacoes_espirituais.jpg" 
                   alt="Capa do Livro Estações Espirituais" 
                   width={300} 
                   height={450} 
