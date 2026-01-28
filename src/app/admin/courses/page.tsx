@@ -25,12 +25,6 @@ type UserCourse = {
   user_last_name: string;
 };
 
-type UserProfile = {
-  first_name: string | null;
-  last_name: string | null;
-  email: string | null;
-};
-
 export default function AdminCoursesPage() {
   const { user, isUserLoading } = useSupabaseUser();
   const { toast } = useToast();
@@ -49,7 +43,7 @@ export default function AdminCoursesPage() {
       try {
         setIsLoading(true);
         
-        // Buscar todos os registros de acesso aos cursos com dados do usuário
+        // Buscar todos os registros de acesso aos cursos com dados do usuário da tabela users
         const { data, error } = await supabase
           .from('user_courses')
           .select(`
@@ -58,7 +52,7 @@ export default function AdminCoursesPage() {
             course_id,
             is_enrolled,
             enrolled_at,
-            user:profiles(first_name, last_name, email)
+            user:users(first_name, last_name, email)
           `)
           .order('user_id');
         
@@ -67,7 +61,7 @@ export default function AdminCoursesPage() {
         // Transformar os dados para facilitar o uso
         const transformedData = data?.map(item => {
           // Verificar se item.user é um array ou objeto
-          const userProfile = Array.isArray(item.user) ? item.user[0] : item.user;
+          const userData = Array.isArray(item.user) ? item.user[0] : item.user;
           
           return {
             id: item.id,
@@ -75,9 +69,9 @@ export default function AdminCoursesPage() {
             course_id: item.course_id,
             is_enrolled: item.is_enrolled,
             enrolled_at: item.enrolled_at,
-            user_email: userProfile?.email || '',
-            user_first_name: userProfile?.first_name || '',
-            user_last_name: userProfile?.last_name || '',
+            user_email: userData?.email || '',
+            user_first_name: userData?.first_name || '',
+            user_last_name: userData?.last_name || '',
           }
         }) || [];
         
