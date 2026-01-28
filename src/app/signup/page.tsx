@@ -71,18 +71,20 @@ export default function SignupPage() {
         throw error;
       }
 
-      // Se o usuário foi criado com sucesso, atualizar o perfil com o telefone
+      // Se o usuário foi criado com sucesso, criar/atualizar o perfil com todas as informações
       if (data.user) {
         const { error: profileError } = await supabase
           .from('profiles')
-          .update({
+          .upsert({
+            id: data.user.id,
+            first_name: values.firstName,
+            last_name: values.lastName,
             phone: values.phone,
             updated_at: new Date().toISOString(),
-          })
-          .eq('id', data.user.id); // Atualiza o perfil do usuário recém-criado
+          }, { onConflict: 'id' }); // Usa 'id' como chave de conflito para upsert
 
         if (profileError) {
-          console.error('Erro ao atualizar perfil:', JSON.stringify(profileError, null, 2));
+          console.error('Erro ao criar/atualizar perfil:', JSON.stringify(profileError, null, 2));
           toast({
             variant: "destructive",
             title: "Erro no perfil",
