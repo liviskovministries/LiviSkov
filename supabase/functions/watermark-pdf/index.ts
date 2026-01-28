@@ -8,13 +8,27 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-serve(async (req: Request) => { // Adicionado tipo 'Request'
+serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
+    console.log("[watermark-pdf] OPTIONS request received.");
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { pdfUrl, firstName, lastName, email } = await req.json();
+    console.log("[watermark-pdf] Request received.");
+    let requestBody;
+    try {
+      requestBody = await req.json();
+      console.log("[watermark-pdf] Request body parsed successfully.", { body: requestBody });
+    } catch (jsonError: any) { // Explicitly type jsonError as 'any' for now to avoid TS error on .message
+      console.error("[watermark-pdf] Error parsing request JSON:", { error: jsonError.message, stack: jsonError.stack });
+      return new Response(JSON.stringify({ error: 'Invalid JSON in request body.' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const { pdfUrl, firstName, lastName, email } = requestBody;
 
     if (!pdfUrl || !firstName || !lastName || !email) {
       console.error("[watermark-pdf] Missing required parameters", { pdfUrl, firstName, lastName, email });
@@ -24,14 +38,18 @@ serve(async (req: Request) => { // Adicionado tipo 'Request'
       });
     }
 
+    console.log("[watermark-pdf] Parameters received:", { pdfUrl, firstName, lastName, email });
     console.log("[watermark-pdf] Fetching PDF from:", pdfUrl);
     const existingPdfBytes = await fetch(pdfUrl).then(res => res.arrayBuffer());
+    console.log("[watermark-pdf] PDF fetched successfully. Loading PDF document.");
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
+    console.log("[watermark-pdf] PDF document loaded. Embedding font.");
 
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const watermarkText = `${firstName} ${lastName} - ${email}`;
     const fontSize = 10;
     const textColor = rgb(0.5, 0.5, 0.5); // Cinza claro
+    console.log("[watermark-pdf] Font embedded. Applying watermark to pages.");
 
     const pages = pdfDoc.getPages();
     for (const page of pages) {
@@ -51,10 +69,11 @@ serve(async (req: Request) => { // Adicionado tipo 'Request'
         opacity: 0.5, // Semi-transparente
       });
     }
+    console.log("[watermark-pdf] Watermark applied to all pages. Saving PDF.");
 
     const pdfBytes = await pdfDoc.save();
 
-    console.log("[watermark-pdf] PDF watermarked successfully.");
+    console.log("[watermark-pdf] PDF watermarked successfully. Sending response.");
     return new Response(pdfBytes, {
       status: 200,
       headers: {
@@ -64,11 +83,11 @@ serve(async (req: Request) => { // Adicionado tipo 'Request'
       },
     });
 
-  } catch (error: unknown) { // Tipado como 'unknown'
+  } catch (error: unknown) {
     let errorMessage = "An unknown error occurred.";
     let errorStack = undefined;
 
-    if (error instanceof Error) { // Verificação de tipo
+    if (error instanceof Error) {
       errorMessage = error.message;
       errorStack = error.stack;
     } else if (typeof error === 'object' && error !== null && 'message' in error) {
