@@ -152,7 +152,7 @@ function CoursesPageContent() {
         {/* Updated banner with the attached image */}
         <section className="relative h-[40vh] min-h-[300px] w-full bg-secondary text-foreground">
           <Image 
-            src="/images/c8dcb5a5-a264-4fbe-a8c2-16e426a325c1.png" 
+            src="/images/member-area-banner.jpg" 
             alt="Ambiente de aprendizado inspirador" 
             fill 
             className="object-cover" 
