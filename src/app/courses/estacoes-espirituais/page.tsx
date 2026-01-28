@@ -347,7 +347,7 @@ export default function CoursePage() {
                 alt="Logo Livi Skov" 
                 width={40} 
                 height={40} 
-                className="rounded-full" 
+                className="" 
                 data-ai-hint="logo"
               />
               <span className="text-lg font-bold text-sidebar-foreground">Estações Espirituais</span>
