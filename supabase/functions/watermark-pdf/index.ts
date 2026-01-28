@@ -40,7 +40,49 @@ serve(async (req: Request) => {
 
     console.log("[watermark-pdf] Parameters received:", { pdfUrl, firstName, lastName, email });
     console.log("[watermark-pdf] Fetching PDF from:", pdfUrl);
-    const existingPdfBytes = await fetch(pdfUrl).then(res => res.arrayBuffer());
+    
+    // Verificar se o conteúdo é realmente um PDF
+    const response = await fetch(pdfUrl);
+    if (!response.ok) {
+      console.error("[watermark-pdf] Failed to fetch PDF:", response.status, response.statusText);
+      return new Response(JSON.stringify({ error: `Failed to fetch PDF: ${response.status} ${response.statusText}` }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Verificar o tipo de conteúdo
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('pdf')) {
+      console.error("[watermark-pdf] Invalid content type:", contentType);
+      return new Response(JSON.stringify({ error: 'The requested file is not a valid PDF' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const existingPdfBytes = await response.arrayBuffer();
+    
+    // Verificar se há dados suficientes para ser um PDF
+    if (existingPdfBytes.byteLength < 4) {
+      console.error("[watermark-pdf] PDF file too small or empty");
+      return new Response(JSON.stringify({ error: 'Invalid PDF file: file is too small or empty' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Verificar cabeçalho PDF (primeiros bytes devem ser '%PDF')
+    const header = new Uint8Array(existingPdfBytes.slice(0, 4));
+    const headerStr = String.fromCharCode(...header);
+    if (!headerStr.startsWith('%PDF')) {
+      console.error("[watermark-pdf] Invalid PDF header:", headerStr);
+      return new Response(JSON.stringify({ error: 'Invalid PDF file: no PDF header found' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     console.log("[watermark-pdf] PDF fetched successfully. Loading PDF document.");
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
     console.log("[watermark-pdf] PDF document loaded. Embedding font.");

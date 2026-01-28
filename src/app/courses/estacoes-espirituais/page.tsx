@@ -282,27 +282,53 @@ export default function CoursePage() {
       const lastName = supabaseUser.user_metadata?.last_name || '';
       const email = supabaseUser.email || '';
 
-      // Chamada corrigida usando fetch direto com cabeçalhos CORS
-      const response = await fetch('https://rxvcxqfnkvqfxwzbujka.supabase.co/functions/v1/watermark-pdf', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${supabase.auth.getSession()}`,
-        },
-        body: JSON.stringify({
-          pdfUrl: originalPdfUrl,
-          firstName,
-          lastName,
-          email,
-        }),
-      });
+      // URLs alternativas caso a principal falhe
+      const alternativeUrls = [
+        originalPdfUrl,
+        'https://rxvcxqfnkvqfxwzbujka.supabase.co/storage/v1/object/sign/Estacoes%20Espirituais/Livi-Skov-Estacoes-Espirituais.pdf?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJFc3RhY29lcyBFc3Bpcml0dWFpcy9MaXZpLVNrb3YtRXN0YWNvZXMtRXNwaXJpdHVhaXMucGRmIiwiaWF0IjoxNzQ4NDAxMDAwLCJleHAiOjE3Nzk5MzcwMDB9.TEST_TOKEN'
+      ];
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP ${response.status}: ${errorText}`);
+      let pdfBlob;
+      let errorDetails = '';
+
+      // Tentar com URLs alternativas
+      for (const url of alternativeUrls) {
+        try {
+          console.log("[CoursePage] Trying URL:", url);
+          const response = await fetch('https://rxvcxqfnkvqfxwzbujka.supabase.co/functions/v1/watermark-pdf', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              pdfUrl: url,
+              firstName,
+              lastName,
+              email,
+            }),
+          });
+
+          if (!response.ok) {
+            const errorText = await response.text();
+            errorDetails = `URL: ${url}\nStatus: ${response.status}\nError: ${errorText}`;
+            console.error("[CoursePage] Error response:", errorDetails);
+            continue; // Tentar próxima URL
+          }
+
+          pdfBlob = await response.blob();
+          break; // Sucesso, sair do loop
+
+        } catch (fetchError: any) {
+          errorDetails = `URL: ${url}\nError: ${fetchError.message}`;
+          console.error("[CoursePage] Fetch error:", fetchError);
+          continue; // Tentar próxima URL
+        }
       }
 
-      const pdfBlob = await response.blob();
+      if (!pdfBlob) {
+        throw new Error(`Não foi possível baixar o livro de nenhuma das URLs:\n${errorDetails}`);
+      }
+
       const url = window.URL.createObjectURL(pdfBlob);
       const a = document.createElement('a');
       a.href = url;
@@ -319,10 +345,35 @@ export default function CoursePage() {
 
     } catch (error: any) {
       console.error("[CoursePage] Error downloading watermarked PDF:", error);
+      
+      // Tente fornecer o PDF original como fallback
+      try {
+        const directResponse = await fetch(originalPdfUrl);
+        if (directResponse.ok) {
+          const pdfBlob = await directResponse.blob();
+          const url = window.URL.createObjectURL(pdfBlob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'Livi-Skov-Estacoes-Espirituais.pdf';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          window.URL.revokeObjectURL(url);
+          
+          toast({
+            title: "Download do PDF original concluído",
+            description: "O livro foi baixado sem marca d'água devido a um erro no processamento."
+          });
+          return;
+        }
+      } catch (fallbackError: any) {
+        console.error("[CoursePage] Fallback also failed:", fallbackError);
+      }
+
       toast({
         variant: "destructive",
         title: "Erro no download",
-        description: error.message || "Não foi possível baixar o livro com marca d'água."
+        description: error.message || "Não foi possível baixar o livro. Tente novamente mais tarde."
       });
     } finally {
       setIsDownloading(false);
@@ -396,6 +447,11 @@ export default function CoursePage() {
                 >
                   {isDownloading ? 'Gerando...' : 'Baixar Livro em PDF'}
                 </Button>
+                {!selectedLesson.content && (
+                  <p className="text-sm text-muted-foreground mt-2">
+                    Link para download indisponível.
+                  </p>
+                )}
               </div>
             </CardContent>
           </Card>
