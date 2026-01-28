@@ -20,7 +20,7 @@ const courses = [
     id: 'estacoes-espirituais',
     title: 'Curso Estações Espirituais',
     description: 'Aprenda a reconhecer e a viver plenamente cada estação da sua vida com Deus.',
-    imageUrl: '/images/c8dcb5a5-a264-4fbe-a8c2-16e426a325c1.png',
+    imageUrl: '/images/logo-curso-estacoes-espirituais.jpg', // Updated to the new logo
     imageHint: 'spiritual journey',
   }
 ];
