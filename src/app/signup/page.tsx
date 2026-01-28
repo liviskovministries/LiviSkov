@@ -15,7 +15,6 @@ import { SiteHeader } from '@/components/header';
 import { SiteFooter } from '@/components/footer';
 import Image from 'next/image';
 import { useSupabaseAuth, useSupabaseUser } from '@/integrations/supabase/supabase-provider';
-import { supabase } from '@/integrations/supabase/client';
 
 const formSchema = z.object({
   firstName: z.string().min(2, { message: 'O nome deve ter pelo menos 2 caracteres.' }),
@@ -55,8 +54,8 @@ export default function SignupPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      // 1. Fazer o cadastro de autenticação no Supabase
-      // Passamos todos os dados no metadata para que o trigger possa usá-los
+      // Fazer o cadastro de autenticação no Supabase
+      // Passamos apenas os dados necessários no metadata para evitar sobrecarga
       const { data: authData, error: authError } = await supabaseAuth.signUp({
         email: values.email,
         password: values.password,
@@ -73,51 +72,29 @@ export default function SignupPage() {
         throw authError;
       }
 
-      // 2. Garantir adicionalmente que telefone seja salvo após um tempo
-      if (authData?.user) {
-        setTimeout(async () => {
-          try {
-            // Atualizar telefone nas tabelas para garantir
-            await supabase
-              .from('users')
-              .update({
-                phone: values.phone,
-                updated_at: new Date().toISOString(),
-              })
-              .eq('id', authData.user?.id);
-
-            // Tentar atualizar profiles também
-            try {
-              await supabase
-                .from('profiles')
-                .update({
-                  phone: values.phone,
-                  updated_at: new Date().toISOString(),
-                })
-                .eq('id', authData.user?.id);
-            } catch (profileError) {
-              console.warn('Profile table update might have failed:', profileError);
-            }
-            
-          } catch (updateError) {
-            console.error('Erro nas atualizações pós-cadastro:', updateError);
-          }
-        }, 2000);
-      }
-
       toast({
         title: "Conta criada com sucesso!",
-        description: "Você receberá um email para confirmar sua conta. Seu telefone foi salvo com sucesso.",
+        description: "Você receberá um email para confirmar sua conta. Todos os dados foram salvos corretamente.",
       });
       
       // Redirecionar para login após cadastro
       router.push('/login');
     } catch (error: any) {
       console.error('Signup error:', error);
+      
+      // Mensagem de erro mais específica
+      let errorMessage = error.message || "Ocorreu um erro ao criar a conta. Por favor, tente novamente.";
+      
+      if (error.message?.includes('already registered')) {
+        errorMessage = "Este email já está cadastrado. Por favor, faça login ou use outro email.";
+      } else if (error.message?.includes('password')) {
+        errorMessage = "A senha não atende aos requisitos de segurança.";
+      }
+      
       toast({
         variant: "destructive",
         title: "Erro ao criar conta",
-        description: error.message || "Ocorreu um erro ao criar a conta. Por favor, tente novamente.",
+        description: errorMessage,
       });
     }
   }
