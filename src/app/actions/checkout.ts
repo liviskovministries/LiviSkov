@@ -11,21 +11,46 @@ const COURSE_PRICE_ID = process.env.STRIPE_COURSE_PRICE_ID || 'price_replace_me'
 
 export async function createCheckoutSession(userId: string, courseId: string, userEmail: string | null) {
   if (!userId) {
-    // This should be handled by the client, but as a safeguard.
     return { error: 'User must be logged in to purchase.' };
   }
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:9002';
   
   try {
-    // Instead of creating a Stripe session, we'll redirect directly to the Stripe payment link
-    // This assumes you've set up the link in your Stripe dashboard
-    const stripePaymentLink = 'https://buy.stripe.com/6oUbJ37bDbe46U0fbM5ZC00';
-    
-    // We'll pass the user info as metadata in the redirect URL
-    const redirectUrl = `${stripePaymentLink}?client_reference_id=${userId}&prefilled_email=${userEmail || ''}`;
-    
-    redirect(redirectUrl);
+    // Create a Stripe Checkout Session for direct checkout on platform
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price: COURSE_PRICE_ID,
+          quantity: 1,
+        },
+      ],
+      mode: 'payment',
+      success_url: `${appUrl}/courses?payment_success=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${appUrl}/courses`,
+      customer_email: userEmail || undefined,
+      client_reference_id: userId,
+      metadata: {
+        course_id: courseId,
+        user_id: userId,
+      },
+      // Enable direct platform checkout
+      payment_intent_data: {
+        setup_future_usage: 'on_session',
+      },
+      billing_address_collection: 'required',
+      shipping_address_collection: {
+        allowed_countries: ['BR'],
+      },
+    });
+
+    if (!session.url) {
+      throw new Error('Failed to create checkout session');
+    }
+
+    // Redirect to Stripe Checkout
+    redirect(session.url);
   } catch (error) {
     console.error('Stripe Checkout Error:', error);
     return { error: 'An unexpected error occurred. Please try again.' };
@@ -34,12 +59,14 @@ export async function createCheckoutSession(userId: string, courseId: string, us
 
 export async function getSessionStatus(sessionId: string): Promise<{ status: Stripe.Checkout.Session.Status | null, client_reference_id: string | null, metadata: Stripe.Metadata | null }> {
   try {
-    // Since we're not using Stripe sessions anymore, we'll return a default success status
-    // In a real implementation, you would verify the payment through Stripe's API
+    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+      expand: ['payment_intent'],
+    });
+    
     return { 
-      status: 'complete', 
-      client_reference_id: null, 
-      metadata: null 
+      status: session.status, 
+      client_reference_id: session.client_reference_id, 
+      metadata: session.metadata 
     };
   } catch (error) {
     console.error(`Error retrieving session ${sessionId}:`, error);

@@ -2,14 +2,13 @@
 
 import { useFirestore, useCollection, useMemoFirebase, setDocumentNonBlocking, useUser } from '@/firebase';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useState, useTransition } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SiteHeader } from '@/components/header';
 import { SiteFooter } from '@/components/footer';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { collection, doc } from 'firebase/firestore';
 import { createCheckoutSession, getSessionStatus } from '@/app/actions/checkout';
 import { useToast } from '@/hooks/use-toast';
 import { useSupabaseUser } from '@/integrations/supabase/supabase-provider';
@@ -20,7 +19,7 @@ const courses = [
     id: 'estacoes-espirituais',
     title: 'Curso Estações Espirituais',
     description: 'Aprenda a reconhecer e a viver plenamente cada estação da sua vida com Deus.',
-    imageUrl: '/images/logo-curso-estacoes-espirituais.jpg', // Updated to the new logo
+    imageUrl: '/images/logo-curso-estacoes-espirituais.jpg',
     imageHint: 'spiritual journey',
   }
 ];
@@ -31,8 +30,6 @@ function CheckoutHandler() {
   const router = useRouter();
   const { toast } = useToast();
   
-  // Não precisamos mais de Firebase enrollments aqui, pois o acesso será verificado na tabela users do Supabase.
-
   useEffect(() => {
     const paymentSuccess = searchParams.get('payment_success');
     const sessionId = searchParams.get('session_id');
@@ -44,11 +41,8 @@ function CheckoutHandler() {
           
           const session = await getSessionStatus(sessionId);
           
-          // No novo fluxo, a verificação real do pagamento e a atualização do acesso
-          // ocorreriam via webhook do Stripe ou uma API mais robusta.
-          // Por enquanto, simulamos o sucesso e atualizamos o acesso.
           if (session.status === 'complete' && supabaseUser.id) {
-            const courseId = 'estacoes-espirituais'; // Hardcoded para o curso atual
+            const courseId = 'estacoes-espirituais';
             
             // Atualizar o status de acesso na tabela public.users
             const { error } = await supabase
@@ -104,7 +98,7 @@ function CoursesPageContent() {
   const { user: supabaseUser, isUserLoading: isSupabaseUserLoading } = useSupabaseUser();
   const router = useRouter();
   const { toast } = useToast();
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false); // Corrigido: usando useState em vez de useTransition
   const [userCourseAccess, setUserCourseAccess] = useState<boolean | null>(null);
   const [isAccessLoading, setIsAccessLoading] = useState(true);
 
@@ -134,14 +128,41 @@ function CoursesPageContent() {
     fetchUserAccess();
   }, [supabaseUser]);
 
-  const handlePurchase = (courseId: string) => {
+  const handlePurchase = async (courseId: string) => {
     if (!supabaseUser) {
       router.push('/login?redirect=/courses');
       return;
     }
     
-    // Redirecionar diretamente para o link do Stripe
-    window.location.href = 'https://buy.stripe.com/6oUbJ37bDbe46U0fbM5ZC00';
+    try {
+      setIsPending(true); // Agora funciona corretamente
+      
+      // Usar checkout integrado do Stripe
+      const result = await createCheckoutSession(
+        supabaseUser.id,
+        courseId,
+        supabaseUser.email || null
+      );
+      
+      if ('error' in result) {
+        toast({
+          variant: 'destructive',
+          title: 'Erro no checkout',
+          description: result.error
+        });
+      }
+      // A função createCheckoutSession já faz o redirect automaticamente
+      
+    } catch (error: any) {
+      console.error('Checkout error:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Erro no checkout',
+        description: error.message || 'Ocorreu um erro ao processar o pagamento.'
+      });
+    } finally {
+      setIsPending(false); // Agora funciona corretamente
+    }
   }
 
   if (isSupabaseUserLoading || isAccessLoading) {
@@ -152,7 +173,6 @@ function CoursesPageContent() {
     );
   }
 
-  // Determine the display name
   const displayName = supabaseUser?.user_metadata?.first_name && supabaseUser?.user_metadata?.last_name
     ? `${supabaseUser.user_metadata.first_name} ${supabaseUser.user_metadata.last_name}`
     : supabaseUser?.user_metadata?.first_name
@@ -163,7 +183,6 @@ function CoursesPageContent() {
     <div className="flex min-h-screen flex-col bg-background">
       <SiteHeader />
       <main className="flex-1">
-        {/* Updated banner with the attached image */}
         <section className="relative h-[40vh] min-h-[300px] w-full bg-secondary text-foreground">
           <Image 
             src="/images/member-area-banner.jpg" 
@@ -188,7 +207,7 @@ function CoursesPageContent() {
         <div className="container py-12 md:py-20">
           <div className="mt-12 flex flex-col items-center gap-8">
             {courses.map((course) => {
-              const isEnrolled = userCourseAccess; // Verifica o acesso do usuário
+              const isEnrolled = userCourseAccess;
               
               return (
                 <Card key={course.id} className="w-full max-w-4xl overflow-hidden shadow-lg transition-transform duration-300 hover:scale-[1.02] hover:shadow-2xl md:flex">
@@ -214,7 +233,12 @@ function CoursesPageContent() {
                           <Button size="lg" className="w-full">Acessar Curso</Button>
                         </Link>
                       ) : (
-                        <Button onClick={() => handlePurchase(course.id)} size="lg" className="w-full" disabled={isPending}>
+                        <Button 
+                          onClick={() => handlePurchase(course.id)} 
+                          size="lg" 
+                          className="w-full" 
+                          disabled={isPending}
+                        >
                           {isPending ? 'Aguarde...' : 'Comprar Curso'}
                         </Button>
                       )}
