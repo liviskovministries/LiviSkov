@@ -140,8 +140,14 @@ function CoursesPageContent() {
       return;
     }
     
-    // Redirecionar diretamente para o link do Stripe
-    window.location.href = 'https://buy.stripe.com/6oUbJ37bDbe46U0fbM5ZC00';
+    // Abrir link do Stripe em nova janela
+    window.open('https://buy.stripe.com/6oUbJ37bDbe46U0fbM5ZC00', '_blank', 'noopener,noreferrer');
+    
+    // Mostrar mensagem informativa
+    toast({
+      title: "Abrindo página de pagamento",
+      description: "A página de pagamento será aberta em uma nova aba. Após concluir o pagamento, volte aqui para acessar o curso."
+    });
   }
 
   if (isSupabaseUserLoading || isAccessLoading) {

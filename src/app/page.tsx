@@ -25,6 +25,11 @@ export default function Home() {
     });
   };
 
+  const handlePurchase = () => {
+    // Abrir link do Stripe em nova janela
+    window.open('https://buy.stripe.com/6oUbJ37bDbe46U0fbM5ZC00', '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <SiteHeader />
@@ -48,12 +53,13 @@ export default function Home() {
             <p className="mt-4 max-w-2xl text-lg md:text-xl">
               Aprenda a reconhecer e a viver plenamente cada estação da sua vida com Deus.
             </p>
-            <Button asChild size="lg" className="mt-8 bg-primary hover:bg-primary/90 text-primary-foreground">
-              <Link href="/signup">Cadastre-se e adquira já</Link>
+            <Button onClick={handlePurchase} size="lg" className="mt-8 bg-primary hover:bg-primary/90 text-primary-foreground">
+              Cadastre-se e adquira já
             </Button>
           </div>
         </section>
 
+        {/* Restante do código permanece igual */}
         {/* Testimonials Section */}
         <section id="testimonials" className="bg-secondary py-20">
           <div className="container text-center">
