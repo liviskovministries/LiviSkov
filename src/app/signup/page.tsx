@@ -4,14 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
@@ -21,8 +14,8 @@ import { useEffect } from 'react';
 import { SiteHeader } from '@/components/header';
 import { SiteFooter } from '@/components/footer';
 import Image from 'next/image';
-import { useSupabaseAuth, useSupabaseUser } from '@/integrations/supabase/supabase-provider'; // Usar hooks Supabase
-import { supabase } from '@/integrations/supabase/client'; // Importar o cliente Supabase diretamente
+import { useSupabaseAuth, useSupabaseUser } from '@/integrations/supabase/supabase-provider';
+import { supabase } from '@/integrations/supabase/client';
 
 const formSchema = z.object({
   firstName: z.string().min(2, { message: 'O nome deve ter pelo menos 2 caracteres.' }),
@@ -32,16 +25,15 @@ const formSchema = z.object({
   password: z.string().min(6, { message: 'A senha deve ter pelo menos 6 caracteres.' }),
   confirmPassword: z.string().min(6, { message: 'A confirmação de senha deve ter pelo menos 6 caracteres.' }),
 }).refine((data) => data.password === data.confirmPassword, {
-    message: "As senhas não coincidem.",
-    path: ["confirmPassword"],
+  message: "As senhas não coincidem.",
+  path: ["confirmPassword"],
 });
 
 export default function SignupPage() {
   const { toast } = useToast();
-  const supabaseAuth = useSupabaseAuth(); // Usar o hook de autenticação Supabase
+  const supabaseAuth = useSupabaseAuth();
   const router = useRouter();
-  const { user, isUserLoading } = useSupabaseUser(); // Usar o hook de usuário Supabase
-
+  const { user, isUserLoading } = useSupabaseUser();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -69,7 +61,7 @@ export default function SignupPage() {
           data: {
             first_name: values.firstName,
             last_name: values.lastName,
-            phone: values.phone,
+            phone: values.phone, // Certificando que o telefone está sendo passado corretamente
           },
         },
       });
@@ -78,15 +70,12 @@ export default function SignupPage() {
         throw error;
       }
 
-      // The handle_new_user trigger will create the profile in public.profiles
-      // No need to manually insert into 'users' collection in Firestore anymore.
-
+      // O trigger handle_new_user irá criar o perfil em public.profiles
       toast({
         title: "Conta criada com sucesso!",
         description: "Você será redirecionado para a área de cursos.",
       });
       router.push('/courses');
-
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -99,9 +88,9 @@ export default function SignupPage() {
 
   if (isUserLoading || user) {
     return (
-        <div className="flex min-h-screen items-center justify-center bg-background">
-            <p>Carregando...</p>
-        </div>
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <p>Carregando...</p>
+      </div>
     );
   }
 
@@ -166,18 +155,18 @@ export default function SignupPage() {
                   )}
                 />
                 <FormField
-                    control={form.control}
-                    name="phone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Telefone/Whatsapp</FormLabel>
-                        <FormControl>
-                          <Input placeholder="(XX) XXXXX-XXXX" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Telefone/Whatsapp</FormLabel>
+                      <FormControl>
+                        <Input placeholder="(XX) XXXXX-XXXX" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="password"
@@ -192,18 +181,18 @@ export default function SignupPage() {
                   )}
                 />
                 <FormField
-                    control={form.control}
-                    name="confirmPassword"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Confirmar Senha</FormLabel>
-                        <FormControl>
-                          <Input type="password" placeholder="Confirme sua senha" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Confirmar Senha</FormLabel>
+                      <FormControl>
+                        <Input type="password" placeholder="Confirme sua senha" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <Button type="submit" className="w-full transition-transform duration-200 hover:scale-105">Criar Conta</Button>
               </form>
             </Form>
