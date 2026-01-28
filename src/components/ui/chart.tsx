@@ -50,8 +50,9 @@ const ChartWrapper = React.forwardRef<HTMLDivElement, ChartWrapperProps>(
 )
 ChartWrapper.displayName = "ChartWrapper"
 
-interface ChartProps extends React.ComponentProps<typeof RechartsPrimitive.ResponsiveContainer> {
+interface ChartProps extends Omit<React.ComponentProps<typeof RechartsPrimitive.ResponsiveContainer>, 'ref'> {
   config: ChartConfig
+  ref?: React.Ref<HTMLDivElement>
 }
 
 const Chart = React.forwardRef<HTMLDivElement, ChartProps>(
