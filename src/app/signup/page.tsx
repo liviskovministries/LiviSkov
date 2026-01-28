@@ -34,6 +34,7 @@ export default function SignupPage() {
   const supabaseAuth = useSupabaseAuth();
   const router = useRouter();
   const { user, isUserLoading } = useSupabaseUser();
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -61,7 +62,7 @@ export default function SignupPage() {
           data: {
             first_name: values.firstName,
             last_name: values.lastName,
-            phone: values.phone, // Certificando que o telefone está sendo passado corretamente
+            phone: values.phone,
           },
         },
       });
@@ -70,19 +71,20 @@ export default function SignupPage() {
         throw error;
       }
 
-      // O trigger handle_new_user irá criar o perfil em public.profiles
       toast({
         title: "Conta criada com sucesso!",
-        description: "Você será redirecionado para a área de cursos.",
+        description: "Você receberá um email para confirmar sua conta. Após a confirmação, você será redirecionado para a área de cursos.",
       });
-      router.push('/courses');
+      
+      // Redirecionar para login após cadastro
+      router.push('/login');
     } catch (error: any) {
+      console.error('Signup error:', error);
       toast({
         variant: "destructive",
         title: "Erro ao criar conta",
-        description: error.message || "Ocorreu um erro ao criar a conta.",
+        description: error.message || "Ocorreu um erro ao criar a conta. Por favor, tente novamente.",
       });
-      console.error(error);
     }
   }
 
@@ -100,12 +102,12 @@ export default function SignupPage() {
       <main className="flex-1 flex items-center justify-center p-4">
         <Card className="w-full max-w-md shadow-lg">
           <CardHeader className="flex flex-col items-center">
-            <Image
-              src="/images/logoverde2.fw.png"
-              alt="Livi Skov Logo"
-              width={150}
-              height={50}
-              className="mb-6 h-auto"
+            <Image 
+              src="/images/logoverde2.fw.png" 
+              alt="Livi Skov Logo" 
+              width={150} 
+              height={50} 
+              className="mb-6 h-auto" 
             />
             <CardTitle className="text-center text-2xl text-primary">Criar sua Conta</CardTitle>
             <CardDescription className="text-center">Junte-se à nossa comunidade de aprendizado.</CardDescription>
@@ -193,7 +195,9 @@ export default function SignupPage() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full transition-transform duration-200 hover:scale-105">Criar Conta</Button>
+                <Button type="submit" className="w-full transition-transform duration-200 hover:scale-105">
+                  Criar Conta
+                </Button>
               </form>
             </Form>
             <p className="mt-6 text-center text-sm text-muted-foreground">
