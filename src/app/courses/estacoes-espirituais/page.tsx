@@ -341,7 +341,7 @@ export default function CoursePage() {
       <div className="flex min-h-screen bg-background">
         <Sidebar collapsible="icon" className="border-r">
           <SidebarHeader>
-            <div className="flex items-center justify-center gap-2 p-2">
+            <div className="flex items-center justify-center gap-4 p-2"> {/* Changed gap-2 to gap-4 */}
               <Image 
                 src="/images/logo4branco.fw.png" 
                 alt="Logo Livi Skov" 
