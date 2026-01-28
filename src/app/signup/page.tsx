@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
@@ -15,6 +15,7 @@ import { SiteHeader } from '@/components/header';
 import { SiteFooter } from '@/components/footer';
 import Image from 'next/image';
 import { useSupabaseAuth, useSupabaseUser } from '@/integrations/supabase/supabase-provider';
+import { supabase } from '@/integrations/supabase/client';
 
 const formSchema = z.object({
   firstName: z.string().min(2, { message: 'O nome deve ter pelo menos 2 caracteres.' }),
@@ -54,8 +55,8 @@ export default function SignupPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      // Fazer o cadastro de autenticação no Supabase
-      // Passamos apenas os dados necessários no metadata para evitar sobrecarga
+      // 1. Fazer o cadastro de autenticação no Supabase
+      // Passamos first_name e last_name como metadata para que o trigger possa usá-los
       const { data: authData, error: authError } = await supabaseAuth.signUp({
         email: values.email,
         password: values.password,
@@ -63,7 +64,6 @@ export default function SignupPage() {
           data: {
             first_name: values.firstName,
             last_name: values.lastName,
-            phone: values.phone,
           },
         },
       });
@@ -72,29 +72,42 @@ export default function SignupPage() {
         throw authError;
       }
 
+      // 2. Se o usuário de autenticação foi criado, o trigger já inseriu o registro em public.users.
+      // Agora, vamos atualizar o campo 'phone' na tabela public.users.
+      if (authData.user) {
+        const { error: userUpdateError } = await supabase
+          .from('users')
+          .update({
+            phone: values.phone,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', authData.user.id); // Atualiza o registro do usuário recém-criado
+
+        if (userUpdateError) {
+          console.error('Erro ao atualizar telefone do usuário:', JSON.stringify(userUpdateError, null, 2));
+          toast({
+            variant: "destructive",
+            title: "Erro no cadastro",
+            description: `Não foi possível salvar seu telefone: ${userUpdateError?.message || JSON.stringify(userUpdateError)}`,
+          });
+          // Se a atualização do telefone falhar, o usuário ainda terá uma conta e um registro básico.
+          // Podemos decidir se queremos reverter o cadastro ou apenas logar o erro.
+        }
+      }
+
       toast({
         title: "Conta criada com sucesso!",
-        description: "Você receberá um email para confirmar sua conta. Todos os dados foram salvos corretamente.",
+        description: "Você receberá um email para confirmar sua conta. Após a confirmação, você será redirecionado para a área de cursos.",
       });
       
       // Redirecionar para login após cadastro
       router.push('/login');
     } catch (error: any) {
       console.error('Signup error:', error);
-      
-      // Mensagem de erro mais específica
-      let errorMessage = error.message || "Ocorreu um erro ao criar a conta. Por favor, tente novamente.";
-      
-      if (error.message?.includes('already registered')) {
-        errorMessage = "Este email já está cadastrado. Por favor, faça login ou use outro email.";
-      } else if (error.message?.includes('password')) {
-        errorMessage = "A senha não atende aos requisitos de segurança.";
-      }
-      
       toast({
         variant: "destructive",
         title: "Erro ao criar conta",
-        description: errorMessage,
+        description: error.message || "Ocorreu um erro ao criar a conta. Por favor, tente novamente.",
       });
     }
   }
