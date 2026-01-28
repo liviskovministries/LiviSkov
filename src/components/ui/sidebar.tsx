@@ -79,7 +79,7 @@ function SidebarProvider({
     [open, openProp, onOpenChange]
   );
 
-  const state = open ? "expanded" : "collapsed";
+  const state: "expanded" | "collapsed" = open ? "expanded" : "collapsed"; // Explicitly type 'state'
 
   const contextValue = React.useMemo(
     () => ({
@@ -320,7 +320,7 @@ const SidebarMenuAction = React.forwardRef<
     ref={ref}
     data-sidebar="menu-action"
     className={cn(
-      "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground/70 focus:bg-sidebar-accent focus:text-sidebar-accent-foreground ml-auto rounded-md p-1 text-xs transition-colors",
+      "text-sidebar-foreground/70 hover:text-sidebar-foreground ml-auto rounded-md p-1 text-xs transition-colors",
       className
     )}
     {...props}
@@ -417,6 +417,7 @@ export {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuAction,
   SidebarMenuSub,
   SidebarMenuSubItem,
   SidebarMenuSubButton,
@@ -424,6 +425,7 @@ export {
   SidebarInset,
   SidebarGroup,
   SidebarGroupLabel,
+  SidebarGroupAction,
   SidebarProvider,
   SidebarFooter,
 };
