@@ -40,6 +40,10 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
   // Lógica para o status de inscrição, específica para o slide "Estações Espirituais"
   const hasEnrollmentEnded = currentSlide.enrollmentDeadline ? new Date() > currentSlide.enrollmentDeadline : false;
 
+  const goToSlide = (index: number) => {
+    setCurrentSlideIndex(index);
+  };
+
   return (
     <section id="inicio" className="relative h-[60vh] min-h-[400px] w-full text-white overflow-hidden">
       {currentSlide && (
@@ -83,6 +87,21 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
             </Link>
           )
         )}
+      </div>
+
+      {/* Navigation Dots */}
+      <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 space-x-2">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => goToSlide(index)}
+            className={cn(
+              "h-2 rounded-full transition-all duration-300",
+              index === currentSlideIndex ? "w-8 bg-white" : "w-2 bg-white/50 hover:bg-white/75"
+            )}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
       </div>
     </section>
   );
