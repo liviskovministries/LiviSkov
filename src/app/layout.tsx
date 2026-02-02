@@ -9,6 +9,9 @@ import { SupabaseProvider } from '@/integrations/supabase/supabase-provider';
 export const metadata: Metadata = {
   title: 'Livi Skov - Estações Espirituais',
   description: 'Descubra as estações da sua jornada com Deus',
+  icons: {
+    icon: '/logo4verde.fw.png', // Novo favicon
+  },
 };
 
 export default function RootLayout({
