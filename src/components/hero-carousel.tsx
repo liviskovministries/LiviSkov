@@ -77,7 +77,7 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
                   fill
                   className={cn(
                     "object-cover",
-                    slide.id === 'welcome-banner' && "lg:object-top" // Aplica object-top apenas para o banner de boas-vindas em telas grandes
+                    slide.id === 'welcome-banner' && "lg:object-center-top-10" // Aplica object-center-top-10 apenas para o banner de boas-vindas em telas grandes
                   )}
                   priority
                   data-ai-hint={slide.imageHint}

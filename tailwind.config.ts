@@ -95,6 +95,9 @@ export default {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
+      objectPosition: { // Adicionando a extensão para object-position
+        'center-top-10': 'center 10%', // Posiciona o centro horizontal e 10% do topo verticalmente
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],
