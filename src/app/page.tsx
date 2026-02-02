@@ -8,12 +8,16 @@ import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Mail, MessageSquare } from 'lucide-react';
+import { Mail, MessageSquare, Lock } from 'lucide-react'; // Importar o ícone de cadeado
 
 export default function Home() {
   const heroImage = PlaceHolderImages.find(img => img.id === 'hero-background');
   const testimonialImage = PlaceHolderImages.find(img => img.id === 'testimonial-1');
   const contactImage = PlaceHolderImages.find(img => img.id === 'contact-background');
+
+  // Definir a data limite para as inscrições (ex: 19 de Julho de 2024)
+  const enrollmentDeadline = new Date('2024-07-19T23:59:59'); // Exemplo: 19 de Julho de 2024, 23:59:59
+  const hasEnrollmentEnded = new Date() > enrollmentDeadline;
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -48,11 +52,27 @@ export default function Home() {
             <p className="mt-4 max-w-2xl text-lg md:text-xl">
               Aprenda a reconhecer e a viver plenamente cada estação da sua vida com Deus.
             </p>
-            <Link href="/signup">
-              <Button size="lg" className="mt-8 bg-primary hover:bg-primary/90 text-primary-foreground">
-                Cadastre-se e adquira já
-              </Button>
-            </Link>
+            
+            {hasEnrollmentEnded ? (
+              <div className="mt-8 max-w-2xl text-lg text-white bg-red-600/80 p-4 rounded-lg shadow-lg">
+                <p className="font-bold flex items-center justify-center gap-2">
+                  <Lock className="h-6 w-6" /> Inscrições Encerradas
+                </p>
+                <p className="mt-2 text-sm">
+                  Se você se inscreveu a tempo, por favor,{' '}
+                  <Link href="/signup" className="font-semibold underline hover:text-white/80">
+                    cadastre-se no site
+                  </Link>{' '}
+                  e entre em contato conosco para ter acesso liberado ao seu login.
+                </p>
+              </div>
+            ) : (
+              <Link href="/signup">
+                <Button size="lg" className="mt-8 bg-primary hover:bg-primary/90 text-primary-foreground">
+                  Cadastre-se e adquira já
+                </Button>
+              </Link>
+            )}
           </div>
         </section>
 

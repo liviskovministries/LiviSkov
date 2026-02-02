@@ -185,19 +185,6 @@ function CoursesPageContent() {
               );
             })}
           </div>
-
-          {hasEnrollmentEnded && !userCourseAccess && (
-            <div className="mt-12 text-center text-lg text-muted-foreground">
-              <p>
-                As inscrições para o curso Estações Espirituais foram encerradas.
-                Se você se inscreveu a tempo, por favor,{' '}
-                <Link href="/signup" className="font-semibold text-primary hover:underline">
-                  cadastre-se no site
-                </Link>{' '}
-                e entre em contato conosco para ter acesso liberado ao seu login.
-              </p>
-            </div>
-          )}
         </div>
       </main>
       <SiteFooter />
