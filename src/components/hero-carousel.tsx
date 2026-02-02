@@ -75,7 +75,10 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
                   src={slide.imageUrl}
                   alt={slide.imageHint}
                   fill
-                  className="object-cover"
+                  className={cn(
+                    "object-cover",
+                    slide.id === 'welcome-banner' && "lg:object-top" // Aplica object-top apenas para o banner de boas-vindas em telas grandes
+                  )}
                   priority
                   data-ai-hint={slide.imageHint}
                 />
