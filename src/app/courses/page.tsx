@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
 import { useSupabaseUser } from '@/integrations/supabase/supabase-provider';
 import { supabase } from '@/integrations/supabase/client';
+import { Lock } from 'lucide-react'; // Importar o ícone de cadeado
 
 const courses = [
   {
@@ -36,6 +37,11 @@ function CoursesPageContent() {
   const [isPending, startTransition] = useTransition();
   const [userCourseAccess, setUserCourseAccess] = useState<boolean | null>(null);
   const [isAccessLoading, setIsAccessLoading] = useState(true);
+
+  // Definir a data limite para as inscrições (ex: 19 de Julho de 2024)
+  // Altere esta data para controlar quando as inscrições são encerradas.
+  const enrollmentDeadline = new Date('2024-07-19T23:59:59'); // Exemplo: 19 de Julho de 2024, 23:59:59
+  const hasEnrollmentEnded = new Date() > enrollmentDeadline;
 
   useEffect(() => {
     const fetchUserAccess = async () => {
@@ -64,6 +70,15 @@ function CoursesPageContent() {
   }, [supabaseUser]);
 
   const handlePurchase = (courseId: string) => {
+    if (hasEnrollmentEnded) {
+      toast({
+        variant: "destructive",
+        title: "Inscrições Encerradas",
+        description: "As inscrições para este curso foram encerradas."
+      });
+      return;
+    }
+
     if (!supabaseUser) {
       router.push('/login?redirect=/courses');
       return;
@@ -149,8 +164,19 @@ function CoursesPageContent() {
                           <Button size="lg" className="w-full">Acessar Curso</Button>
                         </Link>
                       ) : (
-                        <Button onClick={() => handlePurchase(course.id)} size="lg" className="w-full" disabled={isPending}>
-                          {isPending ? 'Aguarde...' : 'Comprar Curso'}
+                        <Button 
+                          onClick={() => handlePurchase(course.id)} 
+                          size="lg" 
+                          className="w-full" 
+                          disabled={isPending || hasEnrollmentEnded} // Desabilitar se as inscrições encerraram
+                        >
+                          {hasEnrollmentEnded ? (
+                            <span className="flex items-center gap-2">
+                              <Lock className="h-5 w-5" /> Inscrições Encerradas
+                            </span>
+                          ) : (
+                            isPending ? 'Aguarde...' : 'Comprar Curso'
+                          )}
                         </Button>
                       )}
                     </CardFooter>
