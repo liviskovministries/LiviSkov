@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, } from '@/components/ui/accordion';
 import { Tooltip, TooltipContent, TooltipTrigger, } from '@/components/ui/tooltip';
-import { Home, BookOpen, LogOut, PlayCircle, FileText, CheckCircle, Lock, } from 'lucide-react';
+import { Home, BookOpen, LogOut, PlayCircle, FileText, CheckCircle, Lock, Menu } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import YouTube from 'react-youtube';
@@ -153,7 +153,7 @@ const courseData = {
 };
 
 // URL assinada do PDF com token válido
-const PDF_URL_SIGNED = 'https://rxvcxqfnkvqfxwzbujka.supabase.co/storage/v1/object/sign/Estacoes%20Espirituais/Livi-Skov-Estacoes-Espirituais.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80ODZlMTgxYy1kOWI4LTRkNTctYjY1ZS1iZWFkNzUxM2Q0ZTIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJFc3RhY29lcyBFc3Bpcml0dWFpcy9MaXZpLVNrb3YtRXN0YWNvZXMtRXNwaXJpdHVhaXMucGRmIiwiaWF0IjoxNzY5NjEwNDEzLCJleHAiOjE4MDExNDY0MTN9.TqJJIDxZGw_hBF5lOEJaabbCoSnG8DOPphfDis6JvhQ';
+const PDF_URL_SIGNED = 'https://rxvcxqfnkvqfxwzbujka.supabase.co/storage/v1/object/sign/Estacoes%20Espirituais/Livi-Skov-Estacoes-Espirituais.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80ODZlMTgxYy1kOWI4LTRkNTctYjY1ZS1iZWFkNzUxM2Q0ZTIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJFc3RhY29lcyBFc3Bpcml0dWFpcy9MaXZpLVNrb3YtRXNwaXJpdHVhaXMucGRmIiwiaWF0IjoxNzY5NjEwNDEzLCJleHAiOjE4MDExNDY0MTN9.TqJJIDxZGw_hBF5lOEJaabbCoSnG8DOPphfDis6JvhQ';
 
 export default function CoursePage() {
   const { user: firebaseUser, isUserLoading: isFirebaseUserLoading } = useUser();
@@ -535,7 +535,12 @@ export default function CoursePage() {
         <div className="flex-1">
           <header className="flex h-16 items-center justify-between border-b bg-background px-4 md:px-6">
             <div className="flex items-center gap-4">
-              <SidebarTrigger className="md:hidden"/>
+              <SidebarTrigger asChild className="md:hidden">
+                <Button variant="ghost" size="sm" className="text-primary hover:bg-primary/10">
+                  <Menu className="h-5 w-5 mr-2" />
+                  <span className="font-semibold">Menu do Curso</span>
+                </Button>
+              </SidebarTrigger>
               <h1 className="text-xl font-bold text-primary">
                 {selectedLesson ? selectedLesson.title : courseData.title}
               </h1>
