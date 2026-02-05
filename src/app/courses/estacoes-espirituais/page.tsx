@@ -535,8 +535,8 @@ export default function CoursePage() {
         <div className="flex-1">
           <header className="flex h-16 items-center justify-between border-b bg-background px-4 md:px-6">
             <div className="flex items-center gap-4">
-              <SidebarTrigger className="md:hidden text-primary hover:bg-primary/10" variant="ghost" size="sm">
-                <span className="font-semibold">Menu</span> {/* Apenas o texto 'Menu' */}
+              <SidebarTrigger className="md:hidden" variant="default"> {/* Alterado para variant="default" e removido size="sm" */}
+                <span className="font-semibold">Menu</span>
               </SidebarTrigger>
               <h1 className="text-xl font-bold text-primary">
                 {selectedLesson ? selectedLesson.title : courseData.title}
