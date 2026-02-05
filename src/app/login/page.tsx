@@ -16,7 +16,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation'; // Importar useSearchParams
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { SiteHeader } from '@/components/header';
@@ -33,6 +33,7 @@ export default function LoginPage() {
   const { toast } = useToast();
   const supabaseAuth = useSupabaseAuth(); // Usar o hook de autenticação Supabase
   const router = useRouter();
+  const searchParams = useSearchParams(); // Inicializar useSearchParams
   const { user, isUserLoading } = useSupabaseUser(); // Usar o hook de usuário Supabase
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -48,6 +49,19 @@ export default function LoginPage() {
       router.push('/courses');
     }
   }, [user, router]);
+
+  // Efeito para exibir toast de sucesso após redefinição de senha
+  useEffect(() => {
+    const resetSuccess = searchParams.get('reset');
+    if (resetSuccess === 'true') {
+      toast({
+        title: "Senha redefinida!",
+        description: "Sua senha foi redefinida com sucesso. Faça login com sua nova senha.",
+      });
+      // Limpar o parâmetro da URL para que a mensagem não apareça novamente
+      router.replace('/login', { scroll: false });
+    }
+  }, [searchParams, toast, router]);
 
 
   async function onSubmit(values: z.infer<typeof formSchema>) {

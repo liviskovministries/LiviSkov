@@ -40,7 +40,7 @@ export default function ForgotPasswordPage() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const { error } = await supabaseAuth.resetPasswordForEmail(values.email, {
-        redirectTo: `${window.location.origin}/login?reset=true`, // Redirecionar para a página de login após redefinição
+        redirectTo: `${window.location.origin}/update-password`, // Redirecionar para a nova página de atualização de senha
       });
 
       if (error) {
@@ -51,7 +51,7 @@ export default function ForgotPasswordPage() {
         title: "Email de redefinição enviado!",
         description: "Verifique sua caixa de entrada para redefinir sua senha.",
       });
-      router.push('/login');
+      // Não redirecionar aqui, o usuário será redirecionado pelo link do email
     } catch (error: any) {
       toast({
         variant: "destructive",
