@@ -63,6 +63,13 @@ function UpdatePasswordContent() {
         throw error;
       }
 
+      // Deslogar o usuário explicitamente após a redefinição de senha
+      const { error: signOutError } = await supabaseAuth.signOut();
+      if (signOutError) {
+        console.error("Erro ao fazer logout após atualização de senha:", signOutError.message);
+        // Continuamos o fluxo, pois a senha foi atualizada com sucesso.
+      }
+
       toast({
         title: "Senha redefinida com sucesso!",
         description: "Você pode fazer login com sua nova senha.",
