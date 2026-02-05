@@ -2,7 +2,15 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 // @ts-ignore
 import { PDFDocument, rgb, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0'; // Importar createClient
+// @ts-ignore
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0';
+
+// Add Deno type declarations to fix TypeScript errors
+declare const Deno: {
+  env: {
+    get(key: string): string | undefined;
+  };
+};
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -29,38 +37,17 @@ serve(async (req: Request) => {
       });
     }
 
-    const { bucketName, filePath, firstName, lastName, email } = requestBody;
+    const { pdfUrl, firstName, lastName, email } = requestBody;
 
-    if (!bucketName || !filePath || !firstName || !lastName || !email) {
-      console.error("[watermark-pdf] Missing required parameters", { bucketName, filePath, firstName, lastName, email });
-      return new Response(JSON.stringify({ error: 'Missing required parameters: bucketName, filePath, firstName, lastName, email' }), {
+    if (!pdfUrl || !firstName || !lastName || !email) {
+      console.error("[watermark-pdf] Missing required parameters", { pdfUrl, firstName, lastName, email });
+      return new Response(JSON.stringify({ error: 'Missing required parameters: pdfUrl, firstName, lastName, email' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    console.log("[watermark-pdf] Parameters received:", { bucketName, filePath, firstName, lastName, email });
-
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
-
-    const { data: signedUrlData, error: signedUrlError } = await supabaseClient
-      .storage
-      .from(bucketName)
-      .createSignedUrl(filePath, 60 * 5); // URL válida por 5 minutos
-
-    if (signedUrlError) {
-      console.error("[watermark-pdf] Error generating signed URL:", { error: signedUrlError.message, stack: signedUrlError.stack });
-      return new Response(JSON.stringify({ error: `Failed to generate signed URL: ${signedUrlError.message}` }), {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-
-    const pdfUrl = signedUrlData.signedUrl;
-    console.log("[watermark-pdf] Signed URL generated:", pdfUrl); // <-- NOVO LOG AQUI
+    console.log("[watermark-pdf] Parameters received:", { pdfUrl, firstName, lastName, email });
     console.log("[watermark-pdf] Attempting to fetch PDF from:", pdfUrl);
     
     const response = await fetch(pdfUrl);
