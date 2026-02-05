@@ -70,7 +70,7 @@ const courseData = {
           type: 'video' as const,
           videoId: 'QEx5SiEROtg',
           subtitle: '🍂 Outono – O Tempo de Soltar e Confiar',
-          description: 'O outono é um tempo de transição e desapego. Algumas coisas que carregamos já não fazem sentido e precisamos confiar em Deus para deixá-las ir.\n\n💡 Reflexões para este módulo:\n\n🔸 O que Deus está me pedindo para abrir mão?\n🔸 Como posso confiar mais nele neste tempo?\n🔸 Quais mudanças preciso aceitar para crescer.\n\nO outono nos ensina que, para viver o novo, é preciso soltar o velho. Confie no processo! 🍁'
+          description: 'O outono é um tempo de transição e desapego. Algumas coisas que carregamos já no fazem sentido e precisamos confiar em Deus para deixá-las ir.\n\n💡 Reflexões para este módulo:\n\n🔸 O que Deus está me pedindo para abrir mão?\n🔸 Como posso confiar mais nele neste tempo?\n🔸 Quais mudanças preciso aceitar para crescer.\n\nO outono nos ensina que, para viver o novo, é preciso soltar o velho. Confie no processo! 🍁'
         },
       ],
     },
@@ -153,7 +153,7 @@ const courseData = {
 };
 
 // URL assinada do PDF com token válido
-const PDF_URL_SIGNED = 'https://rxvcxqfnkvqfxwzbujka.supabase.co/storage/v1/object/sign/Estacoes%20Espirituais/Livi-Skov-Estacoes-Espirituais.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80ODZlMTgxYy1kOWI4LTRkNTctYjY1ZS1iZWFkNzUxM2Q0ZTIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJFc3RhY29lcyBFc3Bpcml0dWFpcy9MaXZpLVNrb3YtRXNwaXJpdHVhaXMucGRmIiwiaWF0IjoxNzY5NjEwNDEzLCJleHAiOjE4MDExNDY0MTN9.TqJJIDxZGw_hBF5lOEJaabbCoSnG8DOPphfDis6JvhQ';
+const PDF_URL_SIGNED = 'https://rxvcxqfnkvqfxwzbujka.supabase.co/storage/v1/object/sign/Estacoes%20Espirituais/Livi-Skov-Estacoes-Espirituais.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80ODZlMTgxYy1kOWI4LTRkNTctYjY1ZS1iZWFkNzUxM2Q0ZTIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJFc3RhY29lcyBFc3Bpcml0dWFpcy9MaXZpLVNrb3YtRXNwaXJpdHVhaXMucGRmIiwiaWF0IjoxNzcwMzE0MjMzLCJleHAiOjE4MDE4NTAyMzN9.d9IhE8PGnmCRe3iaxuyVzAJLbjGaJzryXhCbN3wLLoY';
 
 export default function CoursePage() {
   const { user: firebaseUser, isUserLoading: isFirebaseUserLoading } = useUser();
