@@ -537,8 +537,10 @@ export default function CoursePage() {
             <div className="flex items-center gap-4">
               <SidebarTrigger asChild className="md:hidden">
                 <Button variant="ghost" size="sm" className="text-primary hover:bg-primary/10">
-                  <Menu className="h-5 w-5 mr-2" />
-                  <span className="font-semibold">Menu do Curso</span>
+                  <span className="flex items-center"> {/* Encapsula o ícone e o texto em um span */}
+                    <Menu className="h-5 w-5 mr-2" />
+                    <span className="font-semibold">Menu do Curso</span>
+                  </span>
                 </Button>
               </SidebarTrigger>
               <h1 className="text-xl font-bold text-primary">
