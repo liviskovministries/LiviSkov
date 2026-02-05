@@ -39,10 +39,11 @@ serve(async (req: Request) => {
     }
 
     console.log("[watermark-pdf] Parameters received:", { pdfUrl, firstName, lastName, email });
-    console.log("[watermark-pdf] Fetching PDF from:", pdfUrl);
+    console.log("[watermark-pdf] Attempting to fetch PDF from:", pdfUrl); // Log the URL being fetched
     
-    // Verificar se o conteúdo é realmente um PDF
     const response = await fetch(pdfUrl);
+    console.log("[watermark-pdf] PDF fetch response status:", response.status, response.statusText); // Log the response status
+    
     if (!response.ok) {
       console.error("[watermark-pdf] Failed to fetch PDF:", response.status, response.statusText);
       return new Response(JSON.stringify({ error: `Failed to fetch PDF: ${response.status} ${response.statusText}` }), {
@@ -53,6 +54,7 @@ serve(async (req: Request) => {
 
     // Verificar o tipo de conteúdo
     const contentType = response.headers.get('content-type');
+    console.log("[watermark-pdf] Content-Type header:", contentType); // Log the content type
     if (!contentType || !contentType.includes('pdf')) {
       console.error("[watermark-pdf] Invalid content type:", contentType);
       return new Response(JSON.stringify({ error: 'The requested file is not a valid PDF' }), {
