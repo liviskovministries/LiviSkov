@@ -2,6 +2,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 // @ts-ignore
 import { PDFDocument, rgb, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0'; // Importar createClient
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -28,21 +29,42 @@ serve(async (req: Request) => {
       });
     }
 
-    const { pdfUrl, firstName, lastName, email } = requestBody;
+    const { bucketName, filePath, firstName, lastName, email } = requestBody;
 
-    if (!pdfUrl || !firstName || !lastName || !email) {
-      console.error("[watermark-pdf] Missing required parameters", { pdfUrl, firstName, lastName, email });
-      return new Response(JSON.stringify({ error: 'Missing required parameters: pdfUrl, firstName, lastName, email' }), {
+    if (!bucketName || !filePath || !firstName || !lastName || !email) {
+      console.error("[watermark-pdf] Missing required parameters", { bucketName, filePath, firstName, lastName, email });
+      return new Response(JSON.stringify({ error: 'Missing required parameters: bucketName, filePath, firstName, lastName, email' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    console.log("[watermark-pdf] Parameters received:", { pdfUrl, firstName, lastName, email });
-    console.log("[watermark-pdf] Attempting to fetch PDF from:", pdfUrl); // Log the URL being fetched
+    console.log("[watermark-pdf] Parameters received:", { bucketName, filePath, firstName, lastName, email });
+
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    );
+
+    const { data: signedUrlData, error: signedUrlError } = await supabaseClient
+      .storage
+      .from(bucketName)
+      .createSignedUrl(filePath, 60 * 5); // URL válida por 5 minutos
+
+    if (signedUrlError) {
+      console.error("[watermark-pdf] Error generating signed URL:", { error: signedUrlError.message, stack: signedUrlError.stack });
+      return new Response(JSON.stringify({ error: `Failed to generate signed URL: ${signedUrlError.message}` }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const pdfUrl = signedUrlData.signedUrl;
+    console.log("[watermark-pdf] Signed URL generated:", pdfUrl); // <-- NOVO LOG AQUI
+    console.log("[watermark-pdf] Attempting to fetch PDF from:", pdfUrl);
     
     const response = await fetch(pdfUrl);
-    console.log("[watermark-pdf] PDF fetch response status:", response.status, response.statusText); // Log the response status
+    console.log("[watermark-pdf] PDF fetch response status:", response.status, response.statusText);
     
     if (!response.ok) {
       console.error("[watermark-pdf] Failed to fetch PDF:", response.status, response.statusText);
@@ -52,9 +74,8 @@ serve(async (req: Request) => {
       });
     }
 
-    // Verificar o tipo de conteúdo
     const contentType = response.headers.get('content-type');
-    console.log("[watermark-pdf] Content-Type header:", contentType); // Log the content type
+    console.log("[watermark-pdf] Content-Type header:", contentType);
     if (!contentType || !contentType.includes('pdf')) {
       console.error("[watermark-pdf] Invalid content type:", contentType);
       return new Response(JSON.stringify({ error: 'The requested file is not a valid PDF' }), {
@@ -65,7 +86,6 @@ serve(async (req: Request) => {
 
     const existingPdfBytes = await response.arrayBuffer();
     
-    // Verificar se há dados suficientes para ser um PDF
     if (existingPdfBytes.byteLength < 4) {
       console.error("[watermark-pdf] PDF file too small or empty");
       return new Response(JSON.stringify({ error: 'Invalid PDF file: file is too small or empty' }), {
@@ -74,7 +94,6 @@ serve(async (req: Request) => {
       });
     }
 
-    // Verificar cabeçalho PDF (primeiros bytes devem ser '%PDF')
     const header = new Uint8Array(existingPdfBytes.slice(0, 4));
     const headerStr = String.fromCharCode(...header);
     if (!headerStr.startsWith('%PDF')) {
@@ -99,23 +118,19 @@ serve(async (req: Request) => {
     for (const page of pages) {
       const { width, height } = page.getSize();
       
-      // Calcular a largura aproximada do texto rotacionado
-      const textWidth = watermarkText.length * fontSize * 0.6; // Aproximação da largura do texto
-      
-      // Posicionar no centro vertical da página considerando o comprimento do texto
-      const yPosition = (height / 2) + (textWidth / 2); // Centralizar considerando o comprimento
+      const textWidth = watermarkText.length * fontSize * 0.6;
+      const yPosition = (height / 2) + (textWidth / 2);
       
       console.log("[watermark-pdf] Page dimensions:", { width, height, textWidth, yPosition });
       
-      // Desenhar a marca d'água rotacionada 90 graus na lateral esquerda
       page.drawText(watermarkText, {
-        x: 15, // Posição X muito próxima da borda esquerda
-        y: yPosition, // Posição Y centralizada verticalmente
+        x: 15,
+        y: yPosition,
         font,
         size: fontSize,
         color: textColor,
         opacity: 0.6,
-        rotate: { type: 'degrees', angle: -90 }, // Rotacionar -90 graus para ficar paralelo à lombada
+        rotate: { type: 'degrees', angle: -90 },
       });
     }
     console.log("[watermark-pdf] Watermark applied to all pages. Saving PDF.");
