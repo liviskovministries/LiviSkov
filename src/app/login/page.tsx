@@ -16,25 +16,26 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { useRouter, useSearchParams } from 'next/navigation'; // Importar useSearchParams
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react'; // Importar Suspense
 import { SiteHeader } from '@/components/header';
 import { SiteFooter } from '@/components/footer';
 import Image from 'next/image';
-import { useSupabaseAuth, useSupabaseUser } from '@/integrations/supabase/supabase-provider'; // Usar hooks Supabase
+import { useSupabaseAuth, useSupabaseUser } from '@/integrations/supabase/supabase-provider';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Por favor, insira um email válido.' }),
   password: z.string().min(6, { message: 'A senha deve ter pelo menos 6 caracteres.' }),
 });
 
-export default function LoginPage() {
+// Componente que contém a lógica do cliente e usa useSearchParams
+function LoginContent() {
   const { toast } = useToast();
-  const supabaseAuth = useSupabaseAuth(); // Usar o hook de autenticação Supabase
+  const supabaseAuth = useSupabaseAuth();
   const router = useRouter();
-  const searchParams = useSearchParams(); // Inicializar useSearchParams
-  const { user, isUserLoading } = useSupabaseUser(); // Usar o hook de usuário Supabase
+  const searchParams = useSearchParams();
+  const { user, isUserLoading } = useSupabaseUser();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -63,7 +64,6 @@ export default function LoginPage() {
     }
   }, [searchParams, toast, router]);
 
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const { error } = await supabaseAuth.signInWithPassword({
@@ -90,6 +90,75 @@ export default function LoginPage() {
     }
   }
 
+  return (
+    <main className="flex-1 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md shadow-lg">
+        <CardHeader className="flex flex-col items-center">
+          <Image
+            src="/images/logoverde2.fw.png"
+            alt="Livi Skov Logo"
+            width={150}
+            height={50}
+            className="mb-6 h-auto"
+          />
+          <CardTitle className="text-center text-2xl text-primary">Acessar Plataforma</CardTitle>
+          <CardDescription className="text-center">Bem-vindo(a) de volta!</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="seu@email.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                     <div className="flex items-center justify-between">
+                      <FormLabel>Senha</FormLabel>
+                      <Link href="/forgot-password"
+                        className="text-sm font-medium text-primary hover:underline"
+                      >
+                        Esqueceu sua senha?
+                      </Link>
+                    </div>
+                    <FormControl>
+                      <Input type="password" placeholder="Sua senha" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" className="w-full transition-transform duration-200 hover:scale-105">Entrar</Button>
+            </form>
+          </Form>
+          
+          <p className="mt-6 text-center text-sm text-muted-foreground">
+            Não tem uma conta?{' '}
+            <Link href="/signup" className="font-semibold text-primary hover:underline">
+              Cadastre-se
+            </Link>
+          </p>
+        </CardContent>
+      </Card>
+    </main>
+  );
+}
+
+export default function LoginPage() {
+  const { user, isUserLoading } = useSupabaseUser();
+
   if (isUserLoading || user) {
     return (
         <div className="flex min-h-screen items-center justify-center bg-background">
@@ -101,68 +170,13 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <SiteHeader />
-      <main className="flex-1 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md shadow-lg">
-          <CardHeader className="flex flex-col items-center">
-            <Image
-              src="/images/logoverde2.fw.png"
-              alt="Livi Skov Logo"
-              width={150}
-              height={50}
-              className="mb-6 h-auto"
-            />
-            <CardTitle className="text-center text-2xl text-primary">Acessar Plataforma</CardTitle>
-            <CardDescription className="text-center">Bem-vindo(a) de volta!</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input placeholder="seu@email.com" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                       <div className="flex items-center justify-between">
-                        <FormLabel>Senha</FormLabel>
-                        <Link href="/forgot-password"
-                          className="text-sm font-medium text-primary hover:underline"
-                        >
-                          Esqueceu sua senha?
-                        </Link>
-                      </div>
-                      <FormControl>
-                        <Input type="password" placeholder="Sua senha" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit" className="w-full transition-transform duration-200 hover:scale-105">Entrar</Button>
-              </form>
-            </Form>
-            
-            <p className="mt-6 text-center text-sm text-muted-foreground">
-              Não tem uma conta?{' '}
-              <Link href="/signup" className="font-semibold text-primary hover:underline">
-                Cadastre-se
-              </Link>
-            </p>
-          </CardContent>
-        </Card>
-      </main>
+      <Suspense fallback={
+        <main className="flex-1 flex items-center justify-center p-4">
+          <p>Carregando formulário de login...</p>
+        </main>
+      }>
+        <LoginContent />
+      </Suspense>
       <SiteFooter />
     </div>
   );
