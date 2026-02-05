@@ -39,8 +39,12 @@ export default function ForgotPasswordPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      // Usar NEXT_PUBLIC_APP_URL se estiver definido, caso contrário, usar window.location.origin
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
+      const redirectUrl = `${appUrl}/update-password`;
+
       const { error } = await supabaseAuth.resetPasswordForEmail(values.email, {
-        redirectTo: `${window.location.origin}/update-password`, // Redirecionar para a nova página de atualização de senha
+        redirectTo: redirectUrl, // Redirecionar para a nova página de atualização de senha
       });
 
       if (error) {
