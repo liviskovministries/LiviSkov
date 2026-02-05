@@ -39,12 +39,14 @@ export default function ForgotPasswordPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      // Usar NEXT_PUBLIC_APP_URL se estiver definido, caso contrário, usar window.location.origin
       const appUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
       const redirectUrl = `${appUrl}/update-password`;
 
+      // Adicione este console.log para verificar a URL de redirecionamento
+      console.log("[ForgotPasswordPage] Redirect URL being sent to Supabase:", redirectUrl);
+
       const { error } = await supabaseAuth.resetPasswordForEmail(values.email, {
-        redirectTo: redirectUrl, // Redirecionar para a nova página de atualização de senha
+        redirectTo: redirectUrl,
       });
 
       if (error) {
@@ -55,7 +57,6 @@ export default function ForgotPasswordPage() {
         title: "Email de redefinição enviado!",
         description: "Verifique sua caixa de entrada para redefinir sua senha.",
       });
-      // Não redirecionar aqui, o usuário será redirecionado pelo link do email
     } catch (error: any) {
       toast({
         variant: "destructive",
