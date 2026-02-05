@@ -536,8 +536,7 @@ export default function CoursePage() {
           <header className="flex h-16 items-center justify-between border-b bg-background px-4 md:px-6">
             <div className="flex items-center gap-4">
               <SidebarTrigger className="md:hidden text-primary hover:bg-primary/10" variant="ghost" size="sm">
-                <Menu className="h-5 w-5 mr-2" />
-                <span className="font-semibold">Menu do Curso</span>
+                <span className="font-semibold">Menu</span> {/* Apenas o texto 'Menu' */}
               </SidebarTrigger>
               <h1 className="text-xl font-bold text-primary">
                 {selectedLesson ? selectedLesson.title : courseData.title}
