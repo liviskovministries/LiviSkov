@@ -153,7 +153,7 @@ const courseData = {
 };
 
 // URL assinada do PDF com token válido
-const PDF_URL_SIGNED = 'https://rxvcxqfnkvqfxwzbujka.supabase.co/storage/v1/object/sign/Estacoes%20Espirituais/Livi-Skov-Estacoes-Espirituais.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80ODZlMTgxYy1kOWI4LTRkNTctYjY1ZS1iZWFkNzUxM2Q0ZTIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJFc3RhY29lcyBFc3Bpcml0dWFpcy9MaXZpLVNrb3YtRXNwaXJpdHVhaXMucGRmIiwiaWF0IjoxNzcwMzE0MjMzLCJleHAiOjE4MDE4NTAyMzN9.d9IhE8PGnmCRe3iaxuyVzAJLbjGaJzryXhCbN3wLLoY';
+const PDF_URL_SIGNED = 'https://rxvcxqfnkvqfxwzbujka.supabase.co/storage/v1/object/sign/Estacoes%20Espirituais/Livi-Skov-Estacoes-Espirituais.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80ODZlMTgxYy1kOWI4LTRkNTctYjY1ZS1iZWFkNzUxM2Q0ZTIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJFc3RhY29lcyBFc3Bpcml0dWFpcy9MaXZpLVNrb3YtRXN0YWNvZXMtRXNwaXJpdHVhaXMucGRmIiwiaWF0IjoxNzcwMzE0MjMzLCJleHAiOjE4MDE4NTAyMzN9.d9IhE8PGnmCRe3iaxuyVzAJLbjGaJzryXhCbN3wLLoY';
 
 export default function CoursePage() {
   const { user: firebaseUser, isUserLoading: isFirebaseUserLoading } = useUser();
@@ -285,7 +285,7 @@ export default function CoursePage() {
       const email = supabaseUser.email || '';
 
       console.log("[CoursePage] Downloading watermarked PDF for:", { firstName, lastName, email });
-      console.log("[CoursePage] PDF URL:", PDF_URL_SIGNED);
+      console.log("[CoursePage] Using pre-signed PDF URL:", PDF_URL_SIGNED);
 
       const response = await fetch('https://rxvcxqfnkvqfxwzbujka.supabase.co/functions/v1/watermark-pdf', {
         method: 'POST',
@@ -293,7 +293,7 @@ export default function CoursePage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          pdfUrl: PDF_URL_SIGNED,
+          pdfUrl: PDF_URL_SIGNED, // Enviando a URL assinada pré-gerada
           firstName,
           lastName,
           email,
