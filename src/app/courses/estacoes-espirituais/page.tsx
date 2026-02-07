@@ -4,12 +4,28 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking, useUser } from '@/firebase';
 import { collection, doc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
-import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton, SidebarTrigger, SidebarInset, SidebarGroup, SidebarGroupLabel, SidebarProvider, SidebarFooter, } from '@/components/ui/sidebar';
+import { 
+  Sidebar, 
+  SidebarContent, 
+  SidebarHeader, 
+  SidebarMenu, 
+  SidebarMenuItem, 
+  SidebarMenuButton, 
+  SidebarMenuSub, 
+  SidebarMenuSubItem, 
+  SidebarMenuSubButton, 
+  SidebarTrigger, // Adicionando importação faltante
+  SidebarInset, 
+  SidebarGroup, 
+  SidebarGroupLabel, 
+  SidebarProvider, 
+  SidebarFooter 
+} from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, } from '@/components/ui/accordion';
-import { Tooltip, TooltipContent, TooltipTrigger, } from '@/components/ui/tooltip';
-import { Home, BookOpen, LogOut, PlayCircle, FileText, CheckCircle, Lock, Menu } from 'lucide-react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Home, BookOpen, LogOut, PlayCircle, FileText, CheckCircle, Lock, Menu } from 'lucide-react'; // Adicionando Menu
 import Image from 'next/image';
 import Link from 'next/link';
 import YouTube from 'react-youtube';
@@ -437,118 +453,122 @@ export default function CoursePage() {
   };
 
   return (
-    <SidebarProvider>
-      <div className="flex min-h-screen bg-background">
-        <Sidebar collapsible="icon" className="border-r">
-          <SidebarHeader>
-            <div className="flex items-center justify-center gap-4 p-2">
-              <Image 
-                src="/images/logo4branco.fw.png" 
-                alt="Logo Livi Skov" 
-                width={40} 
-                height={40} 
-                className="" 
-                data-ai-hint="logo"
-              />
-              <span className="text-lg font-bold text-sidebar-foreground">Estações Espirituais</span>
-            </div>
-          </SidebarHeader>
-          <SidebarContent className="p-0">
-            <Accordion type="multiple" defaultValue={['modulo-0']} className="w-full">
-              {courseData.modules.map((module) => {
-                const releaseDate = module.releaseDate ? new Date(module.releaseDate) : null;
-                const isModuleUnlocked = !releaseDate || currentTime >= releaseDate;
-                
-                return (
-                  <AccordionItem value={module.id} key={module.id} className="border-none">
-                    <AccordionTrigger className="px-4 py-2 text-sm font-semibold text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground hover:no-underline">
-                      {module.title}
-                    </AccordionTrigger>
-                    <AccordionContent className="pb-0 pl-3">
-                      <ul className="flex flex-col gap-1 py-2 border-l border-sidebar-border ml-3">
-                        {module.lessons.map((lesson) => {
-                          const isLocked = !isModuleUnlocked;
-                          const releaseDateFormatted = releaseDate ? 
-                            new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC' }).format(releaseDate) : '';
-                          
-                          const lessonButton = (
-                            <button
-                              onClick={() => !isLocked && handleLessonClick(lesson)}
-                              disabled={isLocked}
-                              className={`w-full text-left text-sm p-2 rounded-md flex items-center gap-3 transition-colors ${
-                                selectedLesson.id === lesson.id 
-                                  ? 'bg-sidebar-accent text-sidebar-foreground font-semibold' 
-                                  : isLocked 
-                                    ? 'cursor-not-allowed opacity-60' 
-                                    : 'hover:bg-sidebar-accent'
-                              }`}
-                            >
-                              {isLocked ? (
-                                <Lock className="h-4 w-4 flex-shrink-0" />
-                              ) : lesson.type === 'video' ? (
-                                <PlayCircle className="h-4 w-4 flex-shrink-0"/>
-                              ) : (
-                                <FileText className="h-4 w-4 flex-shrink-0" />
-                              )}
-                              <span className="flex-1 truncate">{lesson.title}</span>
-                              {completionStatus[lesson.id] && <CheckCircle className="h-4 w-4 text-green-500" />}
-                            </button>
-                          );
-                          
-                          return (
-                            <li key={lesson.id} className="px-2">
-                              {isLocked && releaseDate ? (
-                                <Tooltip>
-                                  <TooltipTrigger asChild>{lessonButton}</TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>Disponível em {releaseDateFormatted}</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              ) : (
-                                lessonButton
-                              )}
-                            </li>
-                          )
-                        })}
-                      </ul>
-                    </AccordionContent>
-                  </AccordionItem>
-                )
-              })}
-            </Accordion>
-          </SidebarContent>
-          <SidebarFooter>
-            <div className="flex flex-col gap-2 p-2">
-              <Button variant="ghost" className="justify-start gap-2" asChild>
-                <Link href="/courses">
-                  <Home className="h-4 w-4" />
-                  <span>Área de Membros</span>
-                </Link>
-              </Button>
-              <Button variant="ghost" onClick={handleLogout} className="justify-start gap-2">
-                <LogOut className="h-4 w-4" />
-                <span>Sair</span>
-              </Button>
-            </div>
-          </SidebarFooter>
-        </Sidebar>
-        <div className="flex-1">
-          <header className="flex h-16 items-center justify-between border-b bg-background px-4 md:px-6">
-            <div className="flex items-center gap-4">
-              <SidebarTrigger className="md:hidden" variant="default"> {/* Alterado para variant="default" e removido size="sm" */}
-                <span className="font-semibold">Menu</span>
-              </SidebarTrigger>
-              <h1 className="text-xl font-bold text-primary">
-                {selectedLesson ? selectedLesson.title : courseData.title}
-              </h1>
-            </div>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-muted-foreground hidden md:inline">
-                {supabaseUser?.user_metadata?.first_name || supabaseUser?.email}
-              </span>
-            </div>
-          </header>
-          <main className="p-4 md:p-6 lg:p-8">
+    <div className="flex min-h-screen bg-background">
+      {/* Header fixo */}
+      <header className="fixed top-0 left-0 right-0 z-50 flex h-16 items-center justify-between border-b bg-background px-4 md:px-6">
+        <div className="flex items-center gap-4">
+          <SidebarTrigger className="md:hidden" variant="default">
+            <Menu className="h-6 w-6" />
+            <span className="sr-only">Abrir menu</span>
+          </SidebarTrigger>
+          <h1 className="text-xl font-bold text-primary">
+            {selectedLesson ? selectedLesson.title : courseData.title}
+          </h1>
+        </div>
+        <div className="flex items-center gap-4">
+          <span className="text-sm text-muted-foreground hidden md:inline">
+            {supabaseUser?.user_metadata?.first_name || supabaseUser?.email}
+          </span>
+        </div>
+      </header>
+
+      {/* SidebarProvider e conteúdo principal com padding para compensar o header fixo */}
+      <SidebarProvider>
+        <div className="flex w-full mt-16">
+          <Sidebar collapsible="icon" className="border-r">
+            <SidebarHeader>
+              <div className="flex items-center justify-center gap-4 p-2">
+                <Image 
+                  src="/images/logo4branco.fw.png" 
+                  alt="Logo Livi Skov" 
+                  width={40} 
+                  height={40} 
+                  className="" 
+                  data-ai-hint="logo"
+                />
+                <span className="text-lg font-bold text-sidebar-foreground">Estações Espirituais</span>
+              </div>
+            </SidebarHeader>
+            <SidebarContent className="p-0">
+              <Accordion type="multiple" defaultValue={['modulo-0']} className="w-full">
+                {courseData.modules.map((module) => {
+                  const releaseDate = module.releaseDate ? new Date(module.releaseDate) : null;
+                  const isModuleUnlocked = !releaseDate || currentTime >= releaseDate;
+                  
+                  return (
+                    <AccordionItem value={module.id} key={module.id} className="border-none">
+                      <AccordionTrigger className="px-4 py-2 text-sm font-semibold text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground hover:no-underline">
+                        {module.title}
+                      </AccordionTrigger>
+                      <AccordionContent className="pb-0 pl-3">
+                        <ul className="flex flex-col gap-1 py-2 border-l border-sidebar-border ml-3">
+                          {module.lessons.map((lesson) => {
+                            const isLocked = !isModuleUnlocked;
+                            const releaseDateFormatted = releaseDate ? 
+                              new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC' }).format(releaseDate) : '';
+                            
+                            const lessonButton = (
+                              <button
+                                onClick={() => !isLocked && handleLessonClick(lesson)}
+                                disabled={isLocked}
+                                className={`w-full text-left text-sm p-2 rounded-md flex items-center gap-3 transition-colors ${
+                                  selectedLesson.id === lesson.id 
+                                    ? 'bg-sidebar-accent text-sidebar-foreground font-semibold' 
+                                    : isLocked 
+                                      ? 'cursor-not-allowed opacity-60' 
+                                      : 'hover:bg-sidebar-accent'
+                                }`}
+                              >
+                                {isLocked ? (
+                                  <Lock className="h-4 w-4 flex-shrink-0" />
+                                ) : lesson.type === 'video' ? (
+                                  <PlayCircle className="h-4 w-4 flex-shrink-0"/>
+                                ) : (
+                                  <FileText className="h-4 w-4 flex-shrink-0" />
+                                )}
+                                <span className="flex-1 truncate">{lesson.title}</span>
+                                {completionStatus[lesson.id] && <CheckCircle className="h-4 w-4 text-green-500" />}
+                              </button>
+                            );
+                            
+                            return (
+                              <li key={lesson.id} className="px-2">
+                                {isLocked && releaseDate ? (
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>{lessonButton}</TooltipTrigger>
+                                    <TooltipContent>
+                                      <p>Disponível em {releaseDateFormatted}</p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                ) : (
+                                  lessonButton
+                                )}
+                              </li>
+                            )
+                          })}
+                        </ul>
+                      </AccordionContent>
+                    </AccordionItem>
+                  )
+                })}
+              </Accordion>
+            </SidebarContent>
+            <SidebarFooter>
+              <div className="flex flex-col gap-2 p-2">
+                <Button variant="ghost" className="justify-start gap-2" asChild>
+                  <Link href="/courses">
+                    <Home className="h-4 w-4" />
+                    <span>Área de Membros</span>
+                  </Link>
+                </Button>
+                <Button variant="ghost" onClick={handleLogout} className="justify-start gap-2">
+                  <LogOut className="h-4 w-4" />
+                  <span>Sair</span>
+                </Button>
+              </div>
+            </SidebarFooter>
+          </Sidebar>
+          <main className="flex-1 p-4 md:p-6 lg:p-8">
             <div className="mx-auto max-w-4xl">
               {renderLessonContent()}
               <div className="mt-8">
@@ -562,7 +582,7 @@ export default function CoursePage() {
             </div>
           </main>
         </div>
-      </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </div>
   );
 }
