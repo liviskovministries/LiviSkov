@@ -2,22 +2,13 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking, useUser } from '@/firebase';
-import { collection, doc } from 'firebase/firestore';
+import { doc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { 
   Sidebar, 
   SidebarContent, 
   SidebarHeader, 
-  SidebarMenu, 
-  SidebarMenuItem, 
-  SidebarMenuButton, 
-  SidebarMenuSub, 
-  SidebarMenuSubItem, 
-  SidebarMenuSubButton, 
-  SidebarTrigger, // Adicionando importação faltante
-  SidebarInset, 
-  SidebarGroup, 
-  SidebarGroupLabel, 
+  SidebarTrigger, 
   SidebarProvider, 
   SidebarFooter 
 } from '@/components/ui/sidebar';
@@ -25,7 +16,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { Home, BookOpen, LogOut, PlayCircle, FileText, CheckCircle, Lock, Menu } from 'lucide-react'; // Adicionando Menu
+import { Home, LogOut, PlayCircle, FileText, CheckCircle, Lock, Menu } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import YouTube from 'react-youtube';
@@ -37,10 +28,9 @@ type Lesson = {
   id: string;
   title: string;
   type: 'video' | 'resource';
-  content?: string;
-  videoId?: string;
   subtitle?: string;
   description: string;
+  videoId?: string;
 };
 
 const courseData = {
@@ -56,7 +46,7 @@ const courseData = {
           type: 'video' as const,
           videoId: 'Dc4EBMJXQgg',
           subtitle: 'Boas-vindas ao Curso!',
-          description: 'Bem-vinda ao curso Estações Espirituais! 🌿\n\nNeste módulo introdutório, você entenderá como as diferentes fases da vida refletem as estações do ano e como Deus trabalha em cada uma delas. Vou compartilhar minha jornada e como fui moldada por cada estação. Prepare-se para uma experiência de aprendizado e transformação. 🚀✨'
+          description: 'Bem-vinda ao curso Estações Espirituais! 🌿\n\nNeste módulo introdutório, você entenderá como as diferentes fases da vida refletem as estações do ano e como Deus trabalha em cada uma delas.'
         },
         {
           id: 'intro-2',
@@ -64,14 +54,14 @@ const courseData = {
           type: 'video' as const,
           videoId: 'Dc4EBMJXQgg',
           subtitle: 'Entendendo o Conceito',
-          description: 'Este curso é uma jornada espiritual através das estações da minha vida. Assim como a natureza passa por mudanças, nossa caminhada com Deus também é marcada por períodos de crescimento, renúncia, desafios e renovações.\n\n🔍 O que você vai aprender?\n\n✔️ Como reconhecer a estação espiritual que está vivendo.\n✔️ Como abraçar cada fase com confiança.\n✔️ Como permitir que Deus fortaleça seu coração.\n\nQue esta caminhada traga clareza, esperança e transformação para sua vida! 🙏'
+          description: 'Este curso é uma jornada espiritual através das estações da minha vida.'
         },
         {
           id: 'intro-3',
           title: 'Livro Estações Espirituais',
           type: 'resource' as const,
           subtitle: 'Sobre o Livro de Apoio',
-          description: 'Acesse e baixar o material de apoio principal do curso. Este livro è base da nossa jornada, aprofundando os temas abordados nas aulas e oferecendo exercícios práticos para cada estação.'
+          description: 'Acesse e baixe o material de apoio principal do curso.'
         },
       ],
     },
@@ -86,7 +76,7 @@ const courseData = {
           type: 'video' as const,
           videoId: 'QEx5SiEROtg',
           subtitle: '🍂 Outono – O Tempo de Soltar e Confiar',
-          description: 'O outono é um tempo de transição e desapego. Algumas coisas que carregamos já no fazem sentido e precisamos confiar em Deus para deixá-las ir.\n\n💡 Reflexões para este módulo:\n\n🔸 O que Deus está me pedindo para abrir mão?\n🔸 Como posso confiar mais nele neste tempo?\n🔸 Quais mudanças preciso aceitar para crescer.\n\nO outono nos ensina que, para viver o novo, é preciso soltar o velho. Confie no processo! 🍁'
+          description: 'O outono é um tempo de transição e desapego.'
         },
       ],
     },
@@ -101,7 +91,7 @@ const courseData = {
           type: 'video' as const,
           videoId: '1CZvtjsZ8_M',
           subtitle: '❄️ Inverno – Fortalecendo Raízes na Espera',
-          description: 'O inverno espiritual é um tempo de espera, paciência e profundidade. Muitas vezes, nos sentimos isoladas, mas é nesse silêncio que Deus nos leva a um nível mais profundo com Ele.\n\n🔎 Dicas para enfrentar o inverno espiritual:\n\n✔️ Confie no tempo de Deus.\n✔️ Busque forças na oração e na Palavra.\n✔️ Entenda que a preparação acontece no silêncio.\n\nO inverno pode parecer longo, mas ele sempre precede um novo florescer. 🌨️'
+          description: 'O inverno espiritual é um tempo de espera, paciência e profundidade.'
         },
       ],
     },
@@ -116,7 +106,7 @@ const courseData = {
           type: 'video' as const,
           videoId: 'w4fnk9onusU',
           subtitle: '🌸 Primavera – O Florescer de uma Nova Temporada',
-          description: 'A primavera espiritual é tempo de novidade e transformação! 🌷 Após uma longa fase de silêncio, Deus nos chama a despertar e crescer.\n\n🎯 Desafios da primavera:\n\n🌱 Sair da zona de conforto.\n🌱 Abraçar as novas oportunidades.\n🌱 Celebrar os pequenos avanços.\n\nNem sempre é fácil crescer, mas Deus nos fortalece para cada etapa. Abrace esse tempo de renovação! ✨'
+          description: 'A primavera espiritual é tempo de novidade e transformação!'
         },
       ],
     },
@@ -131,7 +121,7 @@ const courseData = {
           type: 'video' as const,
           videoId: '5rt6pkMFD2E',
           subtitle: '🔄 Transição – Abraçando Mudanças e Novos Começos',
-          description: 'A transição pode ser desafiadora, pois o antigo já não serve mais, mas o novo ainda não chegou completamente. É o momento de confiar que Deus está no controle e nos guiará para a próxima fase.\n\n🌟 Como lidar com a transição?\n\n✨ Mantenha a calma e confie em Deus.\n✨ Não tenha medo do novo.\n✨ Use esse tempo para se fortalecer.\n\nA transição pode parecer incerta, mas Deus já preparou o caminho para você! 💖'
+          description: 'A transição pode ser desafiadora, pois o antigo já não serve mais.'
         },
       ],
     },
@@ -146,7 +136,7 @@ const courseData = {
           type: 'video' as const,
           videoId: 'DewkwZFGMXY',
           subtitle: '☀️ Verão – A Colheita e o Impacto do Propósito',
-          description: 'O verão espiritual é tempo de colheita e abundância!🌻 Após um longo processo de aprendizado, Deus nos leva a frutificar. É a hora de compartilhar, abençoar e viver a plenitude do chamado dele para nós.\n\n📌 O que aprender com o verão?\n\n✔️ Desfrutar dos frutos do esforço.\n✔️ Usar a bênção para abençoar outros.\n✔️ Permanecer firme no propósito de Deus.\n\nO verão é uma estação de alegria e responsabilidade. Que possamos viver esse tempo com gratidão e sabedoria! 🌞'
+          description: 'O verão espiritual é tempo de colheita e abundância!'
         },
       ],
     },
@@ -160,20 +150,19 @@ const courseData = {
           title: 'Live de Encerramento',
           type: 'video' as const,
           videoId: 'hfQRwqcqsxU',
-          subtitle: 'GRANDE ENCONTRO FINAL – Aulão ao Vivo no Zoom! (Gravação)',
-          description: 'Este foi o nosso último encontro, um momento de conexão e reflexão sobre tudo o que vivemos.\n\n💡 O que tivemos?\n\n✅ Compartilhamento de experiências.\n✅ Reflexões sobre cada estação.\n✅ Direcionamentos para o futuro.\n✅ Um tempo de comunhão e gratidão.\n\n🚀 Prepare-se para um GRANDE encerramento numa reunião maravilhosa no Zoom! 🎓🎊'
+          subtitle: 'GRANDE ENCONTRO FINAL',
+          description: 'Este foi o nosso último encontro, um momento de conexão.'
         },
       ],
     },
   ],
 };
 
-// URL assinada do PDF com token válido
 const PDF_URL_SIGNED = 'https://rxvcxqfnkvqfxwzbujka.supabase.co/storage/v1/object/sign/Estacoes%20Espirituais/Livi-Skov-Estacoes-Espirituais.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80ODZlMTgxYy1kOWI4LTRkNTctYjY1ZS1iZWFkNzUxM2Q0ZTIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJFc3RhY29lcyBFc3Bpcml0dWFpcy9MaXZpLVNrb3YtRXN0YWNvZXMtRXNwaXJpdHVhaXMucGRmIiwiaWF0IjoxNzcwMzE0MjMzLCJleHAiOjE4MDE4NTAyMzN9.d9IhE8PGnmCRe3iaxuyVzAJLbjGaJzryXhCbN3wLLoY';
 
 export default function CoursePage() {
-  const { user: firebaseUser, isUserLoading: isFirebaseUserLoading } = useUser();
-  const { user: supabaseUser, isUserLoading: isSupabaseUserLoading } = useSupabaseUser();
+  const { user: firebaseUser } = useUser();
+  const { user: supabaseUser } = useSupabaseUser();
   const supabaseAuth = useSupabaseAuth();
   const firestore = useFirestore();
   const router = useRouter();
@@ -183,24 +172,16 @@ export default function CoursePage() {
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isDownloading, setIsDownloading] = useState(false);
-  const [currentTime, setCurrentTime] = useState<Date>(new Date());
+  const [currentTime] = useState<Date>(new Date());
   
   const courseId = 'estacoes-espirituais';
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-    
-    return () => clearInterval(timer);
-  }, []);
 
   const progressDocRef = useMemoFirebase(() => {
     if (!firebaseUser || !firestore) return null;
     return doc(firestore, 'users', firebaseUser.uid, 'courseProgress', courseId);
   }, [firebaseUser, firestore]);
 
-  const { data: progressData, isLoading: progressLoading } = useDoc<{ completedLessons: Record<string, boolean> }>(progressDocRef);
+  const { data: progressData } = useDoc<{ completedLessons: Record<string, boolean> }>(progressDocRef);
 
   useEffect(() => {
     if (progressData?.completedLessons) {
@@ -216,20 +197,14 @@ export default function CoursePage() {
       }
 
       try {
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from('users')
           .select('estacoes_espirituais_access')
           .eq('id', supabaseUser.id)
           .single();
         
-        if (error) {
-          console.error('Error checking Supabase user access:', error);
-          setIsEnrolled(false);
-        } else {
-          setIsEnrolled(data?.estacoes_espirituais_access || false);
-        }
-      } catch (error) {
-        console.error('Error checking enrollment status:', error);
+        setIsEnrolled(data?.estacoes_espirituais_access || false);
+      } catch {
         setIsEnrolled(false);
       } finally {
         setIsLoading(false);
@@ -240,23 +215,19 @@ export default function CoursePage() {
   }, [supabaseUser]);
 
   useEffect(() => {
-    if (!isSupabaseUserLoading && !supabaseUser) {
+    if (!supabaseUser && !isLoading) {
       router.push('/login');
     }
     
-    if (!isSupabaseUserLoading && supabaseUser && !isLoading && !isEnrolled) {
+    if (supabaseUser && !isLoading && !isEnrolled) {
       router.push('/courses');
     }
-  }, [supabaseUser, isSupabaseUserLoading, router, isEnrolled, isLoading]);
+  }, [supabaseUser, router, isEnrolled, isLoading]);
 
   const markLessonAsComplete = (lessonId: string) => {
     if (!progressDocRef || completionStatus[lessonId]) return;
     
-    const newStatus = {
-      ...completionStatus,
-      [lessonId]: true
-    };
-    
+    const newStatus = { ...completionStatus, [lessonId]: true };
     setCompletionStatus(newStatus);
     
     setDocumentNonBlocking(progressDocRef, {
@@ -300,26 +271,13 @@ export default function CoursePage() {
       const lastName = supabaseUser.user_metadata?.last_name || '';
       const email = supabaseUser.email || '';
 
-      console.log("[CoursePage] Downloading watermarked PDF for:", { firstName, lastName, email });
-      console.log("[CoursePage] Using pre-signed PDF URL:", PDF_URL_SIGNED);
-
       const response = await fetch('https://rxvcxqfnkvqfxwzbujka.supabase.co/functions/v1/watermark-pdf', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          pdfUrl: PDF_URL_SIGNED, // Enviando a URL assinada pré-gerada
-          firstName,
-          lastName,
-          email,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pdfUrl: PDF_URL_SIGNED, firstName, lastName, email }),
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP ${response.status}: ${errorText}`);
-      }
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
       const pdfBlob = await response.blob();
       const url = window.URL.createObjectURL(pdfBlob);
@@ -336,10 +294,7 @@ export default function CoursePage() {
         description: "Seu livro com marca d'água foi baixado com sucesso."
       });
 
-    } catch (error: any) {
-      console.error("[CoursePage] Error downloading watermarked PDF:", error);
-      
-      // Tentar fallback para download direto se a marca d'água falhar
+    } catch {
       try {
         const directResponse = await fetch(PDF_URL_SIGNED);
         if (directResponse.ok) {
@@ -355,47 +310,25 @@ export default function CoursePage() {
           
           toast({
             title: "Download do PDF original concluído",
-            description: "O livro foi baixado sem marca d'água devido a um erro no processamento."
+            description: "O livro foi baixado sem marca d'água."
           });
           return;
         }
-      } catch (fallbackError: any) {
-        console.error("[CoursePage] Fallback also failed:", fallbackError);
-      }
+      } catch {}
 
       toast({
         variant: "destructive",
         title: "Erro no download",
-        description: error.message || "Não foi possível baixar o livro. Tente novamente mais tarde."
+        description: "Não foi possível baixar o livro."
       });
     } finally {
       setIsDownloading(false);
     }
   };
 
-  if (isSupabaseUserLoading || !supabaseUser || isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <p>Carregando...</p>
-      </div>
-    );
-  }
-
-  if (!isEnrolled) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <p>Verificando acesso...</p>
-      </div>
-    );
-  }
-
   const handleLogout = async () => {
-    const { error } = await supabaseAuth.signOut();
-    if (error) {
-      console.error("Erro ao fazer logout:", error.message);
-    } else {
-      router.push('/');
-    }
+    await supabaseAuth.signOut();
+    router.push('/');
   };
 
   const renderLessonContent = () => {
@@ -426,7 +359,6 @@ export default function CoursePage() {
                   width={300} 
                   height={450} 
                   className="rounded-lg shadow-lg" 
-                  data-ai-hint="book cover"
                 />
               </div>
               <div className="flex flex-col items-center md:items-start">
@@ -440,40 +372,51 @@ export default function CoursePage() {
                 >
                   {isDownloading ? 'Gerando...' : 'Baixar Livro em PDF'}
                 </Button>
-                <p className="text-sm text-muted-foreground mt-4">
-                  O livro será baixado com uma marca d'água personalizada com seu nome e email.
-                </p>
               </div>
             </CardContent>
           </Card>
-        )
+        );
       default:
         return <p>Selecione uma aula para começar.</p>;
     }
   };
 
-  return (
-    <div className="flex min-h-screen bg-background">
-      {/* Header fixo */}
-      <header className="fixed top-0 left-0 right-0 z-50 flex h-16 items-center justify-between border-b bg-background px-4 md:px-6">
-        <div className="flex items-center gap-4">
-          <SidebarTrigger className="md:hidden" variant="default">
-            <Menu className="h-6 w-6" />
-            <span className="sr-only">Abrir menu</span>
-          </SidebarTrigger>
-          <h1 className="text-xl font-bold text-primary">
-            {selectedLesson ? selectedLesson.title : courseData.title}
-          </h1>
-        </div>
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-muted-foreground hidden md:inline">
-            {supabaseUser?.user_metadata?.first_name || supabaseUser?.email}
-          </span>
-        </div>
-      </header>
+  if (!supabaseUser || isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <p>Carregando...</p>
+      </div>
+    );
+  }
 
-      {/* SidebarProvider e conteúdo principal com padding para compensar o header fixo */}
-      <SidebarProvider>
+  if (!isEnrolled) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <p>Verificando acesso...</p>
+      </div>
+    );
+  }
+
+  return (
+    <SidebarProvider>
+      <div className="flex min-h-screen bg-background">
+        <header className="fixed top-0 left-0 right-0 z-50 flex h-16 items-center justify-between border-b bg-background px-4 md:px-6">
+          <div className="flex items-center gap-4">
+            <SidebarTrigger className="md:hidden" variant="default">
+              <Menu className="h-6 w-6" />
+              <span className="sr-only">Abrir menu</span>
+            </SidebarTrigger>
+            <h1 className="text-xl font-bold text-primary">
+              {selectedLesson ? selectedLesson.title : courseData.title}
+            </h1>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-muted-foreground hidden md:inline">
+              {supabaseUser?.user_metadata?.first_name || supabaseUser?.email}
+            </span>
+          </div>
+        </header>
+
         <div className="flex w-full mt-16">
           <Sidebar collapsible="icon" className="border-r">
             <SidebarHeader>
@@ -484,7 +427,6 @@ export default function CoursePage() {
                   width={40} 
                   height={40} 
                   className="" 
-                  data-ai-hint="logo"
                 />
                 <span className="text-lg font-bold text-sidebar-foreground">Estações Espirituais</span>
               </div>
@@ -544,12 +486,12 @@ export default function CoursePage() {
                                   lessonButton
                                 )}
                               </li>
-                            )
+                            );
                           })}
                         </ul>
                       </AccordionContent>
                     </AccordionItem>
-                  )
+                  );
                 })}
               </Accordion>
             </SidebarContent>
@@ -582,7 +524,7 @@ export default function CoursePage() {
             </div>
           </main>
         </div>
-      </SidebarProvider>
-    </div>
+      </div>
+    </SidebarProvider>
   );
 }
