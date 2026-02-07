@@ -1,8 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
-import { useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking, useUser } from '@/firebase';
-import { collection, doc } from 'firebase/firestore';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -159,7 +157,6 @@ const courseData = {
   ],
 };
 
-// URL assinada do PDF com token válido
 const PDF_URL_SIGNED = 'https://rxvcxqfnkvqfxwzbujka.supabase.co/storage/v1/object/sign/Estacoes%20Espirituais/Livi-Skov-Estacoes-Espirituais.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80ODZlMTgxYy1kOWI4LTRkNTctYjY1ZS1iZWFkNzUxM2Q0ZTIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJFc3RhY29lcyBFc3Bpcml0dWFpcy9MaXZpLVNrb3YtRXN0YWNvZXMtRXNwaXJpdHVhaXMucGRmIiwiaWF0IjoxNzcwMzE0MjMzLCJleHAiOjE4MDE4NTAyMzN9.d9IhE8PGnmCRe3iaxuyVzAJLbjGaJzryXhCbN3wLLoY';
 
 export default function CoursePage() {
@@ -173,8 +170,6 @@ export default function CoursePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isDownloading, setIsDownloading] = useState(false);
   const [currentTime, setCurrentTime] = useState<Date>(new Date());
-  
-  const courseId = 'estacoes-espirituais';
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -269,9 +264,6 @@ export default function CoursePage() {
       const lastName = supabaseUser.user_metadata?.last_name || '';
       const email = supabaseUser.email || '';
 
-      console.log("[CoursePage] Downloading watermarked PDF for:", { firstName, lastName, email });
-      console.log("[CoursePage] Using pre-signed PDF URL:", PDF_URL_SIGNED);
-
       const response = await fetch('https://rxvcxqfnkvqfxwzbujka.supabase.co/functions/v1/watermark-pdf', {
         method: 'POST',
         headers: {
@@ -306,9 +298,8 @@ export default function CoursePage() {
       });
 
     } catch (error: any) {
-      console.error("[CoursePage] Error downloading watermarked PDF:", error);
+      console.error("Error downloading watermarked PDF:", error);
       
-      // Tentar fallback para download direto se a marca d'água falhar
       try {
         const directResponse = await fetch(PDF_URL_SIGNED);
         if (directResponse.ok) {
@@ -329,7 +320,7 @@ export default function CoursePage() {
           return;
         }
       } catch (fallbackError: any) {
-        console.error("[CoursePage] Fallback also failed:", fallbackError);
+        console.error("Fallback also failed:", fallbackError);
       }
 
       toast({
@@ -453,8 +444,6 @@ export default function CoursePage() {
                       <ul className="flex flex-col gap-1 py-2 border-l border-sidebar-border ml-3">
                         {module.lessons.map((lesson) => {
                           const isLocked = !isModuleUnlocked;
-                          const releaseDateFormatted = releaseDate ? 
-                            new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC' }).format(releaseDate) : '';
                           
                           const lessonButton = (
                             <button
@@ -482,11 +471,11 @@ export default function CoursePage() {
                           
                           return (
                             <li key={lesson.id} className="px-2">
-                              {isLocked && releaseDate ? (
+                              {isLocked ? (
                                 <Tooltip>
                                   <TooltipTrigger asChild>{lessonButton}</TooltipTrigger>
                                   <TooltipContent>
-                                    <p>Disponível em {releaseDateFormatted}</p>
+                                    <p>Disponível em breve</p>
                                   </TooltipContent>
                                 </Tooltip>
                               ) : (
@@ -520,9 +509,9 @@ export default function CoursePage() {
         <div className="flex-1">
           <header className="flex h-16 items-center justify-between border-b bg-background px-4 md:px-6">
             <div className="flex items-center gap-4">
-              <SidebarTrigger className="md:hidden flex items-center gap-2" variant="default">
-                <Menu className="h-5 w-5" />
-                <span className="font-semibold">Menu</span>
+              <SidebarTrigger className="md:hidden flex items-center gap-2 bg-primary/10 p-2 rounded-md" variant="default">
+                <Menu className="h-6 w-6 text-primary" />
+                <span className="font-semibold text-primary">Menu</span>
               </SidebarTrigger>
               <h1 className="text-xl font-bold text-primary">
                 {selectedLesson ? selectedLesson.title : courseData.title}
