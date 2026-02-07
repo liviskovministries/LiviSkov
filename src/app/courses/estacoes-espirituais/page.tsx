@@ -4,11 +4,18 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking, useUser } from '@/firebase';
 import { collection, doc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
-import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton, SidebarTrigger, SidebarInset, SidebarGroup, SidebarGroupLabel, SidebarProvider, SidebarFooter, } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, } from '@/components/ui/accordion';
-import { Tooltip, TooltipContent, TooltipTrigger, } from '@/components/ui/tooltip';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarProvider,
+  SidebarTrigger,
+  SidebarFooter,
+} from '@/components/ui/sidebar';
 import { Home, BookOpen, LogOut, PlayCircle, FileText, CheckCircle, Lock, Menu } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -156,10 +163,8 @@ const courseData = {
 const PDF_URL_SIGNED = 'https://rxvcxqfnkvqfxwzbujka.supabase.co/storage/v1/object/sign/Estacoes%20Espirituais/Livi-Skov-Estacoes-Espirituais.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80ODZlMTgxYy1kOWI4LTRkNTctYjY1ZS1iZWFkNzUxM2Q0ZTIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJFc3RhY29lcyBFc3Bpcml0dWFpcy9MaXZpLVNrb3YtRXN0YWNvZXMtRXNwaXJpdHVhaXMucGRmIiwiaWF0IjoxNzcwMzE0MjMzLCJleHAiOjE4MDE4NTAyMzN9.d9IhE8PGnmCRe3iaxuyVzAJLbjGaJzryXhCbN3wLLoY';
 
 export default function CoursePage() {
-  const { user: firebaseUser, isUserLoading: isFirebaseUserLoading } = useUser();
   const { user: supabaseUser, isUserLoading: isSupabaseUserLoading } = useSupabaseUser();
   const supabaseAuth = useSupabaseAuth();
-  const firestore = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
   const [selectedLesson, setSelectedLesson] = useState<Lesson>(courseData.modules[0].lessons[0]);
@@ -178,19 +183,6 @@ export default function CoursePage() {
     
     return () => clearInterval(timer);
   }, []);
-
-  const progressDocRef = useMemoFirebase(() => {
-    if (!firebaseUser || !firestore) return null;
-    return doc(firestore, 'users', firebaseUser.uid, 'courseProgress', courseId);
-  }, [firebaseUser, firestore]);
-
-  const { data: progressData, isLoading: progressLoading } = useDoc<{ completedLessons: Record<string, boolean> }>(progressDocRef);
-
-  useEffect(() => {
-    if (progressData?.completedLessons) {
-      setCompletionStatus(progressData.completedLessons);
-    }
-  }, [progressData]);
 
   useEffect(() => {
     const checkEnrollmentStatus = async () => {
@@ -234,19 +226,12 @@ export default function CoursePage() {
   }, [supabaseUser, isSupabaseUserLoading, router, isEnrolled, isLoading]);
 
   const markLessonAsComplete = (lessonId: string) => {
-    if (!progressDocRef || completionStatus[lessonId]) return;
-    
     const newStatus = {
       ...completionStatus,
       [lessonId]: true
     };
     
     setCompletionStatus(newStatus);
-    
-    setDocumentNonBlocking(progressDocRef, {
-      id: courseId,
-      completedLessons: newStatus
-    }, { merge: true });
   };
 
   const handleLessonClick = (lesson: Lesson) => {
@@ -293,7 +278,7 @@ export default function CoursePage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          pdfUrl: PDF_URL_SIGNED, // Enviando a URL assinada pré-gerada
+          pdfUrl: PDF_URL_SIGNED,
           firstName,
           lastName,
           email,
@@ -535,7 +520,8 @@ export default function CoursePage() {
         <div className="flex-1">
           <header className="flex h-16 items-center justify-between border-b bg-background px-4 md:px-6">
             <div className="flex items-center gap-4">
-              <SidebarTrigger className="md:hidden" variant="default"> {/* Alterado para variant="default" e removido size="sm" */}
+              <SidebarTrigger className="md:hidden flex items-center gap-2" variant="default">
+                <Menu className="h-5 w-5" />
                 <span className="font-semibold">Menu</span>
               </SidebarTrigger>
               <h1 className="text-xl font-bold text-primary">
