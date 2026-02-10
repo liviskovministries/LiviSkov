@@ -10,7 +10,8 @@ import {
   SidebarHeader, 
   SidebarTrigger, 
   SidebarProvider, 
-  SidebarFooter 
+  SidebarFooter,
+  useSidebar // Adicionando a importação do hook useSidebar
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -121,7 +122,7 @@ const courseData = {
           type: 'video' as const,
           videoId: '5rt6pkMFD2E',
           subtitle: '🔄 Transição – Abraçando Mudanças e Novos Começos',
-          description: 'A transição pode ser desafiadora, pois o antigo já não serve mais.'
+          description: 'A transição pode ser desafiadora, pois o antigo já no serve mais.'
         },
       ],
     },
@@ -158,7 +159,7 @@ const courseData = {
   ],
 };
 
-const PDF_URL_SIGNED = 'https://rxvcxqfnkvqfxwzbujka.supabase.co/storage/v1/object/sign/Estacoes%20Espirituais/Livi-Skov-Estacoes-Espirituais.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80ODZlMTgxYy1kOWI4LTRkNTctYjY1ZS1iZWFkNzUxM2Q0ZTIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJFc3RhY29lcyBFc3Bpcml0dWFpcy9MaXZpLVNrb3YtRXN0YWNvZXMtRXNwaXJpdHVhaXMucGRmIiwiaWF0IjoxNzcwMzE0MjMzLCJleHAiOjE4MDE4NTAyMzN9.d9IhE8PGnmCRe3iaxuyVzAJLbjGaJzryXhCbN3wLLoY';
+const PDF_URL_SIGNED = 'https://rxvcxqfnkvqfxwzbujka.supabase.co/storage/v1/object/sign/Estacoes%20Espirituais/Livi-Skov-Estacoes-Espirituais.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80ODZlMTgxYy1kOWI4LTRkNTctYjY1ZS1iZWFkNzUxM2Q0ZTIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJFc3RhY29lcyBFc3Bpcml0dWFpcy9MaXZpLVNrb3YtRXNwaXJpdHVhaXMucGRmIiwiaWF0IjoxNzcwMzE0MjMzLCJleHAiOjE4MDE4NTAyMzN9.d9IhE8PGnmCRe3iaxuyVzAJLbjGaJzryXhCbN3wLLoY';
 
 export default function CoursePage() {
   const { user: firebaseUser } = useUser();
@@ -397,12 +398,17 @@ export default function CoursePage() {
     );
   }
 
+  // Usando o hook useSidebar para obter o estado do menu lateral
+  const { isOpen, isCollapsed } = useSidebar();
+
   return (
     <SidebarProvider>
       <div className="flex min-h-screen bg-background">
-        <header className="fixed top-0 left-0 right-0 z-50 flex h-16 items-center justify-between border-b bg-background px-4 md:px-6">
+        <header className={`fixed top-0 right-0 z-50 flex h-16 items-center justify-between border-b bg-background px-4 md:px-6 transition-all duration-300 ease-in-out ${
+          isOpen ? "md:left-[280px]" : "md:left-16" // Ajusta a posição left no desktop
+        }`}>
           <div className="flex items-center gap-4">
-            <SidebarTrigger className="md:hidden" variant="default">
+            <SidebarTrigger className="md:hidden"> {/* Removido variant="default" */}
               <Menu className="h-6 w-6" />
               <span className="sr-only">Abrir menu</span>
             </SidebarTrigger>
