@@ -96,13 +96,6 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
                       <p className="font-bold flex items-center justify-center gap-2">
                         <Lock className="h-6 w-6" /> Inscrições Encerradas
                       </p>
-                      <p className="mt-2 text-sm">
-                        Se você se inscreveu a tempo, por favor,{' '}
-                        <Link href="/signup" className="font-semibold underline hover:text-white/80">
-                          cadastre-se no site
-                        </Link>{' '}
-                        e entre em contato conosco para ter acesso liberado ao seu login.
-                      </p>
                     </div>
                   ) : (
                     slide.buttonText && slide.buttonHref && (
