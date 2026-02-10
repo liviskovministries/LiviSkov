@@ -59,7 +59,7 @@ export function SidebarProvider({
 
 // 4. Componente Sidebar
 const sidebarVariants = cva(
-  "flex flex-col h-full bg-sidebar text-sidebar-foreground transition-all duration-300 ease-in-out",
+  "flex flex-col h-full bg-sidebar text-sidebar-foreground transition-all duration-300 ease-in-out fixed top-0 left-0 z-40", // Adicionado fixed positioning e z-index
   {
     variants: {
       collapsible: {

@@ -9,7 +9,8 @@ import {
   SidebarContent, 
   SidebarHeader, 
   SidebarProvider, 
-  SidebarFooter
+  SidebarFooter,
+  useSidebar // Adicionando a importação do hook useSidebar
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -397,6 +398,9 @@ export default function CoursePage() {
     );
   }
 
+  // Usando o hook useSidebar para obter o estado do menu lateral
+  const { isOpen } = useSidebar();
+
   return (
     <SidebarProvider>
       <div className="flex min-h-screen bg-background">
@@ -407,7 +411,8 @@ export default function CoursePage() {
           supabaseUser={supabaseUser} 
         />
 
-        <div className="flex w-full mt-16">
+        {/* Removido mt-16 deste div */}
+        <div className="flex w-full"> 
           <Sidebar collapsible="icon" className="border-r">
             <SidebarHeader>
               <div className="flex items-center justify-center gap-4 p-2">
@@ -500,7 +505,9 @@ export default function CoursePage() {
               </div>
             </SidebarFooter>
           </Sidebar>
-          <main className="flex-1 p-4 md:p-6 lg:p-8">
+          <main className={`flex-1 p-4 md:p-6 lg:p-8 pt-16 transition-all duration-300 ease-in-out ${
+            isOpen ? "md:ml-[280px]" : "md:ml-16" // Margem esquerda dinâmica para o conteúdo principal
+          }`}>
             <div className="mx-auto max-w-4xl">
               {renderLessonContent()}
               <div className="mt-8">
