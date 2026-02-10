@@ -92,10 +92,16 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
                   </p>
 
                   {slide.showEnrollmentMessage && hasEnrollmentEnded ? (
-                    <div className="mt-8 max-w-2xl">
-                      <p className="text-3xl font-bold text-white bg-red-600/80 p-6 rounded-lg shadow-lg">
-                        <Lock className="h-8 w-8 inline-block mr-2" />
-                        INSCRIÇÕES ENCERRADAS
+                    <div className="mt-8 max-w-2xl text-lg text-white bg-red-600/80 p-4 rounded-lg shadow-lg">
+                      <p className="font-bold flex items-center justify-center gap-2">
+                        <Lock className="h-6 w-6" /> Inscrições Encerradas
+                      </p>
+                      <p className="mt-2 text-sm">
+                        Se você se inscreveu a tempo, por favor,{' '}
+                        <Link href="/signup" className="font-semibold underline hover:text-white/80">
+                          cadastre-se no site
+                        </Link>{' '}
+                        e entre em contato conosco para ter acesso liberado ao seu login.
                       </p>
                     </div>
                   ) : (
