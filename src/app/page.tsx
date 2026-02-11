@@ -187,8 +187,8 @@ export default function Home() {
                 <p className="text-muted-foreground">
                   Para dúvidas, sugestões ou suporte, envie um email para:
                 </p>
-                <a href="mailto:contato@liviskov.com" className="mt-2 inline-block font-semibold text-primary hover:underline">
-                  contato@liviskov.com
+                <a href="mailto:liviskovministries@gmail.com" className="mt-2 inline-block font-semibold text-primary hover:underline">
+                  liviskovministries@gmail.com
                 </a>
               </CardContent>
             </Card>
