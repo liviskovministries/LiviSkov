@@ -233,7 +233,7 @@ export function CourseLayout({
           </SidebarFooter>
         </Sidebar>
         <main className={`flex-1 p-4 md:p-6 lg:p-8 transition-all duration-300 ease-in-out ${
-          sidebar.state === 'expanded' ? "md:ml-[280px]" : "md:ml-16" // Usando estado correto da sidebar
+          sidebar.state === 'expanded' ? "md:ml-[280px]" : "md:ml-16"
         }`}>
           <div className="mx-auto max-w-4xl">
             {renderLessonContent()}
@@ -242,10 +242,7 @@ export function CourseLayout({
                 {selectedLesson?.subtitle || 'Sobre a aula'}
               </h2>
               <div className="mt-4 text-muted-foreground space-y-4 whitespace-pre-wrap">
-                {selectedLesson?.description === "Acesse e baixar o material de apoio principal do curso. Este livro è base da nossa jornada, aprofundando os temas abordados nas aulas e oferecendo exercícios práticos para cada estação."}
-                {selectedLesson?.description !== "Acesse e baixar o material de apoio principal do curso. Este livro è base da nossa jornada, aprofundando os temas abordados nas aulas e oferecendo exercícios práticos para cada estação." ? 
-                  selectedLesson?.description : 
-                  "Acesse e baixe o material de apoio principal do curso. Este livro é a base da nossa jornada, aprofundando os temas abordados nas aulas e oferecendo exercícios práticos para cada estação."}
+                {selectedLesson?.description}
               </div>
             </div>
           </div>

@@ -55,7 +55,7 @@ const courseData = {
           title: 'Livro Estações Espirituais',
           type: 'resource' as const,
           subtitle: 'Sobre o Livro de Apoio',
-          description: 'Acesse e baixar o material de apoio principal do curso. Este livro è base da nossa jornada, aprofundando os temas abordados nas aulas e oferecendo exercícios práticos para cada estação.'
+          description: 'Acesse e baixe o material de apoio principal do curso. Este livro é a base da nossa jornada, aprofundando os temas abordados nas aulas e oferecendo exercícios práticos para cada estação.'
         },
       ],
     },
