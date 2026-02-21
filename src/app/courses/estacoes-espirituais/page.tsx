@@ -115,7 +115,7 @@ const courseData = {
           type: 'video' as const,
           videoId: '5rt6pkMFD2E',
           subtitle: '🔄 Transição – Abraçando Mudanças e Novos Começos',
-          description: 'A transição pode ser desafiadora, pois o antigo já não serve mais, mas o novo ainda não chegou completamente. É o momento de confiar que Deus está no controle e nos guiará para a próxima fase.\n\n🌟 Como lidar com a transição?\n\n✨ Mantenha a calma e confie em Deus.\n✨ Não tenha medo do novo.\n✨ Use esse tempo para se fortalecer.\n\nA transição pode parecer incerta, mas Deus já preparou o caminho para você! 💖'
+          description: 'A transição pode ser desafiadora, pois o antigo já no serve mais, mas o novo ainda não chegou completamente. É o momento de confiar que Deus está no controle e nos guiará para a próxima fase.\n\n🌟 Como lidar com a transição?\n\n✨ Mantenha a calma e confie em Deus.\n✨ Não tenha medo do novo.\n✨ Use esse tempo para se fortalecer.\n\nA transição pode parecer incerta, mas Deus já preparou o caminho para você! 💖'
         },
       ],
     },
@@ -557,6 +557,14 @@ export default function CoursePage() {
                   </h2>
                   <div className="mt-4 text-muted-foreground space-y-4 whitespace-pre-wrap mb-8">
                     {selectedLesson?.description}
+                  </div>
+                  {/* Botão de acesso ao Zoom */}
+                  <div className="mt-6 text-center">
+                    <Link href="https://us02web.zoom.us/j/86237725402?pwd=EWb0Dh8cRJFQg5J3rCtDsG4KZnuxYj.1" target="_blank" rel="noopener noreferrer">
+                      <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
+                        Acessar Aulão no Zoom
+                      </Button>
+                    </Link>
                   </div>
                 </>
               )}
