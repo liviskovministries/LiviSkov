@@ -143,7 +143,7 @@ const courseData = {
           id: 'enc-1',
           title: 'Live de Encerramento',
           type: 'video' as const,
-          videoId: 'hfQRwqcqsxU',
+          videoId: undefined, // Removido o ID do vídeo
           subtitle: 'GRANDE ENCONTRO FINAL – Aulão ao Vivo no Zoom! (Gravação)',
           description: 'Este foi o nosso último encontro, um momento de conexão e reflexão sobre tudo o que vivemos.\n\n💡 O que tivemos?\n\n✅ Compartilhamento de experiências.\n✅ Reflexões sobre cada estação.\n✅ Direcionamentos para o futuro.\n✅ Um tempo de comunhão e gratidão.\n\n🚀 Prepare-se para um GRANDE encerramento numa reunião maravilhosa no Zoom! 🎓🎊'
         },
