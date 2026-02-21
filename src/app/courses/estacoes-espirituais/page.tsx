@@ -25,6 +25,8 @@ type Lesson = {
   videoId?: string;
   subtitle?: string;
   description: string;
+  zoomLink?: string; // Adicionado para links do Zoom
+  eventDate?: string; // Adicionado para a data do evento
 };
 
 const courseData = {
@@ -137,15 +139,15 @@ const courseData = {
     {
       id: 'modulo-6',
       title: '🎉 Encerramento',
-      // releaseDate: '2026-02-23', // Removido para liberar a aula
       lessons: [
         {
           id: 'enc-1',
           title: 'Live de Encerramento',
-          type: 'video' as const,
-          videoId: 'hfQRwqcqsxU',
-          subtitle: 'GRANDE ENCONTRO FINAL – Aulão ao Vivo no Zoom! (Gravação)',
-          description: 'Este foi o nosso último encontro, um momento de conexão e reflexão sobre tudo o que vivemos.\n\n💡 O que tivemos?\n\n✅ Compartilhamento de experiências.\n✅ Reflexões sobre cada estação.\n✅ Direcionamentos para o futuro.\n✅ Um tempo de comunhão e gratidão.\n\n🚀 Prepare-se para um GRANDE encerramento numa reunião maravilhosa no Zoom! 🎓🎊'
+          type: 'resource' as const, // Alterado para 'resource'
+          subtitle: 'GRANDE ENCONTRO FINAL – Aulão ao Vivo no Zoom!',
+          description: 'Este será o nosso último encontro, um momento de conexão e reflexão sobre tudo o que vivemos.\n\n💡 O que teremos?\n\n✅ Compartilhamento de experiências.\n✅ Reflexões sobre cada estação.\n✅ Direcionamentos para o futuro.\n✅ Um tempo de comunhão e gratidão.\n\n🚀 Prepare-se para um GRANDE encerramento numa reunião maravilhosa no Zoom!',
+          zoomLink: 'https://us02web.zoom.us/j/86237725402?pwd=EWb0Dh8cRJFQg5J3rCtDsG4KZnuxYj.1',
+          eventDate: 'Segunda-feira, 23 de fevereiro às 20:30h',
         },
       ],
     },
@@ -400,37 +402,62 @@ export default function CoursePage() {
           </div>
         );
       case 'resource':
-        return (
-          <Card className="bg-card overflow-hidden">
-            <CardContent className="p-6 flex flex-col md:flex-row items-center justify-center gap-6 text-center md:text-left">
-              <div className="w-48 flex-shrink-0">
-                <Image 
-                  src="/images/capa_livro_estacoes_espirituais.jpg" 
-                  alt="Capa do Livro Estações Espirituais" 
-                  width={300} 
-                  height={450} 
-                  className="rounded-lg shadow-lg" 
-                  data-ai-hint="book cover"
-                />
-              </div>
-              <div className="flex flex-col items-center md:items-start">
-                <h3 className="text-2xl font-bold text-foreground">{selectedLesson.title}</h3>
-                <p className="text-muted-foreground mt-2">Material de Apoio Principal</p>
-                <Button 
-                  onClick={handleDownloadWatermarkedPdf} 
-                  size="lg" 
-                  className="mt-4"
-                  disabled={isDownloading}
-                >
-                  {isDownloading ? 'Gerando...' : 'Baixar Livro em PDF'}
-                </Button>
-                <p className="text-sm text-muted-foreground mt-4">
-                  O livro será baixado com uma marca d'água personalizada com seu nome e email.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        )
+        // Lógica para o livro de apoio vs. o aulão do Zoom
+        if (selectedLesson.id === 'intro-3') {
+          return (
+            <Card className="bg-card overflow-hidden">
+              <CardContent className="p-6 flex flex-col md:flex-row items-center justify-center gap-6 text-center md:text-left">
+                <div className="w-48 flex-shrink-0">
+                  <Image 
+                    src="/images/capa_livro_estacoes_espirituais.jpg" 
+                    alt="Capa do Livro Estações Espirituais" 
+                    width={300} 
+                    height={450} 
+                    className="rounded-lg shadow-lg" 
+                    data-ai-hint="book cover"
+                  />
+                </div>
+                <div className="flex flex-col items-center md:items-start">
+                  <h3 className="text-2xl font-bold text-foreground">{selectedLesson.title}</h3>
+                  <p className="text-muted-foreground mt-2">Material de Apoio Principal</p>
+                  <Button 
+                    onClick={handleDownloadWatermarkedPdf} 
+                    size="lg" 
+                    className="mt-4"
+                    disabled={isDownloading}
+                  >
+                    {isDownloading ? 'Gerando...' : 'Baixar Livro em PDF'}
+                  </Button>
+                  <p className="text-sm text-muted-foreground mt-4">
+                    O livro será baixado com uma marca d'água personalizada com seu nome e email.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        } else if (selectedLesson.id === 'enc-1') {
+          return (
+            <Card className="bg-card overflow-hidden">
+              <CardContent className="p-6 flex flex-col items-center justify-center gap-6 text-center">
+                <h3 className="text-2xl font-bold text-foreground">{selectedLesson.subtitle}</h3>
+                <p className="text-muted-foreground mt-2 whitespace-pre-wrap">{selectedLesson.description}</p>
+                {selectedLesson.eventDate && (
+                  <p className="text-lg font-semibold text-primary mt-4">
+                    🗓️ Quando: {selectedLesson.eventDate}
+                  </p>
+                )}
+                {selectedLesson.zoomLink && (
+                  <Link href={selectedLesson.zoomLink} target="_blank" rel="noopener noreferrer">
+                    <Button size="lg" className="mt-4">
+                      Acessar Aulão no Zoom
+                    </Button>
+                  </Link>
+                )}
+              </CardContent>
+            </Card>
+          );
+        }
+        return <p>Selecione uma aula para começar.</p>;
       default:
         return <p>Selecione uma aula para começar.</p>;
     }
