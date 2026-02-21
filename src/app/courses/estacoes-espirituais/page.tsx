@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking, useUser } from '@/firebase';
 import { collection, doc } from 'firebase/firestore';
-import { useRouter } from 'next/navigation'; // Corrigido aqui
+import { useRouter } from 'next/navigation';
 import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton, SidebarTrigger, SidebarInset, SidebarGroup, SidebarGroupLabel, SidebarProvider, SidebarFooter, } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -280,9 +280,21 @@ export default function CoursePage() {
     });
 
     try {
-      const firstName = supabaseUser.user_metadata?.first_name || '';
-      const lastName = supabaseUser.user_metadata?.last_name || '';
-      const email = supabaseUser.email || '';
+      // Fetch user profile from public.users table for reliable data
+      const { data: profileData, error: profileError } = await supabase
+        .from('users')
+        .select('first_name, last_name, email')
+        .eq('id', supabaseUser.id)
+        .single();
+
+      if (profileError || !profileData) {
+        console.error('Error fetching user profile from public.users:', profileError);
+        throw new Error('Não foi possível obter os dados do seu perfil para o download.');
+      }
+
+      const firstName = profileData.first_name || '';
+      const lastName = profileData.last_name || '';
+      const email = profileData.email || '';
 
       console.log("[CoursePage] Downloading watermarked PDF for:", { firstName, lastName, email });
       console.log("[CoursePage] Using pre-signed PDF URL:", PDF_URL_SIGNED);
