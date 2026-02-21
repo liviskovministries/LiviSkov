@@ -145,7 +145,7 @@ const courseData = {
           type: 'video' as const,
           videoId: undefined, // Removido o ID do vídeo
           subtitle: 'GRANDE ENCONTRO FINAL – Aulão ao Vivo no Zoom (Segunda-feira, 23 de fevereiro de 2026 às 20:30h)',
-          description: 'Este será o nosso último encontro, um momento de conexão e reflexão sobre tudo o que vivemos.\n\n💡 O que tivemos?\n\n✅ Compartilhamento de experiências.\n✅ Reflexões sobre cada estação.\n✅ Direcionamentos para o futuro.\n✅ Um tempo de comunhão e gratidão.\n\n🚀 Prepare-se para um GRANDE encerramento numa reunião maravilhosa no Zoom! 🎓🎊'
+          description: 'Este será o nosso último encontro, um momento de conexão e reflexão sobre tudo o que vivemos.\n\n💡 O que teremos?\n\n✅ Compartilhamento de experiências.\n✅ Reflexões sobre cada estação.\n✅ Direcionamentos para o futuro.\n✅ Um tempo de comunhão e gratidão.\n\n🚀 Prepare-se para um GRANDE encerramento numa reunião maravilhosa no Zoom! 🎓🎊'
         },
       ],
     },
