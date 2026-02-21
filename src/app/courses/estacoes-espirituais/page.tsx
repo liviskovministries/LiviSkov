@@ -143,7 +143,7 @@ const courseData = {
         {
           id: 'enc-1',
           title: 'Live de Encerramento',
-          type: 'resource' as const, // Alterado para 'resource'
+          type: 'resource' as const,
           subtitle: 'GRANDE ENCONTRO FINAL – Aulão ao Vivo no Zoom!',
           description: 'Este será o nosso último encontro, um momento de conexão e reflexão sobre tudo o que vivemos.\n\n💡 O que teremos?\n\n✅ Compartilhamento de experiências.\n✅ Reflexões sobre cada estação.\n✅ Direcionamentos para o futuro.\n✅ Um tempo de comunhão e gratidão.\n\n🚀 Prepare-se para um GRANDE encerramento numa reunião maravilhosa no Zoom!',
           zoomLink: 'https://us02web.zoom.us/j/86237725402?pwd=EWb0Dh8cRJFQg5J3rCtDsG4KZnuxYj.1',
@@ -440,7 +440,18 @@ export default function CoursePage() {
             <Card className="bg-card overflow-hidden">
               <CardContent className="p-6 flex flex-col items-center justify-center gap-6 text-center">
                 <h3 className="text-2xl font-bold text-foreground">{selectedLesson.subtitle}</h3>
-                <p className="text-muted-foreground mt-2 whitespace-pre-wrap">{selectedLesson.description}</p>
+                <p className="text-muted-foreground mt-2 whitespace-pre-wrap">
+                  Este será o nosso último encontro, um momento de conexão e reflexão sobre tudo o que vivemos.
+
+                  💡 O que teremos?
+
+                  ✅ Compartilhamento de experiências.
+                  ✅ Reflexões sobre cada estação.
+                  ✅ Direcionamentos para o futuro.
+                  ✅ Um tempo de comunhão e gratidão.
+
+                  🚀 Prepare-se para um GRANDE encerramento numa reunião maravilhosa no Zoom!
+                </p>
                 {selectedLesson.eventDate && (
                   <p className="text-lg font-semibold text-primary mt-4">
                     🗓️ Quando: {selectedLesson.eventDate}
