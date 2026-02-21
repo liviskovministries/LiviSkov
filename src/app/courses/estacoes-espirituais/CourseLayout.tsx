@@ -120,7 +120,7 @@ export function CourseLayout({
             <Card className="bg-card overflow-hidden">
               <CardContent className="p-6 flex flex-col items-center justify-center gap-6 text-center">
                 <h3 className="text-2xl font-bold text-foreground">{selectedLesson.subtitle}</h3>
-                <p className="text-muted-foreground mt-2 whitespace-pre-wrap">{selectedLesson.description}</p>
+                {/* Removido o parágrafo de descrição aqui */}
                 {selectedLesson.eventDate && (
                   <p className="text-lg font-semibold text-primary mt-4">
                     🗓️ Quando: {selectedLesson.eventDate}
