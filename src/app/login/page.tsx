@@ -18,7 +18,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useToast } from '@/hooks/use-toast';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Suspense, useEffect } from 'react'; // Importar Suspense
+import { Suspense, useEffect } from 'react';
 import { SiteHeader } from '@/components/header';
 import { SiteFooter } from '@/components/footer';
 import Image from 'next/image';
@@ -35,7 +35,6 @@ function LoginContent() {
   const supabaseAuth = useSupabaseAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { user, isUserLoading } = useSupabaseUser();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,12 +43,6 @@ function LoginContent() {
       password: '',
     },
   });
-
-  useEffect(() => {
-    if (user) {
-      router.push('/courses');
-    }
-  }, [user, router]);
 
   // Efeito para exibir toast de sucesso após redefinição de senha
   useEffect(() => {
@@ -158,15 +151,31 @@ function LoginContent() {
 
 export default function LoginPage() {
   const { user, isUserLoading } = useSupabaseUser();
+  const router = useRouter();
 
-  if (isUserLoading || user) {
+  useEffect(() => {
+    if (!isUserLoading && user) {
+      // Se o usuário está logado e o carregamento terminou, redireciona
+      router.push('/courses');
+    }
+  }, [user, isUserLoading, router]);
+
+  if (isUserLoading) {
+    // Mostra carregando apenas enquanto o status do usuário está sendo verificado
     return (
-        <div className="flex min-h-screen items-center justify-center bg-background">
-            <p>Carregando...</p>
-        </div>
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <p>Carregando...</p>
+      </div>
     );
   }
 
+  if (user) {
+    // Se o usuário está logado (e isUserLoading é false), ele já foi redirecionado pelo useEffect
+    // Este return é um fallback, mas o useEffect deve agir primeiro
+    return null; 
+  }
+
+  // Se o usuário não está logado (e isUserLoading é false), renderiza o formulário de login
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <SiteHeader />
