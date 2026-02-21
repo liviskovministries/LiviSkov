@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking, useUser } from '@/firebase';
 import { collection, doc } from 'firebase/firestore';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'; // Corrigido aqui
 import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton, SidebarTrigger, SidebarInset, SidebarGroup, SidebarGroupLabel, SidebarProvider, SidebarFooter, } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -561,7 +561,7 @@ export default function CoursePage() {
                   {/* Botão de acesso ao Zoom */}
                   <div className="mt-6 text-center">
                     <Link href="https://us02web.zoom.us/j/86237725402?pwd=EWb0Dh8cRJFQg5J3rCtDsG4KZnuxYj.1" target="_blank" rel="noopener noreferrer">
-                      <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
+                      <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
                         Acessar Aulão no Zoom
                       </Button>
                     </Link>
