@@ -137,7 +137,7 @@ const courseData = {
     {
       id: 'modulo-6',
       title: '🎉 Encerramento',
-      releaseDate: '2026-02-23',
+      // releaseDate: '2026-02-23', // Removido para liberar a aula
       lessons: [
         {
           id: 'enc-1',
