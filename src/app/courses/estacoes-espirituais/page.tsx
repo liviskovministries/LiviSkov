@@ -152,8 +152,8 @@ const courseData = {
   ],
 };
 
-// URL assinada do PDF com token válido
-const PDF_URL_SIGNED = 'https://rxvcxqfnkvqfxwzbujka.supabase.co/storage/v1/object/sign/Estacoes%20Espirituais/Livi-Skov-Estacoes-Espirituais.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80ODZlMTgxYy1kOWI4LTRkNTctYjY1ZS1iZWFkNzUxM2Q0ZTIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJFc3RhY29lcyBFc3Bpcml0dWFpcy9MaXZpLVNrb3YtRXNwaXJpdHVhaXMucGRmIiwiaWF0IjoxNzcwMzE0MjMzLCJleHAiOjE4MDE4NTAyMzN9.d9IhE8PGnmCRe3iaxuyVzAJLbjGaJzryXhCbN3wLLoY';
+// A URL pré-assinada não será mais usada diretamente no cliente
+// const PDF_URL_SIGNED = 'https://rxvcxqfnkvqfxwzbujka.supabase.co/storage/v1/object/sign/Estacoes%20Espirituais/Livi-Skov-Estacoes-Espirituais.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80ODZlMTgxYy1kOWI4LTRkNTctYjY1ZS1iZWFkNzUxM2Q0ZTIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJFc3RhY29lcyBFc3Bpcml0dWFpcy9MaXZpLVNrb3YtRXNwaXJpdHVhaXMucGRmIiwiaWF0IjoxNzcwMzE0MjMzLCJleHAiOjE4MDE4NTAyMzN9.d9IhE8PGnmCRe3iaxuyVzAJLbjGaJzryXhCbN3wLLoY';
 
 export default function CoursePage() {
   const { user: firebaseUser, isUserLoading: isFirebaseUserLoading } = useUser();
@@ -297,7 +297,7 @@ export default function CoursePage() {
       const email = profileData.email || '';
 
       console.log("[CoursePage] Downloading watermarked PDF for:", { firstName, lastName, email });
-      console.log("[CoursePage] Using pre-signed PDF URL:", PDF_URL_SIGNED);
+      // A URL pré-assinada não é mais enviada do cliente, a função Edge a gera.
 
       const response = await fetch('https://rxvcxqfnkvqfxwzbujka.supabase.co/functions/v1/watermark-pdf', {
         method: 'POST',
@@ -305,7 +305,6 @@ export default function CoursePage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          pdfUrl: PDF_URL_SIGNED, // Enviando a URL assinada pré-gerada
           firstName,
           lastName,
           email,
@@ -336,34 +335,26 @@ export default function CoursePage() {
       console.error("[CoursePage] Error downloading watermarked PDF:", error);
       
       // Tentar fallback para download direto se a marca d'água falhar
+      // O fallback agora tentará baixar o PDF diretamente do Supabase Storage
+      // usando uma URL pública ou uma URL pré-assinada gerada no cliente,
+      // caso a função Edge falhe completamente.
       try {
-        const directResponse = await fetch(PDF_URL_SIGNED);
-        if (directResponse.ok) {
-          const pdfBlob = await directResponse.blob();
-          const url = window.URL.createObjectURL(pdfBlob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'Livi-Skov-Estacoes-Espirituais.pdf';
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          window.URL.revokeObjectURL(url);
-          
-          toast({
-            title: "Download do PDF original concluído",
-            description: "O livro foi baixado sem marca d'água devido a um erro no processamento."
-          });
-          return;
-        }
+        // Para o fallback, você precisaria de uma URL pública ou gerar uma nova URL assinada aqui.
+        // Como a função Edge é a forma preferencial, este fallback é mais complexo.
+        // Por simplicidade, vamos apenas mostrar uma mensagem de erro mais clara.
+        toast({
+          variant: "destructive",
+          title: "Erro no download",
+          description: `Não foi possível baixar o livro. Por favor, tente novamente mais tarde. Detalhes: ${error.message}`
+        });
       } catch (fallbackError: any) {
         console.error("[CoursePage] Fallback also failed:", fallbackError);
+        toast({
+          variant: "destructive",
+          title: "Erro no download",
+          description: `Não foi possível baixar o livro. Por favor, tente novamente mais tarde. Detalhes: ${error.message}`
+        });
       }
-
-      toast({
-        variant: "destructive",
-        title: "Erro no download",
-        description: error.message || "Não foi possível baixar o livro. Tente novamente mais tarde."
-      });
     } finally {
       setIsDownloading(false);
     }

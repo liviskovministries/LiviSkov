@@ -2,11 +2,30 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 // @ts-ignore
 import { PDFDocument, rgb, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
+// @ts-ignore
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0'; // Import Supabase client
+
+// Declaração de tipo para Deno.env para resolver erros de compilação
+declare namespace Deno {
+  namespace env {
+    function get(key: string): string | undefined;
+  }
+}
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+// Initialize Supabase client with service role key
+const supabaseAdmin = createClient(
+  Deno.env.get('SUPABASE_URL') ?? '',
+  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+);
+
+// Define the bucket and file path for the PDF
+const BUCKET_NAME = 'Estacoes Espirituais'; // Assuming this is the correct bucket name
+const FILE_PATH = 'Livi-Skov-Estacoes-Espirituais.pdf'; // Assuming this is the correct file path
 
 serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
@@ -28,18 +47,36 @@ serve(async (req: Request) => {
       });
     }
 
-    const { pdfUrl, firstName, lastName, email } = requestBody;
+    const { firstName, lastName, email } = requestBody; // pdfUrl is no longer expected
 
-    if (!pdfUrl || !firstName || !lastName || !email) {
-      console.error("[watermark-pdf] Missing required parameters", { pdfUrl, firstName, lastName, email });
-      return new Response(JSON.stringify({ error: 'Missing required parameters: pdfUrl, firstName, lastName, email' }), {
+    if (!firstName || !lastName || !email) {
+      console.error("[watermark-pdf] Missing required parameters", { firstName, lastName, email });
+      return new Response(JSON.stringify({ error: 'Missing required parameters: firstName, lastName, email' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    console.log("[watermark-pdf] Parameters received:", { pdfUrl, firstName, lastName, email });
-    console.log("[watermark-pdf] Attempting to fetch PDF from pre-signed URL:", pdfUrl);
+    console.log("[watermark-pdf] Parameters received:", { firstName, lastName, email });
+
+    // Generate a new signed URL for the private PDF using the service role key
+    console.log(`[watermark-pdf] Generating signed URL for bucket: ${BUCKET_NAME}, path: ${FILE_PATH}`);
+    const { data: signedUrlData, error: signedUrlError } = await supabaseAdmin
+      .storage
+      .from(BUCKET_NAME)
+      .createSignedUrl(FILE_PATH, 60); // URL valid for 60 seconds
+
+    if (signedUrlError) {
+      console.error("[watermark-pdf] Error generating signed URL:", signedUrlError.message);
+      return new Response(JSON.stringify({ error: `Failed to generate signed URL: ${signedUrlError.message}` }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const pdfUrl = signedUrlData.signedUrl;
+    console.log("[watermark-pdf] Signed URL generated:", pdfUrl);
+    console.log("[watermark-pdf] Attempting to fetch PDF from generated signed URL.");
     
     const response = await fetch(pdfUrl);
     console.log("[watermark-pdf] PDF fetch response status:", response.status, response.statusText);
@@ -56,7 +93,7 @@ serve(async (req: Request) => {
     console.log("[watermark-pdf] Content-Type header:", contentType);
     if (!contentType || !contentType.includes('pdf')) {
       console.error("[watermark-pdf] Invalid content type:", contentType);
-      return new Response(JSON.stringify({ error: 'The requested file is not a valid PDF' }), {
+      return new Response(JSON.stringify({ error: 'The requested file is not a valid PDF.' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
@@ -66,7 +103,7 @@ serve(async (req: Request) => {
     
     if (existingPdfBytes.byteLength < 4) {
       console.error("[watermark-pdf] PDF file too small or empty");
-      return new Response(JSON.stringify({ error: 'Invalid PDF file: file is too small or empty' }), {
+      return new Response(JSON.stringify({ error: 'Invalid PDF file: file is too small or empty.' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
@@ -76,7 +113,7 @@ serve(async (req: Request) => {
     const headerStr = String.fromCharCode(...header);
     if (!headerStr.startsWith('%PDF')) {
       console.error("[watermark-pdf] Invalid PDF header:", headerStr);
-      return new Response(JSON.stringify({ error: 'Invalid PDF file: no PDF header found' }), {
+      return new Response(JSON.stringify({ error: 'Invalid PDF file: no PDF header found.' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
