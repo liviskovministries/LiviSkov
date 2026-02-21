@@ -117,7 +117,7 @@ const courseData = {
           type: 'video' as const,
           videoId: '5rt6pkMFD2E',
           subtitle: '🔄 Transição – Abraçando Mudanças e Novos Começos',
-          description: 'A transição pode ser desafiadora, pois o antigo já no faz sentido, mas o novo ainda não chegou completamente. É o momento de confiar que Deus está no controle e nos guiará para a próxima fase.\n\n🌟 Como lidar com a transição?\n\n✨ Mantenha a calma e confie em Deus.\n✨ Não tenha medo do novo.\n✨ Use esse tempo para se fortalecer.\n\nA transição pode parecer incerta, mas Deus já preparou o caminho para você! 💖'
+          description: 'A transição pode ser desafiadora, pois o antigo já não serve mais, mas o novo ainda não chegou completamente. É o momento de confiar que Deus está no controle e nos guiará para a próxima fase.\n\n🌟 Como lidar com a transição?\n\n✨ Mantenha a calma e confie em Deus.\n✨ Não tenha medo do novo.\n✨ Use esse tempo para se fortalecer.\n\nA transição pode parecer incerta, mas Deus já preparou o caminho para você! 💖'
         },
       ],
     },
@@ -145,16 +145,7 @@ const courseData = {
           title: 'Live de Encerramento',
           type: 'resource' as const, // Alterado para 'resource'
           subtitle: 'GRANDE ENCONTRO FINAL – Aulão ao Vivo no Zoom!',
-          description: `Este será o nosso último encontro, um momento de conexão e reflexão sobre tudo o que vivemos.
-
-💡 O que teremos?
-
-✅ Compartilhamento de experiências.
-✅ Reflexões sobre cada estação.
-✅ Direcionamentos para o futuro.
-✅ Um tempo de comunhão e gratidão.
-
-🚀 Prepare-se para um GRANDE encerramento numa reunião maravilhosa no Zoom!`,
+          description: 'Este será o nosso último encontro, um momento de conexão e reflexão sobre tudo o que vivemos.\n\n💡 O que teremos?\n\n✅ Compartilhamento de experiências.\n✅ Reflexões sobre cada estação.\n✅ Direcionamentos para o futuro.\n✅ Um tempo de comunhão e gratidão.\n\n🚀 Prepare-se para um GRANDE encerramento numa reunião maravilhosa no Zoom!',
           zoomLink: 'https://us02web.zoom.us/j/86237725402?pwd=EWb0Dh8cRJFQg5J3rCtDsG4KZnuxYj.1',
           eventDate: 'Segunda-feira, 23 de fevereiro às 20:30h',
         },
@@ -449,7 +440,7 @@ export default function CoursePage() {
             <Card className="bg-card overflow-hidden">
               <CardContent className="p-6 flex flex-col items-center justify-center gap-6 text-center">
                 <h3 className="text-2xl font-bold text-foreground">{selectedLesson.subtitle}</h3>
-                <p className="text-muted-foreground mt-2 whitespace-pre-wrap">{selectedLesson.description}</p> {/* Adicionado a descrição aqui */}
+                <p className="text-muted-foreground mt-2 whitespace-pre-wrap">{selectedLesson.description}</p>
                 {selectedLesson.eventDate && (
                   <p className="text-lg font-semibold text-primary mt-4">
                     🗓️ Quando: {selectedLesson.eventDate}
@@ -587,7 +578,14 @@ export default function CoursePage() {
           <main className="p-4 md:p-6 lg:p-8">
             <div className="mx-auto max-w-4xl">
               {renderLessonContent()}
-              {/* Removido o bloco abaixo que duplicava o subtítulo e a descrição */}
+              <div className="mt-8">
+                <h2 className="text-2xl font-bold text-primary">
+                  {selectedLesson?.subtitle || 'Sobre a aula'}
+                </h2>
+                <div className="mt-4 text-muted-foreground space-y-4 whitespace-pre-wrap">
+                  {selectedLesson?.description}
+                </div>
+              </div>
             </div>
           </main>
         </div>
