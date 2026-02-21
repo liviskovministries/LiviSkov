@@ -115,7 +115,7 @@ const courseData = {
           type: 'video' as const,
           videoId: '5rt6pkMFD2E',
           subtitle: '🔄 Transição – Abraçando Mudanças e Novos Começos',
-          description: 'A transição pode ser desafiadora, pois o antigo já não serve mais, mas o novo ainda não chegou completamente. É o momento de confiar que Deus está no controle e nos guiará para a próxima fase.\n\n🌟 Como lidar com a transição?\n\n✨ Mantenha a calma e confie em Deus.\n✨ Não tenha medo do novo.\n✨ Use esse tempo para se fortalecer.\n\nA transição pode parecer incerta, mas Deus já preparou o caminho para você! 💖'
+          description: 'A transição pode ser desafiadora, pois o antigo já no serve mais, mas o novo ainda não chegou completamente. É o momento de confiar que Deus está no controle e nos guiará para a próxima fase.\n\n🌟 Como lidar com a transição?\n\n✨ Mantenha a calma e confie em Deus.\n✨ Não tenha medo do novo.\n✨ Use esse tempo para se fortalecer.\n\nA transição pode parecer incerta, mas Deus já preparou o caminho para você! 💖'
         },
       ],
     },
@@ -153,7 +153,7 @@ const courseData = {
 };
 
 // URL assinada do PDF com token válido
-const PDF_URL_SIGNED = 'https://rxvcxqfnkvqfxwzbujka.supabase.co/storage/v1/object/sign/Estacoes%20Espirituais/Livi-Skov-Estacoes-Espirituais.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80ODZlMTgxYy1kOWI4LTRkNTctYjY1ZS1iZWFkNzUxM2Q0ZTIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJFc3RhY29lcyBFc3Bpcml0dWFpcy9MaXZpLVNrb3YtRXN0YWNvZXMtRXNwaXJpdHVhaXMucGRmIiwiaWF0IjoxNzcwMzE0MjMzLCJleHAiOjE4MDE4NTAyMzN9.d9IhE8PGnmCRe3iaxuyVzAJLbjGaJzryXhCbN3wLLoY';
+const PDF_URL_SIGNED = 'https://rxvcxqfnkvqfxwzbujka.supabase.co/storage/v1/object/sign/Estacoes%20Espirituais/Livi-Skov-Estacoes-Espirituais.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80ODZlMTgxYy1kOWI4LTRkNTctYjY1ZS1iZWFkNzUxM2Q0ZTIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJFc3RhY29lcyBFc3Bpcml0dWFpcy9MaXZpLVNrb3YtRXNwaXJpdHVhaXMucGRmIiwiaWF0IjoxNzcwMzE0MjMzLCJleHAiOjE4MDE4NTAyMzN9.d9IhE8PGnmCRe3iaxuyVzAJLbjGaJzryXhCbN3wLLoY';
 
 export default function CoursePage() {
   const { user: firebaseUser, isUserLoading: isFirebaseUserLoading } = useUser();
@@ -550,15 +550,27 @@ export default function CoursePage() {
           </header>
           <main className="p-4 md:p-6 lg:p-8">
             <div className="mx-auto max-w-4xl">
+              {selectedLesson?.id === 'enc-1' && (
+                <>
+                  <h2 className="text-2xl font-bold text-primary">
+                    {selectedLesson?.subtitle || 'Sobre a aula'}
+                  </h2>
+                  <div className="mt-4 text-muted-foreground space-y-4 whitespace-pre-wrap mb-8">
+                    {selectedLesson?.description}
+                  </div>
+                </>
+              )}
               {renderLessonContent()}
-              <div className="mt-8">
-                <h2 className="text-2xl font-bold text-primary">
-                  {selectedLesson?.subtitle || 'Sobre a aula'}
-                </h2>
-                <div className="mt-4 text-muted-foreground space-y-4 whitespace-pre-wrap">
-                  {selectedLesson?.description}
+              {selectedLesson?.id !== 'enc-1' && (
+                <div className="mt-8">
+                  <h2 className="text-2xl font-bold text-primary">
+                    {selectedLesson?.subtitle || 'Sobre a aula'}
+                  </h2>
+                  <div className="mt-4 text-muted-foreground space-y-4 whitespace-pre-wrap">
+                    {selectedLesson?.description}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </main>
         </div>
