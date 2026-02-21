@@ -26,8 +26,6 @@ type Lesson = {
   subtitle?: string;
   description: string;
   videoId?: string;
-  zoomLink?: string; // Adicionado para links do Zoom
-  eventDate?: string; // Adicionado para a data do evento
 };
 
 interface CourseLayoutProps {
@@ -83,61 +81,36 @@ export function CourseLayout({
           </div>
         );
       case 'resource':
-        // Lógica para o livro de apoio vs. o aulão do Zoom
-        if (selectedLesson.id === 'intro-3') {
-          return (
-            <Card className="bg-card overflow-hidden">
-              <CardContent className="p-6 flex flex-col md:flex-row items-center justify-center gap-6 text-center md:text-left">
-                <div className="w-48 flex-shrink-0">
-                  <Image 
-                    src="/images/capa_livro_estacoes_espirituais.jpg" 
-                    alt="Capa do Livro Estações Espirituais" 
-                    width={300} 
-                    height={450} 
-                    className="rounded-lg shadow-lg" 
-                  />
-                </div>
-                <div className="flex flex-col items-center md:items-start">
-                  <h3 className="text-2xl font-bold text-foreground">{selectedLesson.title}</h3>
-                  <p className="text-muted-foreground mt-2">Material de Apoio Principal</p>
-                  <Button 
-                    onClick={handleDownloadWatermarkedPdf} 
-                    size="lg" 
-                    className="mt-4"
-                    disabled={isDownloading}
-                  >
-                    {isDownloading ? 'Gerando...' : 'Baixar Livro em PDF'}
-                  </Button>
-                  <p className="text-sm text-muted-foreground mt-4">
-                    O livro será baixado com uma marca d'água personalizada com seu nome e email.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          );
-        } else if (selectedLesson.id === 'enc-1') {
-          return (
-            <Card className="bg-card overflow-hidden">
-              <CardContent className="p-6 flex flex-col items-center justify-center gap-6 text-center">
-                <h3 className="text-2xl font-bold text-foreground">{selectedLesson.subtitle}</h3>
-                {/* Removido o parágrafo de descrição aqui */}
-                {selectedLesson.eventDate && (
-                  <p className="text-lg font-semibold text-primary mt-4">
-                    🗓️ Quando: {selectedLesson.eventDate}
-                  </p>
-                )}
-                {selectedLesson.zoomLink && (
-                  <Link href={selectedLesson.zoomLink} target="_blank" rel="noopener noreferrer">
-                    <Button size="lg" className="mt-4">
-                      Acessar Aulão no Zoom
-                    </Button>
-                  </Link>
-                )}
-              </CardContent>
-            </Card>
-          );
-        }
-        return <p>Selecione uma aula para começar.</p>;
+        return (
+          <Card className="bg-card overflow-hidden">
+            <CardContent className="p-6 flex flex-col md:flex-row items-center justify-center gap-6 text-center md:text-left">
+              <div className="w-48 flex-shrink-0">
+                <Image 
+                  src="/images/capa_livro_estacoes_espirituais.jpg" 
+                  alt="Capa do Livro Estações Espirituais" 
+                  width={300} 
+                  height={450} 
+                  className="rounded-lg shadow-lg" 
+                />
+              </div>
+              <div className="flex flex-col items-center md:items-start">
+                <h3 className="text-2xl font-bold text-foreground">{selectedLesson.title}</h3>
+                <p className="text-muted-foreground mt-2">Material de Apoio Principal</p>
+                <Button 
+                  onClick={handleDownloadWatermarkedPdf} 
+                  size="lg" 
+                  className="mt-4"
+                  disabled={isDownloading}
+                >
+                  {isDownloading ? 'Gerando...' : 'Baixar Livro em PDF'}
+                </Button>
+                <p className="text-sm text-muted-foreground mt-4">
+                  O livro será baixado com uma marca d'água personalizada com seu nome e email.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        );
       default:
         return <p>Selecione uma aula para começar.</p>;
     }
