@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { SocialSidebar } from '@/components/social-sidebar';
 import { SupabaseProvider } from '@/integrations/supabase/supabase-provider';
+import { TooltipProvider } from '@/components/ui/tooltip'; // Importar TooltipProvider
 
 export const metadata: Metadata = {
   title: 'Livi Skov - Estações Espirituais',
@@ -29,9 +30,11 @@ export default function RootLayout({
         />
         <FirebaseClientProvider>
           <SupabaseProvider>
-            <SocialSidebar />
-            {children}
-            <Toaster />
+            <TooltipProvider> {/* Adicionando TooltipProvider aqui */}
+              <SocialSidebar />
+              {children}
+              <Toaster />
+            </TooltipProvider>
           </SupabaseProvider>
         </FirebaseClientProvider>
         <Script id="crisp-widget" strategy="afterInteractive">
