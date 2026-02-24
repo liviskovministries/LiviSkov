@@ -12,7 +12,6 @@ import {
   SidebarContent,
   SidebarHeader,
   SidebarFooter,
-  SidebarProvider,
   SidebarTrigger,
   useSidebar, // Importar useSidebar
 } from '@/components/ui/sidebar';
@@ -357,145 +356,143 @@ export default function DevocionalPage() {
   };
 
   return (
-    <SidebarProvider>
-      <div className="flex min-h-screen bg-background">
-        {/* Cabeçalho fixo no topo */}
-        <header className="flex h-16 items-center justify-between border-b bg-background px-4 md:px-6 fixed top-0 left-0 right-0 z-40">
-          <div className="flex items-center gap-4">
-            <SidebarTrigger className="md:hidden" variant="default">
-              <span className="font-semibold">Menu</span>
-            </SidebarTrigger>
+    <div className="flex min-h-screen bg-background">
+      {/* Cabeçalho fixo no topo */}
+      <header className="flex h-16 items-center justify-between border-b bg-background px-4 md:px-6 fixed top-0 left-0 right-0 z-40">
+        <div className="flex items-center gap-4">
+          <SidebarTrigger className="md:hidden" variant="default">
+            <span className="font-semibold">Menu</span>
+          </SidebarTrigger>
+          <Image 
+            src="/images/logo4branco.fw.png" 
+            alt="Livi Skov Logo" 
+            width={40} 
+            height={40} 
+            className="" 
+          />
+          <h1 className="text-xl font-bold text-primary">
+            {selectedLesson ? selectedLesson.title : devocionalCourseData.title}
+          </h1>
+        </div>
+        <div className="flex items-center gap-4">
+          <span className="text-sm text-muted-foreground hidden md:inline">
+            {supabaseUser?.user_metadata?.first_name || supabaseUser?.email}
+          </span>
+        </div>
+      </header>
+
+      <Sidebar collapsible="icon" className="border-r pt-16"> {/* Adicionado pt-16 para compensar o cabeçalho fixo */}
+        <SidebarHeader>
+          <div className="flex items-center justify-center gap-4 p-2">
             <Image 
               src="/images/logo4branco.fw.png" 
-              alt="Livi Skov Logo" 
+              alt="Logo Livi Skov" 
               width={40} 
               height={40} 
               className="" 
+              data-ai-hint="logo"
             />
-            <h1 className="text-xl font-bold text-primary">
-              {selectedLesson ? selectedLesson.title : devocionalCourseData.title}
-            </h1>
+            <span className="text-lg font-bold text-sidebar-foreground">Devocional 2026</span>
           </div>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground hidden md:inline">
-              {supabaseUser?.user_metadata?.first_name || supabaseUser?.email}
-            </span>
+        </SidebarHeader>
+        <SidebarContent className="p-0">
+          <Accordion type="multiple" defaultValue={['devocional-intro']} className="w-full">
+            {devocionalCourseData.modules.map((module) => {
+              const moduleReleaseDate = module.releaseDate ? new Date(module.releaseDate) : null;
+              const isModuleUnlocked = !moduleReleaseDate || currentTime >= moduleReleaseDate;
+              
+              return (
+                <AccordionItem value={module.id} key={module.id} className="border-none">
+                  <AccordionTrigger className="px-4 py-2 text-sm font-semibold text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground hover:no-underline">
+                    {module.title}
+                  </AccordionTrigger>
+                  <AccordionContent className="pb-0 pl-3">
+                    <ul className="flex flex-col gap-1 py-2 border-l border-sidebar-border ml-3">
+                      {module.lessons.map((lesson) => {
+                        const lessonReleaseDate = lesson.releaseDate ? new Date(lesson.releaseDate) : null;
+                        const isLessonUnlocked = isModuleUnlocked && (!lessonReleaseDate || currentTime >= lessonReleaseDate);
+                        const isLocked = !isLessonUnlocked;
+                        const releaseDateFormatted = lessonReleaseDate ? 
+                          new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC' }).format(lessonReleaseDate) : '';
+                        
+                        const lessonButton = (
+                          <button
+                            onClick={() => !isLocked && handleLessonClick(lesson)}
+                            disabled={isLocked}
+                            className={cn(
+                              "w-full text-left text-sm p-2 rounded-md flex items-center gap-3 transition-colors",
+                              selectedLesson?.id === lesson.id 
+                                ? 'bg-sidebar-accent text-sidebar-foreground font-semibold' 
+                                : isLocked 
+                                  ? 'cursor-not-allowed opacity-60' 
+                                  : 'hover:bg-sidebar-accent'
+                            )}
+                          >
+                            {isLocked ? (
+                              <Lock className="h-4 w-4 flex-shrink-0" />
+                            ) : lesson.type === 'video' ? (
+                              <PlayCircle className="h-4 w-4 flex-shrink-0"/>
+                            ) : (
+                              <FileText className="h-4 w-4 flex-shrink-0" />
+                            )}
+                            <span className="flex-1 truncate">{lesson.title}</span>
+                            {completionStatus[lesson.id] && <CheckCircle className="h-4 w-4 text-green-500" />}
+                          </button>
+                        );
+                        
+                        return (
+                          <li key={lesson.id} className="px-2">
+                            {isLocked && lessonReleaseDate ? (
+                              <Tooltip>
+                                <TooltipTrigger asChild>{lessonButton}</TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Disponível em {releaseDateFormatted}</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            ) : (
+                              lessonButton
+                            )}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+              );
+            })}
+          </Accordion>
+        </SidebarContent>
+        <SidebarFooter>
+          <div className="flex flex-col gap-2 p-2">
+            <Button variant="ghost" className="justify-start gap-2" asChild>
+              <Link href="/courses">
+                <Home className="h-4 w-4" />
+                <span>Área de Membros</span>
+              </Link>
+            </Button>
+            <Button variant="ghost" onClick={handleLogout} className="justify-start gap-2">
+              <LogOut className="h-4 w-4" />
+              <span>Sair</span>
+            </Button>
           </div>
-        </header>
-
-        <Sidebar collapsible="icon" className="border-r pt-16"> {/* Adicionado pt-16 para compensar o cabeçalho fixo */}
-          <SidebarHeader>
-            <div className="flex items-center justify-center gap-4 p-2">
-              <Image 
-                src="/images/logo4branco.fw.png" 
-                alt="Logo Livi Skov" 
-                width={40} 
-                height={40} 
-                className="" 
-                data-ai-hint="logo"
-              />
-              <span className="text-lg font-bold text-sidebar-foreground">Devocional 2026</span>
-            </div>
-          </SidebarHeader>
-          <SidebarContent className="p-0">
-            <Accordion type="multiple" defaultValue={['devocional-intro']} className="w-full">
-              {devocionalCourseData.modules.map((module) => {
-                const moduleReleaseDate = module.releaseDate ? new Date(module.releaseDate) : null;
-                const isModuleUnlocked = !moduleReleaseDate || currentTime >= moduleReleaseDate;
-                
-                return (
-                  <AccordionItem value={module.id} key={module.id} className="border-none">
-                    <AccordionTrigger className="px-4 py-2 text-sm font-semibold text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground hover:no-underline">
-                      {module.title}
-                    </AccordionTrigger>
-                    <AccordionContent className="pb-0 pl-3">
-                      <ul className="flex flex-col gap-1 py-2 border-l border-sidebar-border ml-3">
-                        {module.lessons.map((lesson) => {
-                          const lessonReleaseDate = lesson.releaseDate ? new Date(lesson.releaseDate) : null;
-                          const isLessonUnlocked = isModuleUnlocked && (!lessonReleaseDate || currentTime >= lessonReleaseDate);
-                          const isLocked = !isLessonUnlocked;
-                          const releaseDateFormatted = lessonReleaseDate ? 
-                            new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC' }).format(lessonReleaseDate) : '';
-                          
-                          const lessonButton = (
-                            <button
-                              onClick={() => !isLocked && handleLessonClick(lesson)}
-                              disabled={isLocked}
-                              className={cn(
-                                "w-full text-left text-sm p-2 rounded-md flex items-center gap-3 transition-colors",
-                                selectedLesson?.id === lesson.id 
-                                  ? 'bg-sidebar-accent text-sidebar-foreground font-semibold' 
-                                  : isLocked 
-                                    ? 'cursor-not-allowed opacity-60' 
-                                    : 'hover:bg-sidebar-accent'
-                              )}
-                            >
-                              {isLocked ? (
-                                <Lock className="h-4 w-4 flex-shrink-0" />
-                              ) : lesson.type === 'video' ? (
-                                <PlayCircle className="h-4 w-4 flex-shrink-0"/>
-                              ) : (
-                                <FileText className="h-4 w-4 flex-shrink-0" />
-                              )}
-                              <span className="flex-1 truncate">{lesson.title}</span>
-                              {completionStatus[lesson.id] && <CheckCircle className="h-4 w-4 text-green-500" />}
-                            </button>
-                          );
-                          
-                          return (
-                            <li key={lesson.id} className="px-2">
-                              {isLocked && lessonReleaseDate ? (
-                                <Tooltip>
-                                  <TooltipTrigger asChild>{lessonButton}</TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>Disponível em {releaseDateFormatted}</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              ) : (
-                                lessonButton
-                              )}
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </AccordionContent>
-                  </AccordionItem>
-                );
-              })}
-            </Accordion>
-          </SidebarContent>
-          <SidebarFooter>
-            <div className="flex flex-col gap-2 p-2">
-              <Button variant="ghost" className="justify-start gap-2" asChild>
-                <Link href="/courses">
-                  <Home className="h-4 w-4" />
-                  <span>Área de Membros</span>
-                </Link>
-              </Button>
-              <Button variant="ghost" onClick={handleLogout} className="justify-start gap-2">
-                <LogOut className="h-4 w-4" />
-                <span>Sair</span>
-              </Button>
-            </div>
-          </SidebarFooter>
-        </Sidebar>
-        <main className={cn(
-          "flex-1 p-4 md:p-6 lg:p-8 pt-20 transition-all duration-300 ease-in-out", // Adicionado pt-20 para compensar o cabeçalho fixo
-          sidebar.state === 'expanded' ? "md:ml-[280px]" : "md:ml-16"
-        )}>
-          <div className="mx-auto max-w-4xl">
-            {renderLessonContent()}
-            <div className="mt-8">
-              <h2 className="text-2xl font-bold text-primary">
-                {selectedLesson?.subtitle || 'Sobre a aula'}
-              </h2>
-              <div className="mt-4 text-muted-foreground space-y-4 whitespace-pre-wrap">
-                {selectedLesson?.description}
-              </div>
+        </SidebarFooter>
+      </Sidebar>
+      <main className={cn(
+        "flex-1 p-4 md:p-6 lg:p-8 pt-20 transition-all duration-300 ease-in-out", // Adicionado pt-20 para compensar o cabeçalho fixo
+        sidebar.state === 'expanded' ? "md:ml-[280px]" : "md:ml-16"
+      )}>
+        <div className="mx-auto max-w-4xl">
+          {renderLessonContent()}
+          <div className="mt-8">
+            <h2 className="text-2xl font-bold text-primary">
+              {selectedLesson?.subtitle || 'Sobre a aula'}
+            </h2>
+            <div className="mt-4 text-muted-foreground space-y-4 whitespace-pre-wrap">
+              {selectedLesson?.description}
             </div>
           </div>
-        </main>
-      </div>
-    </SidebarProvider>
+        </div>
+      </main>
+    </div>
   );
 }

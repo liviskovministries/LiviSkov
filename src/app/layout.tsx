@@ -5,13 +5,14 @@ import { Toaster } from "@/components/ui/toaster";
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { SocialSidebar } from '@/components/social-sidebar';
 import { SupabaseProvider } from '@/integrations/supabase/supabase-provider';
-import { TooltipProvider } from '@/components/ui/tooltip'; // Importar TooltipProvider
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { SidebarProvider } from '@/components/ui/sidebar'; // Importar SidebarProvider
 
 export const metadata: Metadata = {
   title: 'Livi Skov - Estações Espirituais',
   description: 'Descubra as estações da sua jornada com Deus',
   icons: {
-    icon: '/logo4verde.fw.png', // Novo favicon
+    icon: '/logo4verde.fw.png',
   },
 };
 
@@ -30,10 +31,12 @@ export default function RootLayout({
         />
         <FirebaseClientProvider>
           <SupabaseProvider>
-            <TooltipProvider> {/* Adicionando TooltipProvider aqui */}
-              <SocialSidebar />
-              {children}
-              <Toaster />
+            <TooltipProvider>
+              <SidebarProvider> {/* Adicionando SidebarProvider aqui */}
+                <SocialSidebar />
+                {children}
+                <Toaster />
+              </SidebarProvider>
             </TooltipProvider>
           </SupabaseProvider>
         </FirebaseClientProvider>
