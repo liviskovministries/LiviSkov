@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking, useUser } from '@/firebase';
-import { collection, doc } from 'firebase/firestore';
+import { doc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { useSupabaseAuth, useSupabaseUser } from '@/integrations/supabase/supabase-provider';
@@ -12,23 +12,18 @@ import { CourseLayout, Lesson, CourseData } from '@/components/course-layout';
 import { DevocionalNavigation } from '@/components/devocional-navigation';
 import { DevocionalBookLayout } from '@/components/devocional-book-layout';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Button } from '@/components/ui/button'; // Importando Button que estava faltando
+import { Button } from '@/components/ui/button';
 
-// Adicionando dayNumber à interface Lesson temporariamente
-interface DevocionalLesson extends Lesson {
-  dayNumber?: number;
-}
-
-// Conteúdo do livro para cada dia (exemplo - você pode expandir com conteúdo real)
+// Conteúdo do livro para cada dia
 const bookContentByDay = {
-  1: `Bem-vindo ao primeiro dia do seu devocional 2026!\n\nQue este ano seja marcado por renovação espiritual e crescimento contínuo na presença de Deus.\n\nLeitura sugerida: "
-Eu crio novos céus e nova terra, e as coisas passadas não serão lembradas."`,
+  1: `Bem-vindo ao primeiro dia do seu devocional 2026!\n\nQue este ano seja marcado por renovação espiritual e crescimento contínuo na presença de Deus.\n\nLeitura sugerida: "Eu crio novos céus e nova terra, e as coisas passadas não serão lembradas."`,
   2: `Dia 2 - Uma nova perspectiva\n\nComo podemos enxergar as situações com os olhos da fé?`,
-  // ... continuar para os outros dias
+  // Adicione conteúdo para os outros dias...
 };
 
+// Mover generateDailyLessons para dentro do arquivo
 const generateDailyLessons = () => {
-  const lessons: DevocionalLesson[] = [];
+  const lessons: Lesson[] = [];
   for (let i = 1; i <= 31; i++) {
     const day = String(i).padStart(2, '0');
     lessons.push({
@@ -38,7 +33,6 @@ const generateDailyLessons = () => {
       videoId: 'Dc4EBMJXQgg',
       subtitle: `Devocional do Dia ${day}`,
       description: `Bem-vindo ao devocional do Dia ${day}! Hoje, vamos mergulhar na palavra e encontrar inspiração para sua jornada.`,
-      dayNumber: i
     });
   }
   return lessons;
@@ -56,7 +50,7 @@ const devocionalCourseData: CourseData = {
           title: 'Livro Um novo ano, um recomeço',
           type: 'resource',
           subtitle: 'Sobre o Livro Um ano novo, recomeço',
-          description: 'Baixe o livro completo em PDF para acompanhar os 31 dias de devocional.'
+          description: `Este devocional de 31 dias foi cuidadosamente preparado para guiar sua jornada espiritual ao longo de um mês completo de reflexão e crescimento.\n\n📖 O QUE VOCÊ ENCONTRARÁ NO LIVRO:\n\n• 31 devocionais diários com mensagens inspiradoras\n• Espaços para suas próprias reflexões e anotações\n• Passagens bíblicas selecionadas para cada tema\n• Perguntas que estimulam a introspecção\n\n🎯 COMO UTILIZAR:\n\nCada devocional foi pensado para ser acompanhado pelos vídeos correspondentes. Leia o texto do livro, assista o vídeo do dia, e depois volte ao livro para registrar suas reflexões e insights pessoais.\n\nEsta é uma jornada transformadora que combina a profundidade da leitura reflexiva com a dinâmica do conteúdo em vídeo, criando uma experiência completa de aprendizado espiritual.`
         },
         ...generateDailyLessons(),
       ],
