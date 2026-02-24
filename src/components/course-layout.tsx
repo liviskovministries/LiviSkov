@@ -52,7 +52,8 @@ interface CourseLayoutProps {
   handleLogout: () => Promise<void>;
   courseLogoPath: string;
   resourceCoverPath?: string;
-  sidebarContent: React.ReactNode; // Nova prop para o conteúdo da sidebar
+  sidebarContent: React.ReactNode;
+  customContent?: React.ReactNode; // Nova prop para conteúdo customizado
 }
 
 export function CourseLayout({
@@ -68,11 +69,12 @@ export function CourseLayout({
   handleLogout,
   courseLogoPath,
   resourceCoverPath,
-  sidebarContent, // Destruturar a nova prop
+  sidebarContent,
+  customContent,
 }: CourseLayoutProps) {
   const sidebar = useSidebar();
 
-  const renderLessonContent = () => {
+  const defaultLessonContent = () => {
     if (!selectedLesson) return <p>Selecione uma aula para começar.</p>;
     
     switch (selectedLesson.type) {
@@ -128,6 +130,28 @@ export function CourseLayout({
     }
   };
 
+  const renderContent = () => {
+    // Se houver conteúdo customizado, usar ele
+    if (customContent) {
+      return customContent;
+    }
+    
+    // Caso contrário, usar o conteúdo padrão
+    return (
+      <>
+        {defaultLessonContent()}
+        <div className="mt-8">
+          <h2 className="text-2xl font-bold text-primary">
+            {selectedLesson?.subtitle || 'Sobre a aula'}
+          </h2>
+          <div className="mt-4 text-muted-foreground space-y-4 whitespace-pre-wrap">
+            {selectedLesson?.description}
+          </div>
+        </div>
+      </>
+    );
+  };
+
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar collapsible="icon" className="border-r">
@@ -145,7 +169,7 @@ export function CourseLayout({
           </div>
         </SidebarHeader>
         <SidebarContent className="p-0">
-          {sidebarContent} {/* Renderiza o conteúdo da sidebar passado via prop */}
+          {sidebarContent}
         </SidebarContent>
         <SidebarFooter>
           <div className="flex flex-col gap-2 p-2">
@@ -179,16 +203,8 @@ export function CourseLayout({
           </div>
         </header>
         <main className="p-4 md:p-6 lg:p-8">
-          <div className="mx-auto max-w-4xl">
-            {renderLessonContent()}
-            <div className="mt-8">
-              <h2 className="text-2xl font-bold text-primary">
-                {selectedLesson?.subtitle || 'Sobre a aula'}
-              </h2>
-              <div className="mt-4 text-muted-foreground space-y-4 whitespace-pre-wrap">
-                {selectedLesson?.description}
-              </div>
-            </div>
+          <div className="mx-auto max-w-6xl h-full">
+            {renderContent()}
           </div>
         </main>
       </div>
