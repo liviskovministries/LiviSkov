@@ -264,6 +264,17 @@ export default function Devocional2026Page() {
   // Extrair todas as aulas do único módulo para a navegação personalizada
   const allDevocionalLessons = useMemo(() => devocionalCourseData.modules[0].lessons, []);
 
+  // Conteúdo da sidebar para o Devocional 2026
+  const devocionalSidebarContent = useMemo(() => (
+    <DevocionalNavigation
+      lessons={allDevocionalLessons}
+      selectedLesson={selectedLesson}
+      completionStatus={completionStatus}
+      handleLessonClick={handleLessonClick}
+      currentTime={currentTime}
+    />
+  ), [allDevocionalLessons, selectedLesson, completionStatus, handleLessonClick, currentTime]);
+
   return (
     <SidebarProvider>
       <CourseLayout
@@ -279,15 +290,7 @@ export default function Devocional2026Page() {
         handleLogout={handleLogout}
         courseLogoPath="/images/logo4branco.fw.png"
         resourceCoverPath="/images/devocional-2026-banner.jpg"
-        renderSidebarContent={({ selectedLesson, completionStatus, handleLessonClick, currentTime }) => (
-          <DevocionalNavigation
-            lessons={allDevocionalLessons}
-            selectedLesson={selectedLesson}
-            completionStatus={completionStatus}
-            handleLessonClick={handleLessonClick}
-            currentTime={currentTime}
-          />
-        )}
+        sidebarContent={devocionalSidebarContent} // Passar o conteúdo personalizado da sidebar
       />
     </SidebarProvider>
   );

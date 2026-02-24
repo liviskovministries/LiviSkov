@@ -9,6 +9,9 @@ import { useSupabaseAuth, useSupabaseUser } from '@/integrations/supabase/supaba
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { CourseLayout, Lesson, CourseData } from '@/components/course-layout'; // Importar CourseLayout e tipos
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'; // Importar Accordion
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'; // Importar Tooltip
+import { Lock, PlayCircle, FileText, CheckCircle } from 'lucide-react'; // Importar ícones
 
 const courseData: CourseData = {
   title: 'Curso Estações Espirituais',
@@ -332,6 +335,73 @@ export default function CoursePage() {
     }
   };
 
+  // Conteúdo padrão da sidebar para Estações Espirituais
+  const defaultSidebarContent = useMemo(() => (
+    <Accordion type="multiple" defaultValue={['modulo-0']} className="w-full">
+      {courseData.modules.map((module) => {
+        const releaseDate = module.releaseDate ? new Date(module.releaseDate) : null;
+        const isModuleUnlocked = !releaseDate || currentTime >= releaseDate;
+        
+        return (
+          <AccordionItem value={module.id} key={module.id} className="border-none">
+            <AccordionTrigger className="px-4 py-2 text-sm font-semibold text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground hover:no-underline">
+              {module.title}
+            </AccordionTrigger>
+            <AccordionContent className="pb-0 pl-3">
+              <ul className="flex flex-col gap-1 py-2 border-l border-sidebar-border ml-3">
+                {module.lessons.map((lesson) => {
+                  const isLocked = !isModuleUnlocked;
+                  const releaseDateFormatted = releaseDate ? 
+                    new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC' }).format(releaseDate) : '';
+                  
+                  const lessonButton = (
+                    <button
+                      onClick={() => !isLocked && handleLessonClick(lesson)}
+                      disabled={isLocked}
+                      className={`w-full text-left text-sm p-2 rounded-md flex items-center gap-3 transition-colors ${
+                        selectedLesson?.id === lesson.id 
+                          ? 'bg-sidebar-accent text-sidebar-foreground font-semibold' 
+                          : isLocked 
+                            ? 'cursor-not-allowed opacity-60' 
+                            : 'hover:bg-sidebar-accent'
+                      }`}
+                    >
+                      {isLocked ? (
+                        <Lock className="h-4 w-4 flex-shrink-0" />
+                      ) : lesson.type === 'video' ? (
+                        <PlayCircle className="h-4 w-4 flex-shrink-0"/>
+                      ) : (
+                        <FileText className="h-4 w-4 flex-shrink-0" />
+                      )}
+                      <span className="flex-1 truncate">{lesson.title}</span>
+                      {completionStatus[lesson.id] && <CheckCircle className="h-4 w-4 text-green-500" />}
+                    </button>
+                  );
+                  
+                  return (
+                    <li key={lesson.id} className="px-2">
+                      {isLocked && releaseDate ? (
+                        <Tooltip>
+                          <TooltipTrigger asChild>{lessonButton}</TooltipTrigger>
+                          <TooltipContent>
+                            <p>Disponível em {releaseDateFormatted}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      ) : (
+                        lessonButton
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </AccordionContent>
+          </AccordionItem>
+        );
+      })}
+    </Accordion>
+  ), [courseData, completionStatus, handleLessonClick, currentTime, selectedLesson]);
+
+
   if (isSupabaseUserLoading || !supabaseUser || isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
@@ -372,6 +442,7 @@ export default function CoursePage() {
         handleLogout={handleLogout}
         courseLogoPath="/images/logo4branco.fw.png" // Caminho do logo para Estações Espirituais
         resourceCoverPath="/images/capa_livro_estacoes_espirituais.jpg" // Caminho da capa do livro
+        sidebarContent={defaultSidebarContent} // Passar o conteúdo padrão da sidebar
       />
     </SidebarProvider>
   );
