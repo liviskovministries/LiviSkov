@@ -23,6 +23,12 @@
       "description": "Banner para o curso Devocional 2026 - Um novo ano, um recomeço.",
       "imageUrl": "/images/devocional-2026-banner.jpg",
       "imageHint": "devotional new year new beginning"
+    },
+    {
+      "id": "estacoes-espirituais-logo",
+      "description": "Logo do curso Estações Espirituais com elementos sazonais.",
+      "imageUrl": "/images/logo-curso-estacoes-espirituais.jpg",
+      "imageHint": "Estações Espirituais course logo"
     }
   ]
 }
