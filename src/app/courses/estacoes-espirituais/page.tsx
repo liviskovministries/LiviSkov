@@ -143,7 +143,7 @@ const courseData = {
           id: 'enc-1',
           title: 'Live de Encerramento',
           type: 'video' as const,
-          videoId: undefined, // Removido o ID do vídeo
+          videoId: '9dpajnxfsGg', // Adicionado o ID do vídeo da live
           subtitle: 'GRANDE ENCONTRO FINAL – Aulão ao Vivo no Zoom (Segunda-feira, 23 de fevereiro de 2026 às 20:30h)',
           description: 'Este será o nosso último encontro, um momento de conexão e reflexão sobre tudo o que vivemos.\n\n💡 O que teremos?\n\n✅ Compartilhamento de experiências.\n✅ Reflexões sobre cada estação.\n✅ Direcionamentos para o futuro.\n✅ Um tempo de comunhão e gratidão.\n\n🚀 Prepare-se para um GRANDE encerramento numa reunião maravilhosa no Zoom! 🎓🎊'
         },
