@@ -184,7 +184,9 @@ function CoursesPageContent() {
                     <CardFooter className="p-0 mt-6">
                       {isEnrolled ? (
                         <Link href={`/courses/${course.id}`} className="w-full md:w-auto">
-                          <Button size="lg" className="w-full">Acessar Curso</Button>
+                          <Button size="lg" className="w-full">
+                            {course.id === 'devocional-2026' ? 'Acessar Devocional' : 'Acessar Curso'}
+                          </Button>
                         </Link>
                       ) : (
                         <Button 
