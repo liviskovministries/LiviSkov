@@ -28,7 +28,7 @@ const courses = [
   {
     id: 'devocional-2026',
     title: 'Devocional 2026 - Um novo ano, um recomeço',
-    description: '31 DIAS DE ENCORAJAMENTO, RENOVO E RECOMEÇOS NA PALAVRA',
+    description: '31 dias de encorajamento, renovo e recomeços na palavra',
     imageUrl: PlaceHolderImages.find(img => img.id === 'devocional-2026-banner')?.imageUrl || '/images/devocional-2026-banner.jpg',
     imageHint: PlaceHolderImages.find(img => img.id === 'devocional-2026-banner')?.imageHint || 'devotional new year new beginning',
     stripePaymentLink: 'https://buy.stripe.com/replace_with_devocional_link', // **SUBSTITUA ESTE LINK PELO SEU LINK DE PAGAMENTO DO STRIPE PARA O DEVOCIONAL 2026**
