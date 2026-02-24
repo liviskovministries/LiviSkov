@@ -29,6 +29,12 @@
       "description": "Logo do curso Estações Espirituais com elementos sazonais.",
       "imageUrl": "/images/logo-curso-estacoes-espirituais.jpg",
       "imageHint": "Estações Espirituais course logo"
+    },
+    {
+      "id": "devocional-2026-cover",
+      "description": "Capa do livro Devocional 2026 - Um novo ano, um recomeço.",
+      "imageUrl": "/images/capa_devocional_2026.jpg",
+      "imageHint": "Devocional 2026 book cover"
     }
   ]
 }

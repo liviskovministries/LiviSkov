@@ -10,6 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { CourseLayout, Lesson, CourseData } from '@/components/course-layout';
 import { DevocionalNavigation } from '@/components/devocional-navigation'; // Importar o novo componente de navegação
+import { PlaceHolderImages } from '@/lib/placeholder-images'; // Importar PlaceHolderImages
 
 // Função para gerar as 31 aulas diárias
 const generateDailyLessons = () => {
@@ -290,7 +291,7 @@ export default function Devocional2026Page() {
         handleDownloadResource={handleDownloadWatermarkedPdf}
         handleLogout={handleLogout}
         courseLogoPath="/images/logo4branco.fw.png"
-        resourceCoverPath="/images/devocional-2026-banner.jpg"
+        resourceCoverPath={PlaceHolderImages.find(img => img.id === 'devocional-2026-cover')?.imageUrl || '/images/devocional-2026-banner.jpg'}
         sidebarContent={devocionalSidebarContent} // Passar o conteúdo personalizado da sidebar
       />
     </SidebarProvider>
