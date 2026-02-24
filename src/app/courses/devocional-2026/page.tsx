@@ -38,7 +38,7 @@ const devocionalCourseData: CourseData = {
       lessons: [
         {
           id: 'devocional-pdf',
-          title: 'Baixar Devocional em PDF',
+          title: 'Livro Um novo ano, um recomeço',
           type: 'resource' as const,
           subtitle: 'Material de Apoio: Devocional 2026',
           description: 'Acesse e baixe o seu Devocional 2026 em formato PDF. Este material é essencial para acompanhar as leituras diárias e reflexões.'
