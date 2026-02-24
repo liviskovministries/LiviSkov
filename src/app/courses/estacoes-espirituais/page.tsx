@@ -380,16 +380,14 @@ export default function CoursePage() {
                   
                   return (
                     <li key={lesson.id} className="px-2">
-                      {isLocked && releaseDate ? (
-                        <Tooltip>
-                          <TooltipTrigger asChild>{lessonButton}</TooltipTrigger>
+                      <Tooltip> {/* Tooltip sempre renderizado */}
+                        <TooltipTrigger asChild>{lessonButton}</TooltipTrigger>
+                        {isLocked && releaseDate && ( // TooltipContent renderizado condicionalmente
                           <TooltipContent>
                             <p>Disponível em {releaseDateFormatted}</p>
                           </TooltipContent>
-                        </Tooltip>
-                      ) : (
-                        lessonButton
-                      )}
+                        )}
+                      </Tooltip>
                     </li>
                   );
                 })}
