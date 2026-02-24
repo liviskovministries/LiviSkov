@@ -553,34 +553,38 @@ export default function CoursePage() {
           </header>
           <main className="p-4 md:p-6 lg:p-8">
             <div className="mx-auto max-w-4xl">
-              {selectedLesson?.id === 'enc-1' && (
+              {selectedLesson?.id === 'enc-1' ? (
                 <>
-                  <h2 className="text-2xl font-bold text-primary">
-                    {selectedLesson?.subtitle || 'Sobre a aula'}
-                  </h2>
-                  <div className="mt-4 text-muted-foreground space-y-4 whitespace-pre-wrap mb-8">
-                    {selectedLesson?.description}
-                  </div>
-                  {/* Botão de acesso ao Zoom */}
-                  <div className="mt-6 text-center">
-                    <Link href="https://us02web.zoom.us/j/86237725402?pwd=EWb0Dh8cRJFQg5J3rCtDsG4KZnuxYj.1" target="_blank" rel="noopener noreferrer">
-                      <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                        Acessar Aulão no Zoom
-                      </Button>
-                    </Link>
+                  {renderLessonContent()} {/* Vídeo primeiro */}
+                  <div className="mt-8"> {/* Adicionado mt-8 para espaçamento */}
+                    <h2 className="text-2xl font-bold text-primary">
+                      {selectedLesson?.subtitle || 'Sobre a aula'}
+                    </h2>
+                    <div className="mt-4 text-muted-foreground space-y-4 whitespace-pre-wrap mb-8">
+                      {selectedLesson?.description}
+                    </div>
+                    {/* Botão de acesso ao Zoom */}
+                    <div className="mt-6 text-center">
+                      <Link href="https://us02web.zoom.us/j/86237725402?pwd=EWb0Dh8cRJFQg5J3rCtDsG4KZnuxYj.1" target="_blank" rel="noopener noreferrer">
+                        <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                          Acessar Aulão no Zoom
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
                 </>
-              )}
-              {renderLessonContent()}
-              {selectedLesson?.id !== 'enc-1' && (
-                <div className="mt-8">
-                  <h2 className="text-2xl font-bold text-primary">
-                    {selectedLesson?.subtitle || 'Sobre a aula'}
-                  </h2>
-                  <div className="mt-4 text-muted-foreground space-y-4 whitespace-pre-wrap">
-                    {selectedLesson?.description}
+              ) : (
+                <>
+                  {renderLessonContent()}
+                  <div className="mt-8">
+                    <h2 className="text-2xl font-bold text-primary">
+                      {selectedLesson?.subtitle || 'Sobre a aula'}
+                    </h2>
+                    <div className="mt-4 text-muted-foreground space-y-4 whitespace-pre-wrap">
+                      {selectedLesson?.description}
+                    </div>
                   </div>
-                </div>
+                </>
               )}
             </div>
           </main>
