@@ -40,8 +40,8 @@ const devocionalCourseData: CourseData = {
           id: 'devocional-pdf',
           title: 'Livro Um novo ano, um recomeço',
           type: 'resource' as const,
-          subtitle: 'Material de Apoio: Devocional 2026',
-          description: 'Acesse e baixe o seu Devocional 2026 em formato PDF. Este material é essencial para acompanhar as leituras diárias e reflexões.'
+          subtitle: 'Sobre o Livro Um ano novo, recomeço',
+          description: `Este devocional de 31 dias foi cuidadosamente preparado para guiar sua jornada espiritual ao longo de um mês completo de reflexão e crescimento.\n\n📖 O QUE VOCÊ ENCONTRARÁ NO LIVRO:\n\n• 31 devocionais diários com mensagens inspiradoras\n• Espaços para suas próprias reflexões e anotações\n• Passagens bíblicas selecionadas para cada tema\n• Perguntas que estimulam a introspecção\n\n🎯 COMO UTILIZAR:\n\nCada devocional foi pensado para ser acompanhado pelos vídeos correspondentes. Leia o texto do livro, assista o vídeo do dia, e depois volte ao livro para registrar suas reflexões e insights pessoais.\n\nEsta é uma jornada transformadora que combina a profundidade da leitura reflexiva com a dinâmica do conteúdo em vídeo, criando uma experiência completa de aprendizado espiritual.`
         },
         ...generateDailyLessons(), // Adicionar todas as 31 aulas diárias
       ],
