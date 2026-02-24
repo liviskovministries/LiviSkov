@@ -563,14 +563,7 @@ export default function CoursePage() {
                     <div className="mt-4 text-muted-foreground space-y-4 whitespace-pre-wrap mb-8">
                       {selectedLesson?.description}
                     </div>
-                    {/* Botão de acesso ao Zoom */}
-                    <div className="mt-6 text-center">
-                      <Link href="https://us02web.zoom.us/j/86237725402?pwd=EWb0Dh8cRJFQg5J3rCtDsG4KZnuxYj.1" target="_blank" rel="noopener noreferrer">
-                        <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                          Acessar Aulão no Zoom
-                        </Button>
-                      </Link>
-                    </div>
+                    {/* O botão de acesso ao Zoom foi removido daqui */}
                   </div>
                 </>
               ) : (
