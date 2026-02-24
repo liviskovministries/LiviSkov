@@ -9,13 +9,12 @@ import { useSupabaseAuth, useSupabaseUser } from '@/integrations/supabase/supaba
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { DevocionalDailyLayout, DevocionalDailyLesson } from '@/components/devocional-daily-layout';
+import { CourseLayout, Lesson, CourseData } from '@/components/course-layout';
 import { DevocionalNavigation } from '@/components/devocional-navigation';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 // Criando um tipo unificado que pode ser usado em ambos os layouts
-type UnifiedLesson = DevocionalDailyLesson & {
-  type: 'video' | 'resource';
-};
+type UnifiedLesson = DevocionalDailyLesson & Lesson;
 
 // Função para gerar as 31 aulas diárias com texto placeholder
 const generateDailyLessons = (): UnifiedLesson[] => {
@@ -25,17 +24,17 @@ const generateDailyLessons = (): UnifiedLesson[] => {
     lessons.push({
       id: `day-${day}`,
       title: `Devocional - Dia ${day}`,
-      type: 'video' as const,
       subtitle: `Dia ${day}: Um novo recomeço`,
-      description: `Bem-vindo ao devocional do Dia ${day}! Hoje, vamos mergulhar na palavra e encontrar inspiração para sua jornada.`,
+      type: 'video' as const,
       videoId: 'Dc4EBMJXQgg',
+      description: `Bem-vindo ao devocional do Dia ${day}! Hoje, vamos mergulhar na palavra e encontrar inspiração para sua jornada.`,
       bookText: `Texto do livro para o Dia ${day} será adicionado em breve.\n\nEste espaço conterá o conteúdo completo do devocional correspondente ao dia ${day}, incluindo reflexões, passagens bíblicas e perguntas para sua jornada espiritual.`
     });
   }
   return lessons;
 };
 
-const devocionalCourseData = {
+const devocionalCourseData: CourseData = {
   title: 'Devocional 2026',
   modules: [
     {
@@ -47,7 +46,7 @@ const devocionalCourseData = {
           title: 'Livro Um novo ano, um recomeço',
           type: 'resource' as const,
           subtitle: 'Sobre o Livro Um ano novo, recomeço',
-          description: `Este devocional de 31 dias foi cuidadosamente preparado para guiar sua jornada espiritual ao longo de um mês completo de reflexão e crescimento.`,
+          description: `Este devocional de 31 dias foi cuidadosamente preparado para guiar sua jornada espiritual ao longo de um mês completo de reflexão e crescimento.\n\n📖 O QUE VOCÊ ENCONTRARÁ NO LIVRO:\n\n• 31 devocionais diários com mensagens inspiradoras\n• Espaços para suas próprias reflexões e anotações\n• Passagens bíblicas selecionadas para cada tema\n• Perguntas que estimulam a introspecção\n\n🎯 COMO UTILIZAR:\n\nCada devocional foi pensado para ser acompanhado pelos vídeos correspondentes. Leia o texto do livro, assista o vídeo do dia, e depois volte ao livro para registrar suas reflexões e insights pessoais.\n\nEsta é uma jornada transformadora que combina a profundidade da leitura reflexiva com a dinâmica do conteúdo em vídeo, criando uma experiência completa de aprendizado espiritual.`
         },
         ...generateDailyLessons(),
       ],
@@ -254,48 +253,27 @@ export default function Devocional2026Page() {
   // Identificar se é uma aula de vídeo (dias 01-31)
   const isDailyLesson = selectedLesson?.id.startsWith('day-');
 
-  // Funções para navegação entre os dias
-  const getCurrentDayIndex = () => {
-    if (!selectedLesson || !isDailyLesson) return -1;
-    return devocionalCourseData.modules[0].lessons.findIndex(lesson => lesson.id === selectedLesson.id);
-  };
+  // Conversão segura para tipos específicos
+  const lessonsAsDevocionalType: DevocionalDailyLesson[] = devocionalCourseData.modules[0].lessons.map(lesson => ({
+    ...lesson,
+    bookText: (lesson as any).bookText || ''
+  }));
 
-  const hasNextLesson = () => {
-    const currentIndex = getCurrentDayIndex();
-    return currentIndex > -1 && currentIndex < devocionalCourseData.modules[0].lessons.length - 1;
-  };
-
-  const hasPreviousLesson = () => {
-    const currentIndex = getCurrentDayIndex();
-    return currentIndex > 1; // Começa do índice 1 (depois do download do livro)
-  };
-
-  const goToNextLesson = () => {
-    const currentIndex = getCurrentDayIndex();
-    if (hasNextLesson()) {
-      const nextLesson = devocionalCourseData.modules[0].lessons[currentIndex + 1] as UnifiedLesson;
-      handleLessonClick(nextLesson);
-    }
-  };
-
-  const goToPreviousLesson = () => {
-    const currentIndex = getCurrentDayIndex();
-    if (hasPreviousLesson()) {
-      const prevLesson = devocionalCourseData.modules[0].lessons[currentIndex - 1] as UnifiedLesson;
-      handleLessonClick(prevLesson);
-    }
-  };
+  const selectedLessonAsDevocional: DevocionalDailyLesson | null = selectedLesson ? {
+    ...selectedLesson,
+    bookText: (selectedLesson as any).bookText || ''
+  } : null;
 
   // Conteúdo da sidebar para o Devocional 2026
   const devocionalSidebarContent = useMemo(() => (
     <DevocionalNavigation
-      lessons={devocionalCourseData.modules[0].lessons}
-      selectedLesson={selectedLesson}
+      lessons={lessonsAsDevocionalType}
+      selectedLesson={selectedLessonAsDevocional}
       completionStatus={completionStatus}
       handleLessonClick={handleLessonClick}
       currentTime={currentTime}
     />
-  ), [devocionalCourseData.modules[0].lessons, selectedLesson, completionStatus, handleLessonClick, currentTime]);
+  ), [lessonsAsDevocionalType, selectedLessonAsDevocional, completionStatus, handleLessonClick, currentTime]);
 
   // Retornos condicionais
   if (isSupabaseUserLoading || !supabaseUser || isLoading) {
@@ -319,42 +297,45 @@ export default function Devocional2026Page() {
     return (
       <SidebarProvider>
         <DevocionalDailyLayout
-          selectedLesson={selectedLesson}
+          selectedLesson={selectedLessonAsDevocional}
           supabaseUser={supabaseUser}
           completionStatus={completionStatus}
           handleLessonClick={handleLessonClick}
           handleVideoEnd={handleVideoEnd}
           handleLogout={handleLogout}
           sidebarContent={devocionalSidebarContent}
-          onNextLesson={goToNextLesson}
-          onPreviousLesson={goToPreviousLesson}
-          hasNextLesson={hasNextLesson()}
-          hasPreviousLesson={hasPreviousLesson()}
         />
       </SidebarProvider>
     );
   }
 
-  // Para o download do livro, usar o layout diferente
-  const selectedLessonAsLesson = selectedLesson;
-  
+  // Para o download do livro, usar o layout original com conversão de tipos
+  const selectedLessonAsLesson: Lesson | null = selectedLesson ? {
+    id: selectedLesson.id,
+    title: selectedLesson.title,
+    type: selectedLesson.type,
+    subtitle: selectedLesson.subtitle,
+    description: selectedLesson.description,
+    videoId: selectedLesson.videoId
+  } : null;
+
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen bg-background">
-        <div className="flex-1">
-          <div className="p-8 text-center">
-            <h1 className="text-3xl font-bold text-primary">{selectedLesson?.title}</h1>
-            <p className="mt-4 text-muted-foreground">{selectedLesson?.description}</p>
-            <button 
-              onClick={handleDownloadWatermarkedPdf}
-              className="mt-6 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
-              disabled={isDownloading}
-            >
-              {isDownloading ? 'Gerando...' : 'Baixar Livro em PDF'}
-            </button>
-          </div>
-        </div>
-      </div>
+      <CourseLayout
+        selectedLesson={selectedLessonAsLesson}
+        courseData={devocionalCourseData}
+        supabaseUser={supabaseUser}
+        completionStatus={completionStatus}
+        isDownloading={isDownloading}
+        currentTime={currentTime}
+        handleLessonClick={handleLessonClick}
+        handleVideoEnd={handleVideoEnd}
+        handleDownloadResource={handleDownloadWatermarkedPdf}
+        handleLogout={handleLogout}
+        courseLogoPath="/images/logo4branco.fw.png"
+        resourceCoverPath={PlaceHolderImages.find(img => img.id === 'devocional-2026-cover')?.imageUrl || '/images/devocional-2026-banner.jpg'}
+        sidebarContent={devocionalSidebarContent}
+      />
     </SidebarProvider>
   );
 }

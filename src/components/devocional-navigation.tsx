@@ -38,7 +38,7 @@ export function DevocionalNavigation({
     <div className="flex flex-col gap-4 p-4">
       {/* Download do Livro */}
       {downloadLesson && (
-        <div className="mb-2">
+        <div className="mb-4">
           <button
             onClick={() => handleLessonClick(downloadLesson)}
             className={cn(
@@ -48,29 +48,29 @@ export function DevocionalNavigation({
                 : 'hover:bg-sidebar-accent text-sidebar-foreground/70'
             )}
           >
-            <FileText className="h-4 w-4 flex-shrink-0" />
-            <span className="flex-1 truncate text-sm">{downloadLesson.title}</span>
-            {completionStatus[downloadLesson.id] && <CheckCircle className="h-4 w-4 text-green-500" />}
+            <FileText className="h-5 w-5 flex-shrink-0" />
+            <span className="flex-1 truncate font-bold">{downloadLesson.title}</span>
+            {completionStatus[downloadLesson.id] && <CheckCircle className="h-5 w-5 text-green-500" />}
           </button>
         </div>
       )}
 
       {/* Navegação tipo calendário para os dias */}
-      <h3 className="text-sm font-semibold text-sidebar-foreground/90 mb-2">Devocional Diário</h3>
-      <div className="grid grid-cols-5 gap-1">
+      <h3 className="text-lg font-semibold text-sidebar-foreground/90 mb-2">Devocional Diário</h3>
+      <div className="grid grid-cols-7 gap-2">
         {Array.from({ length: 31 }, (_, i) => i + 1).map(dayNum => {
           const lessonId = `day-${String(dayNum).padStart(2, '0')}`;
           const lesson = dailyLessons.find(l => l.id === lessonId);
-          const isLocked = false;
+          const isLocked = false; // Todos os dias estão desbloqueados por enquanto
           const isCompleted = completionStatus[lessonId];
 
           const dayButton = (
             <Button
               key={lessonId}
               variant={selectedLesson?.id === lessonId ? 'default' : 'ghost'}
-              size="sm"
+              size="icon"
               className={cn(
-                "h-8 w-8 text-xs p-0",
+                "w-full h-10 text-sidebar-foreground",
                 selectedLesson?.id === lessonId ? "bg-sidebar-accent hover:bg-sidebar-accent/80" : "hover:bg-sidebar-accent/20",
                 isLocked && "opacity-50 cursor-not-allowed"
               )}
@@ -78,22 +78,22 @@ export function DevocionalNavigation({
               disabled={isLocked}
             >
               {isCompleted ? (
-                <CheckCircle className="h-3 w-3 text-green-500" />
+                <CheckCircle className="h-4 w-4 text-green-500" />
               ) : isLocked ? (
-                <Lock className="h-3 w-3" />
+                <Lock className="h-4 w-4" />
               ) : (
-                dayNum
+                String(dayNum).padStart(2, '0')
               )}
             </Button>
           );
 
           return (
-            <div key={dayNum} className="flex justify-center">
+            <div key={dayNum}>
               {isLocked ? (
                 <Tooltip>
                   <TooltipTrigger asChild>{dayButton}</TooltipTrigger>
-                  <TooltipContent side="right">
-                    <p className="text-xs">Em breve</p>
+                  <TooltipContent>
+                    <p>Em breve</p>
                   </TooltipContent>
                 </Tooltip>
               ) : (

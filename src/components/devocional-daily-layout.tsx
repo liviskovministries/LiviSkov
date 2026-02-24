@@ -3,19 +3,19 @@
 import React from 'react';
 import Image from 'next/image';
 import YouTube from 'react-youtube';
-import { Home, LogOut, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Home, LogOut } from 'lucide-react';
 import { 
   Sidebar, 
   SidebarContent, 
   SidebarHeader, 
   SidebarFooter,
-  useSidebar,
-  SidebarTrigger
+  useSidebar
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { User } from '@supabase/supabase-js';
 import Link from 'next/link';
+import { DevocionalNavigation } from './devocional-navigation';
 
 export interface DevocionalDailyLesson {
   id: string;
@@ -35,10 +35,6 @@ interface DevocionalDailyLayoutProps {
   handleVideoEnd: () => void;
   handleLogout: () => Promise<void>;
   sidebarContent: React.ReactNode;
-  onNextLesson: () => void;
-  onPreviousLesson: () => void;
-  hasNextLesson: boolean;
-  hasPreviousLesson: boolean;
 }
 
 export function DevocionalDailyLayout({
@@ -49,10 +45,6 @@ export function DevocionalDailyLayout({
   handleVideoEnd,
   handleLogout,
   sidebarContent,
-  onNextLesson,
-  onPreviousLesson,
-  hasNextLesson,
-  hasPreviousLesson,
 }: DevocionalDailyLayoutProps) {
   const sidebar = useSidebar();
 
@@ -121,30 +113,6 @@ export function DevocionalDailyLayout({
     );
   };
 
-  const NavButtons = () => (
-    <div className="flex justify-between items-center mt-6 space-x-4">
-      <Button
-        variant="outline"
-        onClick={onPreviousLesson}
-        disabled={!hasPreviousLesson}
-        className="flex items-center gap-2"
-      >
-        <ChevronLeft className="h-4 w-4" />
-        Anterior
-      </Button>
-      
-      <Button
-        variant="outline"
-        onClick={onNextLesson}
-        disabled={!hasNextLesson}
-        className="flex items-center gap-2"
-      >
-        Próximo
-        <ChevronRight className="h-4 w-4" />
-      </Button>
-    </div>
-  );
-
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar collapsible="icon" className="border-r">
@@ -182,9 +150,6 @@ export function DevocionalDailyLayout({
       <div className="flex-1">
         <header className="flex h-16 items-center justify-between border-b bg-background px-4 md:px-6">
           <div className="flex items-center gap-4">
-            <SidebarTrigger className="lg:hidden" variant="ghost">
-              Menu
-            </SidebarTrigger>
             <h1 className="text-xl font-bold text-primary">
               {selectedLesson ? selectedLesson.title : 'Devocional 2026'}
             </h1>
@@ -196,43 +161,24 @@ export function DevocionalDailyLayout({
           </div>
         </header>
         
-        <main className={`p-4 md:p-6 lg:p-8 ${sidebar.state === 'expanded' ? "lg:ml-[280px]" : "lg:ml-16"}`}>
-          <div className="max-w-7xl mx-auto">
+        <main className={`p-4 md:p-6 lg:p-8 transition-all duration-300 ease-in-out ${sidebar.state === 'expanded' ? "md:ml-[280px]" : "md:ml-16"}`}>
+          <div className="mx-auto max-w-7xl">
             {!selectedLesson ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">Selecione um dia para começar o devocional.</p>
               </div>
             ) : (
-              <>
-                {/* Layout para desktop */}
-                <div className="hidden lg:grid lg:grid-cols-2 gap-8">
-                  {/* Coluna esquerda - Vídeo no formato de rede social */}
-                  <div className="flex justify-end">
-                    {renderVideoPlayer()}
-                  </div>
-                  
-                  {/* Coluna direita - Texto do livro */}
-                  <div className="h-[600px] overflow-y-auto">
-                    {renderBookContent()}
-                  </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Coluna esquerda - Vídeo no formato de rede social */}
+                <div className="flex justify-center lg:justify-end">
+                  {renderVideoPlayer()}
                 </div>
-
-                {/* Layout para mobile */}
-                <div className="lg:hidden space-y-6">
-                  {/* Vídeo primeiro no mobile */}
-                  <div className="w-full">
-                    {renderVideoPlayer()}
-                  </div>
-                  
-                  {/* Texto do livro depois no mobile */}
-                  <div className="h-auto max-h-[600px] overflow-y-auto">
-                    {renderBookContent()}
-                  </div>
+                
+                {/* Coluna direita - Texto do livro */}
+                <div className="lg:h-[600px] overflow-y-auto">
+                  {renderBookContent()}
                 </div>
-
-                {/* Botões de navegação */}
-                <NavButtons />
-              </>
+              </div>
             )}
             
             {selectedLesson && (
