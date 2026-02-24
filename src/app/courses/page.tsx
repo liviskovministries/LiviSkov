@@ -19,7 +19,7 @@ const courses = [
   {
     id: 'estacoes-espirituais',
     title: 'Curso Estações Espirituais',
-    description: 'Aprenda a reconhecer e a viver plenamente cada estação da sua vida com Deus.',
+    description: 'Aprenda a reconhecer e a viver plenamente cada estação da sua sua vida com Deus.',
     imageUrl: PlaceHolderImages.find(img => img.id === 'estacoes-espirituais-logo')?.imageUrl || '/images/fundo.jpg',
     imageHint: PlaceHolderImages.find(img => img.id === 'estacoes-espirituais-logo')?.imageHint || 'spiritual journey',
     stripePaymentLink: 'https://buy.stripe.com/6oUbJ37bDbe46U0fbM5ZC00', // Link de pagamento para Estações Espirituais
@@ -198,7 +198,9 @@ function CoursesPageContent() {
                               <Lock className="h-5 w-5" /> Inscrições Encerradas
                             </span>
                           ) : (
-                            isPending ? 'Aguarde...' : 'Comprar Curso'
+                            isPending 
+                              ? 'Aguarde...' 
+                              : course.id === 'devocional-2026' ? 'Comprar Devocional' : 'Comprar Curso'
                           )}
                         </Button>
                       )}
