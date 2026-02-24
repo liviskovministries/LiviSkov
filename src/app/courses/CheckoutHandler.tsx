@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { useSupabaseUser } from '@/integrations/supabase/supabase-provider';
 import { supabase } from '@/integrations/supabase/client';
-import { getSessionStatus } from '@/app/actions/checkout';
+import { getSessionStatus, registerCourseAccess } from '@/app/actions/checkout'; // Importar registerCourseAccess
 
 function CheckoutHandler() {
   const { user: supabaseUser } = useSupabaseUser();
@@ -16,8 +16,9 @@ function CheckoutHandler() {
   useEffect(() => {
     const paymentSuccess = searchParams.get('payment_success');
     const sessionId = searchParams.get('session_id');
-    
-    if (paymentSuccess === 'true' && sessionId && supabaseUser) {
+    const clientReferenceId = searchParams.get('client_reference_id'); // Obter client_reference_id
+
+    if (paymentSuccess === 'true' && sessionId && supabaseUser && clientReferenceId) {
       const verifyAndEnroll = async () => {
         try {
           toast({ title: "Verificando pagamento..." });
@@ -25,25 +26,24 @@ function CheckoutHandler() {
           const session = await getSessionStatus(sessionId);
           
           if (session.status === 'complete' && supabaseUser.id) {
-            const courseId = 'estacoes-espirituais';
+            // Extrair userId e courseId do clientReferenceId
+            const [userIdFromRef, courseId] = clientReferenceId.split('|');
+
+            if (userIdFromRef !== supabaseUser.id) {
+              throw new Error('ID de usuário não corresponde ao pagamento.');
+            }
             
-            // Atualizar o status de acesso na tabela public.users
-            const { error } = await supabase
-              .from('users')
-              .update({ 
-                estacoes_espirituais_access: true, 
-                updated_at: new Date().toISOString() 
-              })
-              .eq('id', supabaseUser.id);
+            // Chamar a função registerCourseAccess com o courseId correto
+            const { success, error: registerError } = await registerCourseAccess(supabaseUser.id, courseId);
             
-            if (error) {
-              console.error('Error updating Supabase user course access:', error);
+            if (registerError) {
+              console.error('Error registering course access:', registerError);
               toast({
                 variant: "destructive",
                 title: "Erro ao conceder acesso",
-                description: `Não foi possível conceder acesso ao curso: ${error.message}`
+                description: `Não foi possível conceder acesso ao curso: ${registerError}`
               });
-            } else {
+            } else if (success) {
               toast({
                 title: "Compra confirmada!",
                 description: "Sua inscrição no curso foi realizada com sucesso."

@@ -20,10 +20,19 @@ export async function createCheckoutSession(userId: string, courseId: string, us
   try {
     // Instead of creating a Stripe session, we'll redirect directly to the Stripe payment link
     // This assumes you've set up the link in your Stripe dashboard
-    const stripePaymentLink = 'https://buy.stripe.com/6oUbJ37bDbe46U0fbM5ZC00';
+    // The client_reference_id will now include both userId and courseId
+    const clientReferenceId = `${userId}|${courseId}`;
+
+    let stripePaymentLink = '';
+    if (courseId === 'estacoes-espirituais') {
+      stripePaymentLink = 'https://buy.stripe.com/6oUbJ37bDbe46U0fbM5ZC00'; // Link para Estações Espirituais
+    } else if (courseId === 'devocional-2026') {
+      stripePaymentLink = 'https://buy.stripe.com/replace_with_devocional_link'; // **SUBSTITUA ESTE LINK PELO SEU LINK DE PAGAMENTO DO STRIPE PARA O DEVOCIONAL 2026**
+    } else {
+      return { error: 'Course not found.' };
+    }
     
-    // We'll pass the user info as metadata in the redirect URL
-    const redirectUrl = `${stripePaymentLink}?client_reference_id=${userId}&prefilled_email=${userEmail || ''}`;
+    const redirectUrl = `${stripePaymentLink}?client_reference_id=${clientReferenceId}&prefilled_email=${userEmail || ''}`;
     
     redirect(redirectUrl);
   } catch (error) {
@@ -54,11 +63,20 @@ export async function getSessionStatus(sessionId: string): Promise<{ status: Str
 // Função para registrar o acesso ao curso após pagamento
 export async function registerCourseAccess(userId: string, courseId: string) {
   try {
+    let updateColumn: string;
+    if (courseId === 'estacoes-espirituais') {
+      updateColumn = 'estacoes_espirituais_access';
+    } else if (courseId === 'devocional-2026') {
+      updateColumn = 'devocional_2026_access';
+    } else {
+      return { success: false, error: 'Curso não reconhecido para registro de acesso.' };
+    }
+
     // Atualizar o status de acesso na tabela public.users
     const { error } = await supabase
       .from('users')
       .update({ 
-        estacoes_espirituais_access: true,
+        [updateColumn]: true,
         updated_at: new Date().toISOString()
       })
       .eq('id', userId);

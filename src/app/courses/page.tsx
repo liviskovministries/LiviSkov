@@ -13,14 +13,26 @@ import { useToast } from '@/hooks/use-toast';
 import { useSupabaseUser } from '@/integrations/supabase/supabase-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { Lock } from 'lucide-react'; // Importar o ícone de cadeado
+import { PlaceHolderImages } from '@/lib/placeholder-images'; // Importar PlaceHolderImages
 
 const courses = [
   {
     id: 'estacoes-espirituais',
     title: 'Curso Estações Espirituais',
     description: 'Aprenda a reconhecer e a viver plenamente cada estação da sua vida com Deus.',
-    imageUrl: '/images/logo-curso-estacoes-espirituais.jpg',
-    imageHint: 'spiritual journey',
+    imageUrl: PlaceHolderImages.find(img => img.id === 'hero-background')?.imageUrl || '/images/fundo.jpg',
+    imageHint: PlaceHolderImages.find(img => img.id === 'hero-background')?.imageHint || 'spiritual journey',
+    stripePaymentLink: 'https://buy.stripe.com/6oUbJ37bDbe46U0fbM5ZC00', // Link de pagamento para Estações Espirituais
+    enrollmentDeadline: new Date('2024-07-19T23:59:59'), // Exemplo: 19 de Julho de 2024, 23:59:59
+  },
+  {
+    id: 'devocional-2026',
+    title: 'Devocional 2026 - Um novo ano, um recomeço',
+    description: '31 DIAS DE ENCORAJAMENTO, RENOVO E RECOMEÇOS NA PALAVRA',
+    imageUrl: PlaceHolderImages.find(img => img.id === 'devocional-2026-banner')?.imageUrl || '/images/devocional-2026-banner.jpg',
+    imageHint: PlaceHolderImages.find(img => img.id === 'devocional-2026-banner')?.imageHint || 'devotional new year new beginning',
+    stripePaymentLink: 'https://buy.stripe.com/replace_with_devocional_link', // **SUBSTITUA ESTE LINK PELO SEU LINK DE PAGAMENTO DO STRIPE PARA O DEVOCIONAL 2026**
+    enrollmentDeadline: null, // Sem data limite para este curso, ou defina uma se houver
   }
 ];
 
@@ -35,13 +47,9 @@ function CoursesPageContent() {
   const router = useRouter();
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
-  const [userCourseAccess, setUserCourseAccess] = useState<boolean | null>(null);
+  // userCoursesAccess agora é um objeto para armazenar o status de acesso de cada curso
+  const [userCoursesAccess, setUserCoursesAccess] = useState<Record<string, boolean>>({});
   const [isAccessLoading, setIsAccessLoading] = useState(true);
-
-  // Definir a data limite para as inscrições (ex: 19 de Julho de 2024)
-  // Altere esta data para controlar quando as inscrições são encerradas.
-  const enrollmentDeadline = new Date('2024-07-19T23:59:59'); // Exemplo: 19 de Julho de 2024, 23:59:59
-  const hasEnrollmentEnded = new Date() > enrollmentDeadline;
 
   useEffect(() => {
     const fetchUserAccess = async () => {
@@ -51,26 +59,36 @@ function CoursesPageContent() {
       }
 
       setIsAccessLoading(true);
-      const { data, error } = await supabase
-        .from('users')
-        .select('estacoes_espirituais_access')
-        .eq('id', supabaseUser.id)
-        .single();
+      try {
+        const { data, error } = await supabase
+          .from('users')
+          .select('estacoes_espirituais_access, devocional_2026_access') // Selecionar todas as colunas de acesso
+          .eq('id', supabaseUser.id)
+          .single();
 
-      if (error) {
+        if (error) {
+          console.error('Error fetching user course access:', error);
+          setUserCoursesAccess({});
+        } else {
+          setUserCoursesAccess({
+            'estacoes-espirituais': data?.estacoes_espirituais_access || false,
+            'devocional-2026': data?.devocional_2026_access || false,
+            // Adicione outros cursos aqui conforme necessário
+          });
+        }
+      } catch (error) {
         console.error('Error fetching user course access:', error);
-        setUserCourseAccess(false);
-      } else {
-        setUserCourseAccess(data?.estacoes_espirituais_access || false);
+        setUserCoursesAccess({});
+      } finally {
+        setIsAccessLoading(false);
       }
-      setIsAccessLoading(false);
     };
 
     fetchUserAccess();
   }, [supabaseUser]);
 
-  const handlePurchase = (courseId: string) => {
-    if (hasEnrollmentEnded) {
+  const handlePurchase = (courseId: string, stripePaymentLink: string, enrollmentDeadline: Date | null) => {
+    if (enrollmentDeadline && new Date() > enrollmentDeadline) {
       toast({
         variant: "destructive",
         title: "Inscrições Encerradas",
@@ -80,12 +98,16 @@ function CoursesPageContent() {
     }
 
     if (!supabaseUser) {
-      router.push('/login?redirect=/courses');
+      router.push(`/login?redirect=/courses&courseId=${courseId}`); // Passar courseId para redirecionamento
       return;
     }
     
     // Abrir link do Stripe em nova janela
-    window.open('https://buy.stripe.com/6oUbJ37bDbe46U0fbM5ZC00', '_blank', 'noopener,noreferrer');
+    // O client_reference_id agora inclui userId e courseId
+    const clientReferenceId = `${supabaseUser.id}|${courseId}`;
+    const redirectUrl = `${stripePaymentLink}?client_reference_id=${clientReferenceId}&prefilled_email=${supabaseUser.email || ''}`;
+
+    window.open(redirectUrl, '_blank', 'noopener,noreferrer');
     
     // Mostrar mensagem informativa
     toast({
@@ -138,7 +160,8 @@ function CoursesPageContent() {
         <div className="container py-12 md:py-20">
           <div className="mt-12 flex flex-col items-center gap-8">
             {courses.map((course) => {
-              const isEnrolled = userCourseAccess;
+              const isEnrolled = userCoursesAccess[course.id]; // Verificar acesso para o curso específico
+              const hasEnrollmentEnded = course.enrollmentDeadline ? new Date() > course.enrollmentDeadline : false;
               
               return (
                 <Card key={course.id} className="w-full max-w-4xl overflow-hidden shadow-lg transition-transform duration-300 hover:scale-[1.02] hover:shadow-2xl md:flex">
@@ -165,7 +188,7 @@ function CoursesPageContent() {
                         </Link>
                       ) : (
                         <Button 
-                          onClick={() => handlePurchase(course.id)} 
+                          onClick={() => handlePurchase(course.id, course.stripePaymentLink, course.enrollmentDeadline)} 
                           size="lg" 
                           className="w-full" 
                           disabled={isPending || hasEnrollmentEnded} // Desabilitar se as inscrições encerraram

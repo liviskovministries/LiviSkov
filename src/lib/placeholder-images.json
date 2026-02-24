@@ -17,6 +17,12 @@
       "description": "Mesa com um notebook, café e itens de escritório, simbolizando contato e trabalho.",
       "imageUrl": "/images/contact-background.jpg",
       "imageHint": "contact communication"
+    },
+    {
+      "id": "devocional-2026-banner",
+      "description": "Banner para o curso Devocional 2026 - Um novo ano, um recomeço.",
+      "imageUrl": "/images/devocional-2026-banner.jpg",
+      "imageHint": "devotional new year new beginning"
     }
   ]
 }
