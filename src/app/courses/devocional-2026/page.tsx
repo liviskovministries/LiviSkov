@@ -8,23 +8,33 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import { useSupabaseAuth, useSupabaseUser } from '@/integrations/supabase/supabase-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { CourseLayout, Lesson, CourseData } from '@/components/course-layout'; // Importar CourseLayout e tipos
+import { CourseLayout, Lesson, CourseData } from '@/components/course-layout';
+import { DevocionalNavigation } from '@/components/devocional-navigation'; // Importar o novo componente de navegação
+
+// Função para gerar as 31 aulas diárias
+const generateDailyLessons = () => {
+  const lessons: Lesson[] = [];
+  for (let i = 1; i <= 31; i++) {
+    const day = String(i).padStart(2, '0');
+    lessons.push({
+      id: `day-${day}`,
+      title: `Dia ${day}`,
+      type: 'video' as const,
+      videoId: 'Dc4EBMJXQgg', // Placeholder video ID para cada dia
+      subtitle: `Devocional do Dia ${day}`,
+      description: `Bem-vindo ao devocional do Dia ${day}! Hoje, vamos mergulhar na palavra e encontrar inspiração para sua jornada.`,
+    });
+  }
+  return lessons;
+};
 
 const devocionalCourseData: CourseData = {
   title: 'Devocional 2026',
   modules: [
     {
-      id: 'devocional-intro',
-      title: 'Introdução ao Devocional',
+      id: 'devocional-content',
+      title: 'Conteúdo do Devocional', // Um único módulo para conter tudo
       lessons: [
-        {
-          id: 'devocional-welcome',
-          title: 'Bem-vindo(a) ao Devocional 2026',
-          type: 'video' as const,
-          videoId: 'Dc4EBMJXQgg', // Placeholder video ID
-          subtitle: 'Sua jornada de 31 dias começa aqui!',
-          description: 'Bem-vindo(a) ao Devocional 2026! Prepare-se para 31 dias de encorajamento, renovo e recomeços na palavra de Deus. Este devocional foi criado para te guiar em uma jornada de fé e propósito para o novo ano.'
-        },
         {
           id: 'devocional-pdf',
           title: 'Baixar Devocional em PDF',
@@ -32,9 +42,9 @@ const devocionalCourseData: CourseData = {
           subtitle: 'Material de Apoio: Devocional 2026',
           description: 'Acesse e baixe o seu Devocional 2026 em formato PDF. Este material é essencial para acompanhar as leituras diárias e reflexões.'
         },
+        ...generateDailyLessons(), // Adicionar todas as 31 aulas diárias
       ],
     },
-    // Adicione mais módulos e aulas aqui conforme necessário para o Devocional 2026
   ],
 };
 
@@ -251,6 +261,9 @@ export default function Devocional2026Page() {
     }
   };
 
+  // Extrair todas as aulas do único módulo para a navegação personalizada
+  const allDevocionalLessons = useMemo(() => devocionalCourseData.modules[0].lessons, []);
+
   return (
     <SidebarProvider>
       <CourseLayout
@@ -264,8 +277,17 @@ export default function Devocional2026Page() {
         handleVideoEnd={handleVideoEnd}
         handleDownloadResource={handleDownloadWatermarkedPdf}
         handleLogout={handleLogout}
-        courseLogoPath="/images/logo4branco.fw.png" // Usando o logo principal por enquanto
-        resourceCoverPath="/images/devocional-2026-banner.jpg" // Capa do Devocional
+        courseLogoPath="/images/logo4branco.fw.png"
+        resourceCoverPath="/images/devocional-2026-banner.jpg"
+        renderSidebarContent={({ selectedLesson, completionStatus, handleLessonClick, currentTime }) => (
+          <DevocionalNavigation
+            lessons={allDevocionalLessons}
+            selectedLesson={selectedLesson}
+            completionStatus={completionStatus}
+            handleLessonClick={handleLessonClick}
+            currentTime={currentTime}
+          />
+        )}
       />
     </SidebarProvider>
   );
