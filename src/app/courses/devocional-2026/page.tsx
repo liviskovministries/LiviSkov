@@ -236,22 +236,6 @@ export default function Devocional2026Page() {
     }
   };
 
-  if (isSupabaseUserLoading || !supabaseUser || isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <p>Carregando...</p>
-      </div>
-    );
-  }
-
-  if (!isEnrolled) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <p>Verificando acesso...</p>
-      </div>
-    );
-  }
-
   const handleLogout = async () => {
     const { error } = await supabaseAuth.signOut();
     if (error) {
@@ -274,6 +258,23 @@ export default function Devocional2026Page() {
       currentTime={currentTime}
     />
   ), [allDevocionalLessons, selectedLesson, completionStatus, handleLessonClick, currentTime]);
+
+  // Retornos condicionais movidos para depois de todas as chamadas de hooks
+  if (isSupabaseUserLoading || !supabaseUser || isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <p>Carregando...</p>
+      </div>
+    );
+  }
+
+  if (!isEnrolled) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <p>Verificando acesso...</p>
+      </div>
+    );
+  }
 
   return (
     <SidebarProvider>
