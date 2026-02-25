@@ -24,7 +24,7 @@ const generateDailyLessons = (): UnifiedLesson[] => {
     const dayText = i === 1 ? 'Dia 01 - Um (Re)novo em Deus' : `Devocional - Dia ${day}`;
     const dayDescription = i === 1 
       ? 'Primeiro dia do devocional! Começamos nossa jornada de renovação e crescimento espiritual.' 
-      : `Bem-vindo ao devocional do Dia ${day}! Hoje, vamos mergulhar na palavra e encontrar inspiração para sua jornada.`;
+      : `Bem-vindo ao devocional do Dia ${day}!`;
     
     // Extrair o ID do vídeo para o Dia 01 da URL fornecida
     const videoId = i === 1 ? 'v2TBVoIbHrw' : 'Dc4EBMJXQgg';
@@ -36,7 +36,7 @@ const generateDailyLessons = (): UnifiedLesson[] => {
       type: 'video' as const,
       videoId: videoId,
       description: dayDescription,
-      bookText: `Texto do livro para o Dia ${day} será adicionado em breve.\n\nEste espaço conterá o conteúdo completo do devocional correspondente ao dia ${day}, incluindo reflexões, passagens bíblicas e perguntas para sua jornada espiritual.`
+      bookText: '' // Texto vazio para remover o conteúdo do livro
     });
   }
   return lessons;
@@ -54,7 +54,7 @@ const devocionalCourseData: CourseData = {
           title: 'Livro Um novo ano, um recomeço',
           type: 'resource' as const,
           subtitle: 'Sobre o Livro Um ano novo, recomeço',
-          description: `Este devocional de 31 dias foi cuidadosamente preparado para guiar sua jornada espiritual ao longo de um mês completo de reflexão e crescimento.\n\n📖 O QUE VOCÊ ENCONTRARÁ NO LIVRO:\n\n• 31 devocionais diários com mensagens inspiradoras\n• Espaços para suas próprias reflexões e anotações\n• Passagens bíblicas selecionadas para cada tema\n• Perguntas que estimulam a introspecção\n\n🎯 COMO UTILIZAR:\n\nCada devocional foi pensado para ser acompanhado pelos vídeos correspondentes. Leia o texto do livro, assista o vídeo do dia, e depois volte ao livro para registrar suas reflexões e insights pessoais.\n\nEsta é uma jornada transformadora que combina a profundidade da leitura reflexiva com a dinâmica do conteúdo em vídeo, criando uma experiência completa de aprendizado espiritual.`
+          description: `Este devocional de 31 dias foi cuidadosamente preparado para guiar sua jornada espiritual.\n\nBaixe o livro completo para acompanhar os devocionais diários.`
         },
         ...generateDailyLessons(),
       ],
@@ -69,7 +69,7 @@ export default function Devocional2026Page() {
   const firestore = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
-  const [selectedLesson, setSelectedLesson] = useState<UnifiedLesson | null>(devocionalCourseData.modules[0].lessons[0] as UnifiedLesson);
+  const [selectedLesson, setSelectedLesson] = useState<UnifiedLesson | null>(devocionalCourseData.modules[0].lessons[1] as UnifiedLesson); // Começar com Dia 01
   const [completionStatus, setCompletionStatus] = useState<Record<string, boolean>>({});
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);

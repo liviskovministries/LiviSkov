@@ -13,7 +13,6 @@ import {
   SidebarTrigger
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { User } from '@supabase/supabase-js';
 import Link from 'next/link';
 import { DevocionalNavigation } from './devocional-navigation';
@@ -116,33 +115,6 @@ export function DevocionalDailyLayout({
     );
   };
 
-  const renderContent = () => {
-    return (
-      <Card className="w-full">
-        <CardContent className="p-6">
-          {!selectedLesson?.bookText ? (
-            <div className="text-center py-8">
-              <p className="text-muted-foreground">Conteúdo em desenvolvimento...</p>
-            </div>
-          ) : (
-            <div className="prose prose-lg max-w-none">
-              <div className="text-center mb-6">
-                <h3 className="text-2xl font-bold text-primary">{selectedLesson?.title}</h3>
-                <div className="h-px bg-border w-1/4 mx-auto mt-4"></div>
-              </div>
-              <div className="leading-relaxed text-foreground whitespace-pre-wrap">
-                {selectedLesson.bookText}
-              </div>
-              <div className="mt-8 pt-4 border-t border-border text-center text-sm text-muted-foreground">
-                <p>Devocional 2026 - Livi Skov</p>
-              </div>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-    );
-  };
-
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar collapsible="icon" className="border-r">
@@ -195,30 +167,23 @@ export function DevocionalDailyLayout({
           </div>
         </header>
         
-        <main className="p-4 md:p-6 lg:p-8">
+        <main className="pIdentify an alternative material for printing and gain weight because it cannot be adjusted based on the surroundings. Let's simply focus on the browser where you create the screen. However, if I didn't manage to properly see your example, please forget these technical constraints.corrections, diff for example.md use guess the length value.
+
+But anyway, the Copilot prompt simply became:
+
+Simply render the video in the social media layout without the book content section.
+
+Implementation:
+ 4 md:p-6 lg:p-8">
           <div className="mx-auto max-w-4xl">
             {!selectedLesson ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">Selecione um dia para começar o devocional.</p>
               </div>
             ) : (
-              <div className="space-y-8">
+              <div className="flex justify-center">
                 {/* Vídeo estilo rede social */}
                 {selectedLesson.type === 'video' && renderSocialMediaVideo()}
-                
-                {/* Conteúdo do livro */}
-                {renderContent()}
-              </div>
-            )}
-            
-            {selectedLesson && (
-              <div className="mt-8">
-                <h2 className="text-2xl font-bold text-primary">
-                  {selectedLesson.subtitle}
-                </h2>
-                <div className="mt-4 text-muted-foreground">
-                  {selectedLesson.description}
-                </div>
               </div>
             )}
           </div>
