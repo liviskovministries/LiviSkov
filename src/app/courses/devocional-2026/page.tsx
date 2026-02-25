@@ -26,7 +26,7 @@ const generateDailyLessons = (): UnifiedLesson[] => {
     { day: '02', title: 'Dia 02 | Aprendendo a ouvir a voz de Deus', videoId: 'bYWG7Z3jtkM', description: 'Aprendendo a discernir e ouvir a voz de Deus em meio ao ruído do mundo.' },
     { day: '03', title: 'Dia 03 | Quando Deus fala no silêncio', videoId: 'FnHu9bFUf9A', description: 'Descobrindo como Deus se revela nos momentos de quietude e silêncio interior.' },
     { day: '04', title: 'Dia 04 — ENTREGANDO O CONTROLE', videoId: 'O7rc-Wsn394', description: 'Aprendendo a confiar em Deus e entregar o controle das nossas vidas nas mãos dele.' },
-    { day: '05', title: 'Dia 05 — CURANDO AS FERIDAS DO CORAÇÃO', videoId: 'K-gmfSH39Lg', description: 'Trazendo cura e restauração para as áreas feridas do nosso coração através do amor de Deus.' },
+    { day: '05', title: 'Dia 05 — CURANDO AS FERIDAS DO CORAÇÃO', videoId: 'K-gmfSH39Lg', description: 'Trazendo curetorno e restauração para as áreas feridas do nosso coração através do amor de Deus.' },
     { day: '06', title: 'Dia 06 — A força da vulnerabilidade', videoId: 'EOmSm-JLDlA', description: 'Descobrindo a força que existe em nos mostrarmos vulneráveis diante de Deus e dos outros.' },
     { day: '07', title: 'DIA 7 | Quem somos em Deus', videoId: 'JNk8vNtMDMA', description: 'Explorando nossa verdadeira identidade em Deus e compreendendo quem somos Nele.' },
     { day: '08', title: 'Dia 08 | Filhos do Rei | Noiva de Cristo | Amigos do Espírito Santo', videoId: 'PzMtVOuVIJI', description: 'Descobrindo nossa identidade divina como filhos do Rei, noiva de Cristo e amigos do Espírito Santo.' },
@@ -308,7 +308,7 @@ export default function Devocional2026Page() {
                        selectedLesson?.id === 'day-17' || selectedLesson?.id === 'day-18' ||
                        selectedLesson?.id === 'day-19' || selectedLesson?.id === 'day-20' ||
                        selectedLesson?.id === 'day-21' || selectedLesson?.id === 'day-22' ||
-                       selectedLesson?.id === 'day-23'; // Adicionei o Dia 23 aqui
+                       selectedLesson?.id === 'day-23' || selectedLesson?.id === 'day-24'; // Adicionei o Dia 24 aqui
 
   // Conversão segura para tipos específicos
   const lessonsAsDevocionalType: DevocionalDailyLesson[] = devocionalCourseData.modules[0].lessons.map(lesson => ({
@@ -349,7 +349,7 @@ export default function Devocional2026Page() {
     );
   }
 
-  // Usar o layout específico para os dias especiais (01-23)
+  // Usar o layout específico para os dias especiais (01-24)
   if (isSpecialDay) {
     return (
       <SidebarProvider>
