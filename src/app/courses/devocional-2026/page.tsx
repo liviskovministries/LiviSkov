@@ -42,10 +42,11 @@ const generateDailyLessons = (): UnifiedLesson[] => {
     { day: '18', title: 'Dia 18 – O valor do processo', videoId: '_gKZ0b2_hXA', description: 'Descobrindo a importância e o propósito divino por trás de cada processo que Deus nos conduz.' },
     { day: '19', title: 'Dia 19 – Aprender a esperar sem desistir', videoId: 'K7wVPZo3n2A', description: 'Desenvolvendo paciência e perseverança para esperar nos tempos de Deus sem perder a fé.' },
     { day: '20', title: 'Dia 20 — Quando Deus pede silêncio', videoId: '9AKKMzWtkfU', description: 'Aprendendo quando Deus nos pede para ficar em silêncio e quais lições podemos extrair desses momentos.' },
+    { day: '21', title: 'Dia 21 — Renovados: a renovação da nossa mente (Metanoia)', videoId: 'yQN4UH0z6qE', description: 'Descobrindo o poder da metamorfose espiritual através da renovação constante da nossa mente em Deus.' },
   ];
 
-  // Dias de 21 a 31 com título padrão
-  for (let i = 21; i <= 31; i++) {
+  // Dias de 22 a 31 com título padrão
+  for (let i = 22; i <= 31; i++) {
     const day = String(i).padStart(2, '0');
     daysConfig.push({ 
       day: day, 
@@ -297,7 +298,8 @@ export default function Devocional2026Page() {
                        selectedLesson?.id === 'day-13' || selectedLesson?.id === 'day-14' ||
                        selectedLesson?.id === 'day-15' || selectedLesson?.id === 'day-16' ||
                        selectedLesson?.id === 'day-17' || selectedLesson?.id === 'day-18' ||
-                       selectedLesson?.id === 'day-19' || selectedLesson?.id === 'day-20';
+                       selectedLesson?.id === 'day-19' || selectedLesson?.id === 'day-20' ||
+                       selectedLesson?.id === 'day-21';
 
   // Conversão segura para tipos específicos
   const lessonsAsDevocionalType: DevocionalDailyLesson[] = devocionalCourseData.modules[0].lessons.map(lesson => ({
@@ -338,7 +340,7 @@ export default function Devocional2026Page() {
     );
   }
 
-  // Usar o layout específico para os dias especiais (01-20)
+  // Usar o layout específico para os dias especiais (01-21)
   if (isSpecialDay) {
     return (
       <SidebarProvider>
