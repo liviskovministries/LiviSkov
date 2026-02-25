@@ -21,9 +21,9 @@ const generateDailyLessons = (): UnifiedLesson[] => {
   const lessons: UnifiedLesson[] = [];
   for (let i = 1; i <= 31; i++) {
     const day = String(i).padStart(2, '0');
-    const dayText = i === 1 ? 'Dia 01 - Um Novo Começo' : `Devocional - Dia ${day}`;
+    const dayText = i === 1 ? 'Dia 01 - Um (Re)novo em Deus' : `Devocional - Dia ${day}`;
     const dayDescription = i === 1 
-      ? 'Primeiro dia do devocional! Iniciamos nossa jornada de reflexão e crescimento.' 
+      ? 'Primeiro dia do devocional! Começamos nossa jornada de renovação e crescimento espiritual.' 
       : `Bem-vindo ao devocional do Dia ${day}! Hoje, vamos mergulhar na palavra e encontrar inspiração para sua jornada.`;
     
     lessons.push({

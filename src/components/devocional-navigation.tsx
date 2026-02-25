@@ -2,16 +2,25 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { FileText, PlayCircle, CheckCircle, Lock } from 'lucide-react';
+import { FileText, CheckCircle, Lock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { Lesson } from './course-layout'; // Assumindo que Lesson type é exportado
+
+export interface DevocionalDailyLesson {
+  id: string;
+  title: string;
+  type: 'video' | 'resource';
+  subtitle?: string;
+  description: string;
+  videoId?: string;
+  bookText?: string;
+}
 
 interface DevocionalNavigationProps {
-  lessons: Lesson[];
-  selectedLesson: Lesson | null;
+  lessons: DevocionalDailyLesson[];
+  selectedLesson: DevocionalDailyLesson | null;
   completionStatus: Record<string, boolean>;
-  handleLessonClick: (lesson: Lesson) => void;
+  handleLessonClick: (lesson: DevocionalDailyLesson) => void;
   currentTime: Date;
 }
 
@@ -52,9 +61,8 @@ export function DevocionalNavigation({
         {Array.from({ length: 31 }, (_, i) => i + 1).map(dayNum => {
           const lessonId = `day-${String(dayNum).padStart(2, '0')}`;
           const lesson = dailyLessons.find(l => l.id === lessonId);
-          // Por enquanto, todas as aulas diárias são consideradas desbloqueadas se existirem
-          // Futuramente, pode-se adicionar lógica de releaseDate aqui também
-          const isLocked = !lesson; 
+          // Por enquanto, todas as aulas diárias são consideradas desbloqueadas
+          const isLocked = false;
           const isCompleted = completionStatus[lessonId];
 
           const dayButton = (
