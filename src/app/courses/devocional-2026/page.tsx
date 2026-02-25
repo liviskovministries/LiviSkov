@@ -43,6 +43,22 @@ const generateDailyLessons = (): UnifiedLesson[] => {
     });
   }
 
+  // Agora sobrescrevemos os Dias 09 e 10 com os novos dados específicos
+  const specificDayConfigs = {
+    '09': { title: 'DIA 9 — Deus nos processos', videoId: 'yZogeLVkDys', description: 'Descobrindo como Deus trabalha em nossos processos internos e crescimento pessoal.' },
+    '10': { title: 'DIA 10 — Quando Deus parece em silêncio', videoId: 'AEE7zZHEydc', description: 'Aprendendo a confiar em Deus mesmo quando Ele parece estar em silêncio em nossas vidas.' }
+  };
+
+  // Atualizamos os dias específicos
+  daysConfig.forEach(config => {
+    const specificConfig = specificDayConfigs[config.day as '09' | '10'];
+    if (specificConfig) {
+      config.title = specificConfig.title;
+      config.videoId = specificConfig.videoId;
+      config.description = specificConfig.description;
+    }
+  });
+
   // Criar as lições baseadas na configuração
   daysConfig.forEach(config => {
     lessons.push({
