@@ -52,16 +52,8 @@ const generateDailyLessons = (): UnifiedLesson[] => {
     { day: '28', title: 'Dia 28 — Quando a identidade é curada, o destino se organiza', videoId: 'iJXH10qdOEA', description: 'Descobrindo como uma identidade curada em Deus organiza e direciona nosso propósito e destino espiritual.' },
     { day: '29', title: 'Dia 29 — Você não chegou até aqui por acaso', videoId: '2e--yIvdbEg', description: 'Reconhecendo que Deus te guiou intencionalmente até este ponto específico da jornada.' },
     { day: '30', title: 'Dia 30 — Olhos levantados e coração firmado', videoId: 'P0cg1QAVC7o', description: 'Bem-vindo ao devocional do Dia 30! Mantendo nossos olhos em Deus e coração firme para concluir esta jornada.' },
+    { day: '31', title: 'Dia 31 - Descansa, Ele continua', videoId: '7nu7cgp8bl8', description: 'Último dia do devocional! Momento de descansar e confiar que Deus continua guiando cada passo da sua jornada.' },
   ];
-
-  // Dia 31 com título padrão
-  const day = '31';
-  daysConfig.push({ 
-    day: day, 
-    title: `Devocional - Dia ${day}`, 
-    videoId: 'Dc4EBMJXQgg', 
-    description: `Bem-vindo ao devocional do Dia ${day}!` 
-  });
 
   // Criar as lições baseadas na configuração
   daysConfig.forEach(config => {
@@ -295,7 +287,7 @@ export default function Devocional2026Page() {
     }
   };
 
-  // Identificar se é um dos dias que usa o layout especial
+  // Identificar se é um dos dias que usa o layout especial - TODOS OS DIAS AGORA!
   const isSpecialDay = selectedLesson?.id === 'day-01' || selectedLesson?.id === 'day-02' || 
                        selectedLesson?.id === 'day-03' || selectedLesson?.id === 'day-04' ||
                        selectedLesson?.id === 'day-05' || selectedLesson?.id === 'day-06' ||
@@ -310,7 +302,8 @@ export default function Devocional2026Page() {
                        selectedLesson?.id === 'day-23' || selectedLesson?.id === 'day-24' ||
                        selectedLesson?.id === 'day-25' || selectedLesson?.id === 'day-26' ||
                        selectedLesson?.id === 'day-27' || selectedLesson?.id === 'day-28' ||
-                       selectedLesson?.id === 'day-29' || selectedLesson?.id === 'day-30'; // Adicionei o Dia 30 aqui
+                       selectedLesson?.id === 'day-29' || selectedLesson?.id === 'day-30' ||
+                       selectedLesson?.id === 'day-31'; // FINALMENTE ADICIONEI O DIA 31!
 
   // Conversão segura para tipos específicos
   const lessonsAsDevocionalType: DevocionalDailyLesson[] = devocionalCourseData.modules[0].lessons.map(lesson => ({
@@ -351,7 +344,7 @@ export default function Devocional2026Page() {
     );
   }
 
-  // Usar o layout específico para os dias especiais (01-30)
+  // Usar o layout específico para os dias especiais - AGORA PARA TODOS OS DIAS (01-31)!
   if (isSpecialDay) {
     return (
       <SidebarProvider>
