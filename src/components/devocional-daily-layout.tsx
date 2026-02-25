@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import YouTube from 'react-youtube';
-import { Home, LogOut, BookOpen } from 'lucide-react';
+import { Home, LogOut } from 'lucide-react';
 import { 
   Sidebar, 
   SidebarContent, 
@@ -53,12 +53,11 @@ export function DevocionalDailyLayout({
     if (!selectedLesson?.videoId) return null;
     
     return (
-      <div className="w-full max-w-md mx-auto lg:mx-0 lg:flex-1">
-        <div className="relative rounded-lg overflow-hidden shadow-lg">
-          {/* Vídeo limpo sem simulação de rede social */}
+      <div className="w-full max-w-md mx-auto lg:max-w-none">
+        <div className="bg-black rounded-lg overflow-hidden shadow-lg">
           <YouTube 
             videoId={selectedLesson.videoId} 
-            className="w-full aspect-[9/16]" 
+            className="w-full aspect-video" 
             iframeClassName="w-full h-full"
             onEnd={handleVideoEnd}
             opts={{
@@ -74,51 +73,30 @@ export function DevocionalDailyLayout({
     );
   };
 
-  const renderBookContent = () => {
+  const renderContent = () => {
     return (
-      <div className="relative h-full">
-        {/* Simulação de livro aberto */}
-        <div className="absolute inset-0 bg-gradient-to-r from-amber-50 to-amber-100 rounded-lg shadow-lg border border-amber-200">
-          {/* Margem interna do livro */}
-          <div className="h-full p-6 flex flex-col">
-            {/* Cabeçalho do livro */}
-            <div className="text-center mb-6">
-              <div className="flex items-center justify-center gap-3 mb-2">
-                <BookOpen className="h-6 w-6 text-amber-600" />
-                <h3 className="text-xl font-bold text-amber-800">{selectedLesson?.title}</h3>
+      <Card className="w-full">
+        <CardContent className="p-6">
+          {!selectedLesson?.bookText ? (
+            <div className="text-center py-8">
+              <p className="text-muted-foreground">Conteúdo em desenvolvimento...</p>
+            </div>
+          ) : (
+            <div className="prose prose-lg max-w-none">
+              <div className="text-center mb-6">
+                <h3 className="text-2xl font-bold text-primary">{selectedLesson?.title}</h3>
+                <div className="h-px bg-border w-1/4 mx-auto mt-4"></div>
               </div>
-              <div className="h-px bg-amber-300 w-3/4 mx-auto"></div>
+              <div className="leading-relaxed text-foreground whitespace-pre-wrap">
+                {selectedLesson.bookText}
+              </div>
+              <div className="mt-8 pt-4 border-t border-border text-center text-sm text-muted-foreground">
+                <p>Devocional 2026 - Livi Skov</p>
+              </div>
             </div>
-            
-            {/* Conteúdo do livro */}
-            <div className="flex-1 overflow-y-auto">
-              {!selectedLesson?.bookText ? (
-                <div className="text-center py-12">
-                  <p className="text-amber-700/80">Conteúdo do livro em desenvolvimento...</p>
-                </div>
-              ) : (
-                <div className="text-amber-900 leading-relaxed">
-                  <div className="text-center mb-8">
-                    <h4 className="text-lg font-semibold mb-4">🎯 Reflexões do Dia</h4>
-                    <div className="h-px bg-amber-300 w-1/2 mx-auto mb-4"></div>
-                  </div>
-                  <div className="whitespace-pre-wrap font-serif text-lg">
-                    {selectedLesson.bookText}
-                  </div>
-                  
-                  {/* Rodapé do livro */}
-                  <div className="mt-8 pt-4 border-t border-amber-300 text-center text-sm text-amber-700/70">
-                    <p>Devocional 2026 - Livi Skov</p>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-        
-        {/* Efeito de páginas */}
-        <div className="absolute -right-1 top-0 bottom-0 w-2 bg-amber-800 rounded-r-lg opacity-20"></div>
-      </div>
+          )}
+        </CardContent>
+      </Card>
     );
   };
 
@@ -174,23 +152,19 @@ export function DevocionalDailyLayout({
           </div>
         </header>
         
-        <main className={`p-4 md:p-6 lg:p-8 transition-all duration-300 ease-in-out ${sidebar.state === 'expanded' ? "md:ml-[280px]" : "md:ml-16"}`}>
-          <div className="mx-auto max-w-7xl">
+        <main className="p-4 md:p-6 lg:p-8">
+          <div className="mx-auto max-w-4xl">
             {!selectedLesson ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">Selecione um dia para começar o devocional.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 min-h-[600px]">
-                {/* Coluna esquerda - Vídeo limpo */}
-                <div className="flex justify-center lg:justify-end">
-                  {selectedLesson.id.startsWith('day-') && renderVideoPlayer()}
-                </div>
+              <div className="space-y-8">
+                {/* Vídeo */}
+                {selectedLesson.type === 'video' && renderVideoPlayer()}
                 
-                {/* Coluna direita - Livro aberto */}
-                <div className="h-[600px] relative">
-                  {renderBookContent()}
-                </div>
+                {/* Conteúdo do livro */}
+                {renderContent()}
               </div>
             )}
             
