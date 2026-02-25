@@ -29,10 +29,11 @@ const generateDailyLessons = (): UnifiedLesson[] => {
     { day: '05', title: 'Dia 05 — CURANDO AS FERIDAS DO CORAÇÃO', videoId: 'K-gmfSH39Lg', description: 'Trazendo cura e restauração para as áreas feridas do nosso coração através do amor de Deus.' },
     { day: '06', title: 'Dia 06 — A força da vulnerabilidade', videoId: 'EOmSm-JLDlA', description: 'Descobrindo a força que existe em nos mostrarmos vulneráveis diante de Deus e dos outros.' },
     { day: '07', title: 'DIA 7 | Quem somos em Deus', videoId: 'JNk8vNtMDMA', description: 'Explorando nossa verdadeira identidade em Deus e compreendendo quem somos Nele.' },
+    { day: '08', title: 'Dia 8 | Filhos do Rei | Noiva de Cristo | Amigos do Espírito Santo', videoId: 'PzMtVOuVIJI', description: 'Descobrindo nossa identidade divina como filhos do Rei, noiva de Cristo e amigos do Espírito Santo.' },
   ];
 
-  // Dias de 8 a 31 com título padrão
-  for (let i = 8; i <= 31; i++) {
+  // Dias de 9 a 31 com título padrão
+  for (let i = 9; i <= 31; i++) {
     const day = String(i).padStart(2, '0');
     daysConfig.push({ 
       day: day, 
@@ -278,7 +279,7 @@ export default function Devocional2026Page() {
   const isSpecialDay = selectedLesson?.id === 'day-01' || selectedLesson?.id === 'day-02' || 
                        selectedLesson?.id === 'day-03' || selectedLesson?.id === 'day-04' ||
                        selectedLesson?.id === 'day-05' || selectedLesson?.id === 'day-06' ||
-                       selectedLesson?.id === 'day-07';
+                       selectedLesson?.id === 'day-07' || selectedLesson?.id === 'day-08';
 
   // Conversão segura para tipos específicos
   const lessonsAsDevocionalType: DevocionalDailyLesson[] = devocionalCourseData.modules[0].lessons.map(lesson => ({
@@ -319,7 +320,7 @@ export default function Devocional2026Page() {
     );
   }
 
-  // Usar o layout específico para os dias especiais (01-07)
+  // Usar o layout específico para os dias especiais (01-08)
   if (isSpecialDay) {
     return (
       <SidebarProvider>
