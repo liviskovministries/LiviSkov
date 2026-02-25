@@ -25,10 +25,11 @@ const generateDailyLessons = (): UnifiedLesson[] => {
     { day: '01', title: 'Dia 01 - Um (Re)novo em Deus', videoId: 'v2TBVoIbHrw', description: 'Primeiro dia do devocional! Começamos nossa jornada de renovação e crescimento espiritual.' },
     { day: '02', title: 'Dia 02 | Aprendendo a ouvir a voz de Deus', videoId: 'bYWG7Z3jtkM', description: 'Aprendendo a discernir e ouvir a voz de Deus em meio ao ruído do mundo.' },
     { day: '03', title: 'Dia 03 | Quando Deus fala no silêncio', videoId: 'FnHu9bFUf9A', description: 'Descobrindo como Deus se revela nos momentos de quietude e silêncio interior.' },
+    { day: '04', title: 'Dia 04 — ENTREGANDO O CONTROLE', videoId: 'O7rc-Wsn394', description: 'Aprendendo a confiar em Deus e entregar o controle das nossas vidas nas mãos dele.' },
   ];
 
-  // Dias de 4 a 31 com título padrão
-  for (let i = 4; i <= 31; i++) {
+  // Dias de 5 a 31 com título padrão
+  for (let i = 5; i <= 31; i++) {
     const day = String(i).padStart(2, '0');
     daysConfig.push({ 
       day: day, 
@@ -271,7 +272,8 @@ export default function Devocional2026Page() {
   };
 
   // Identificar se é um dos dias que usa o layout especial
-  const isSpecialDay = selectedLesson?.id === 'day-01' || selectedLesson?.id === 'day-02' || selectedLesson?.id === 'day-03';
+  const isSpecialDay = selectedLesson?.id === 'day-01' || selectedLesson?.id === 'day-02' || 
+                       selectedLesson?.id === 'day-03' || selectedLesson?.id === 'day-04';
 
   // Conversão segura para tipos específicos
   const lessonsAsDevocionalType: DevocionalDailyLesson[] = devocionalCourseData.modules[0].lessons.map(lesson => ({
@@ -312,7 +314,7 @@ export default function Devocional2026Page() {
     );
   }
 
-  // Usar o layout específico para os dias especiais (01, 02 e 03)
+  // Usar o layout específico para os dias especiais (01, 02, 03 e 04)
   if (isSpecialDay) {
     return (
       <SidebarProvider>
