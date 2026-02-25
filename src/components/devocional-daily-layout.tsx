@@ -52,63 +52,65 @@ export function DevocionalDailyLayout({
     if (!selectedLesson?.videoId) return null;
     
     return (
-      <div className="w-full max-w-sm mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-        {/* Header do post */}
-        <div className="flex items-center p-4 border-b">
-          <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-            <BookOpen className="h-6 w-6 text-white" />
-          </div>
-          <div className="ml-3">
-            <h4 className="font-semibold text-gray-900">Livi Skov</h4>
-            <p className="text-sm text-gray-500">Devocional 2026</p>
-          </div>
-          <div className="ml-auto">
-            <span className="text-xs text-gray-500">Hoje</span>
-          </div>
-        </div>
-        
-        {/* Vídeo */}
-        <div className="w-full aspect-[9/16] bg-black">
-          <YouTube 
-            videoId={selectedLesson.videoId} 
-            className="w-full h-full" 
-            iframeClassName="w-full h-full"
-            onEnd={handleVideoEnd}
-            opts={{
-              playerVars: {
-                modestbranding: 1,
-                rel: 0,
-                showinfo: 0,
-                controls: 1
-              }
-            }}
-          />
-        </div>
-        
-        {/* Ações do post */}
-        <div className="p-4 border-t">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="icon" className="text-gray-600 hover:text-red-500">
-                <Heart className="h-5 w-5" />
-              </Button>
-              <Button variant="ghost" size="icon" className="text-gray-600 hover:text-blue-500">
-                <MessageCircle className="h-5 w-5" />
-              </Button>
-              <Button variant="ghost" size="icon" className="text-gray-600 hover:text-green-500">
-                <Share2 className="h-5 w-5" />
-              </Button>
+      <div className="w-full flex justify-center">
+        <div className="max-w-sm mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+          {/* Header do post */}
+          <div className="flex items-center p-4 border-b">
+            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+              <BookOpen className="h-6 w-6 text-white" />
             </div>
-            <div className="text-xs text-gray-500">
-              {Math.floor(Math.random() * 1000) + 100} visualizações
+            <div className="ml-3">
+              <h4 className="font-semibold text-gray-900">Livi Skov</h4>
+              <p className="text-sm text-gray-500">Devocional 2026</p>
+            </div>
+            <div className="ml-auto">
+              <span className="text-xs text-gray-500">Hoje</span>
             </div>
           </div>
           
-          {/* Descrição */}
-          <div className="mt-3">
-            <p className="text-sm font-medium text-gray-900">Livi Skov</p>
-            <p className="text-gray-700 text-sm mt-1">{selectedLesson.description}</p>
-            <p className="text-gray-500 text-xs mt-2">#Devocional2026 #Renovação #Deus</p>
+          {/* Vídeo */}
+          <div className="w-full aspect-[9/16] bg-black">
+            <YouTube 
+              videoId={selectedLesson.videoId} 
+              className="w-full h-full" 
+              iframeClassName="w-full h-full"
+              onEnd={handleVideoEnd}
+              opts={{
+                playerVars: {
+                  modestbranding: 1,
+                  rel: 0,
+                  showinfo: 0,
+                  controls: 1
+                }
+              }}
+            />
+          </div>
+          
+          {/* Ações do post */}
+          <div className="p-4 border-t">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <Button variant="ghost" size="icon" className="text-gray-600 hover:text-red-500">
+                  <Heart className="h-5 w-5" />
+                </Button>
+                <Button variant="ghost" size="icon" className="text-gray-600 hover:text-blue-500">
+                  <MessageCircle className="h-5 w-5" />
+                </Button>
+                <Button variant="ghost" size="icon" className="text-gray-600 hover:text-green-500">
+                  <Share2 className="h-5 w-5" />
+                </Button>
+              </div>
+              <div className="text-xs text-gray-500">
+                {Math.floor(Math.random() * 1000) + 100} visualizações
+              </div>
+            </div>
+            
+            {/* Descrição */}
+            <div className="mt-3">
+              <p className="text-sm font-medium text-gray-900">Livi Skov</p>
+              <p className="text-gray-700 text-sm mt-1">{selectedLesson.description}</p>
+              <p className="text-gray-500 text-xs mt-2">#Devocional2026 #Renovação #Deus</p>
+            </div>
           </div>
         </div>
       </div>
@@ -167,21 +169,14 @@ export function DevocionalDailyLayout({
           </div>
         </header>
         
-        <main className="pIdentify an alternative material for printing and gain weight because it cannot be adjusted based on the surroundings. Let's simply focus on the browser where you create the screen. However, if I didn't manage to properly see your example, please forget these technical constraints.corrections, diff for example.md use guess the length value.
-
-But anyway, the Copilot prompt simply became:
-
-Simply render the video in the social media layout without the book content section.
-
-Implementation:
- 4 md:p-6 lg:p-8">
-          <div className="mx-auto max-w-4xl">
+        <main className="p-4 md:p-6 lg:p-8">
+          <div className="w-full flex justify-center">
             {!selectedLesson ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">Selecione um dia para começar o devocional.</p>
               </div>
             ) : (
-              <div className="flex justify-center">
+              <div className="w-full flex justify-center">
                 {/* Vídeo estilo rede social */}
                 {selectedLesson.type === 'video' && renderSocialMediaVideo()}
               </div>
