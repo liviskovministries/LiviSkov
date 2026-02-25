@@ -38,10 +38,11 @@ const generateDailyLessons = (): UnifiedLesson[] => {
     { day: '14', title: 'Dia 14 — Coração Ensinável 🤍', videoId: 'lycl6Q4MaRw', description: 'Cultivando um coração aberto e receptivo para aprender com Deus em todas as situações da vida.' },
     { day: '15', title: 'Dia 15 — Posicionamento gera direção', videoId: 'y5ozHEzySAU', description: 'Entendendo como nosso posicionamento espiritual determina a direção que Deus nos guia em nossa jornada.' },
     { day: '16', title: 'Dia 16 – Permanecer quando é mais fácil fugir', videoId: 'FVg2aW3NKo4', description: 'Aprendendo a permanecer firmes diante dos desafios quando a tentação de fugir parece mais forte.' },
+    { day: '17', title: 'Dia 17 — Quando Deus não explica, mas sustenta', videoId: 'R2fdG9iTs_E', description: 'Aprendendo a confiar que mesmo quando Deus não explica as razões, Ele sempre nos sustenta em cada passo.' },
   ];
 
-  // Dias de 17 a 31 com título padrão
-  for (let i = 17; i <= 31; i++) {
+  // Dias de 18 a 31 com título padrão
+  for (let i = 18; i <= 31; i++) {
     const day = String(i).padStart(2, '0');
     daysConfig.push({ 
       day: day, 
@@ -79,7 +80,7 @@ const devocionalCourseData: CourseData = {
           title: 'Livro Um novo ano, um recomeço',
           type: 'resource' as const,
           subtitle: 'Sobre o Livro Um ano novo, recomeço',
-          description: `Este devocional de 31 dias foi cuidadosamente preparado para guiar sua jornada espiritual.\n\nBaixe o livro completo para acompanhar os devocionais diários.`
+          description: `Este devocional de 31 dias foi cuidadosamente preparado para guiar sua jogada espiritual.\n\nBaixe o livro completo para acompanhar os devocionais diários.`
         },
         ...generateDailyLessons(),
       ],
@@ -291,7 +292,8 @@ export default function Devocional2026Page() {
                        selectedLesson?.id === 'day-09' || selectedLesson?.id === 'day-10' ||
                        selectedLesson?.id === 'day-11' || selectedLesson?.id === 'day-12' ||
                        selectedLesson?.id === 'day-13' || selectedLesson?.id === 'day-14' ||
-                       selectedLesson?.id === 'day-15' || selectedLesson?.id === 'day-16';
+                       selectedLesson?.id === 'day-15' || selectedLesson?.id === 'day-16' ||
+                       selectedLesson?.id === 'day-17';
 
   // Conversão segura para tipos específicos
   const lessonsAsDevocionalType: DevocionalDailyLesson[] = devocionalCourseData.modules[0].lessons.map(lesson => ({
@@ -332,7 +334,7 @@ export default function Devocional2026Page() {
     );
   }
 
-  // Usar o layout específico para os dias especiais (01-16)
+  // Usar o layout específico para os dias especiais (01-17)
   if (isSpecialDay) {
     return (
       <SidebarProvider>
