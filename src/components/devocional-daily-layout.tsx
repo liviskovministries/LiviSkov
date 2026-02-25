@@ -41,7 +41,7 @@ interface DevocionalDailyLayoutProps {
 // Páginas do devocional para o Dia 01
 const dia01Pages = [
   {
-    content: `"As misericórdias do SENHOR são a causa de não sermos consumidos, porque as suas misericórdias não têm fim; renovam-se cada manhã. Grande é a tua fidelidade."
+    content: `“As misericórdias do SENHOR são a causa de não sermos consumidos, porque as suas misericórdias não têm fim; renovam-se cada manhã. Grande é a tua fidelidade.”
 Lamentações 3:22–23 (ARA)
 
 DEVOCIONAL
@@ -59,9 +59,21 @@ Restauração é quando algo que foi quebrado não é descartado, mas cuidado co
 
 Pelo contrário, especialistas gastam tempo, recursos e delicadeza para remover camadas de sujeira e revelar novamente as cores originais do artista.
 
-Restaurar é investir em algo que já esteve em sua glória. Se você sente que está desgastado, empoeirado ou quebrado, não ache que Deus vai te descartar. Ele é o Grande Restaurador.
+No Japão, existe uma arte chamada Kintsugi, em que vasos quebrados são restaurados com ouro. As marcas do passado não são escondidas — elas são valorizadas. A história continua, agora com ainda mais significado. Assim também é conosco. Algumas áreas da nossa vida não precisam ser renovadas, mas restauradas. E toda restauração exige tempo, cuidado e pessoas certas ao nosso redor. 
 
-Pense: o que na sua vida precisa de renovo? O que precisa de restauração?`
+Deus usa ferramentas, processos e relacionamentos para nos curar. Psicologia, médicos, igreja, amigos, família — e, acima de tudo, Jesus. Eles são o ouro que Deus usa para restaurar nosso coração. As misericórdias do Senhor se renovam a cada manhã porque Ele acredita no processo. E a fidelidade dEle garante que aquilo que Ele começou, Ele vai completar.`
+  },
+  {
+    content: `Para refletir e escrever:
+
+Em que área da minha vida Deus está me chamando para recomeçar?
+O que precisa ser jogado fora para que o renovo aconteça?
+Que áreas não precisam de renovo, mas de restauração cuidadosa?
+Tenho permitido que Deus use pessoas e processos para me restaurar?
+
+Oração
+
+“Senhor, obrigado porque as Tuas misericórdias se renovam hoje sobre a minha vida. Eu recebo o Teu renovo e entrego diante de Ti tudo aquilo que precisa morrer para que o novo nasça. Cura o que está quebrado, restaura o que foi ferido e me ensina a confiar no Teu processo. Coloca ao meu redor as pessoas certas e me dá um coração ensinável. Eu creio que a Tua fidelidade me sustenta em cada recomeço. Em nome de Jesus, amém.”`
   }
 ];
 
@@ -219,16 +231,6 @@ export function DevocionalDailyLayout({
                     </p>
                   ))}
                 </div>
-                
-                {/* Pergunta reflexiva apenas na última página */}
-                {currentPage === totalPages - 1 && (
-                  <div className="mt-8 p-6 bg-amber-200/30 rounded-lg border border-amber-300 max-w-4xl mx-auto">
-                    <h5 className="font-semibold text-amber-800 mb-3 text-lg">💭 Para refletir:</h5>
-                    <p className="text-amber-700 italic text-base">
-                      O que na sua vida precisa de renovo? O que precisa de restauração?
-                    </p>
-                  </div>
-                )}
               </div>
             </div>
             
