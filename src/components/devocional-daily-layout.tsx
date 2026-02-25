@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import YouTube from 'react-youtube';
-import { Home, LogOut, BookOpen, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Home, LogOut, BookOpen, ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import { 
   Sidebar, 
   SidebarContent, 
@@ -94,21 +94,23 @@ export function DevocionalDailyLayout({
     if (!selectedLesson?.videoId) return null;
     
     return (
-      <div className="w-full max-w-md mx-auto lg:mx-0 lg:flex-1">
-        <div className="relative rounded-lg overflow-hidden shadow-lg">
-          <YouTube 
-            videoId={selectedLesson.videoId} 
-            className="w-full aspect-[9/16]" 
-            iframeClassName="w-full h-full"
-            onEnd={handleVideoEnd}
-            opts={{
-              playerVars: {
-                modestbranding: 1,
-                rel: 0,
-                showinfo: 0
-              }
-            }}
-          />
+      <div className="relative rounded-lg overflow-hidden bg-amber-50 border border-amber-200 shadow-lg">
+        <YouTube 
+          videoId={selectedLesson.videoId} 
+          className="w-full aspect-video" 
+          iframeClassName="w-full h-full"
+          onEnd={handleVideoEnd}
+          opts={{
+            playerVars: {
+              modestbranding: 1,
+              rel: 0,
+              showinfo: 0
+            }
+          }}
+        />
+        {/* Ícone decorativo no canto */}
+        <div className="absolute top-4 right-4 bg-amber-600/20 rounded-full p-2">
+          <Play className="h-4 w-4 text-amber-700" />
         </div>
       </div>
     );
@@ -120,11 +122,11 @@ export function DevocionalDailyLayout({
       return (
         <div className="relative h-full">
           <div className="absolute inset-0 bg-gradient-to-r from-amber-50 to-amber-100 rounded-lg shadow-lg border border-amber-200">
-            <div className="h-full p-6 flex flex-col">
-              <div className="text-center mb-6">
-                <div className="flex items-center justify-center gap-3 mb-2">
-                  <BookOpen className="h-6 w-6 text-amber-600" />
-                  <h3 className="text-xl font-bold text-amber-800">{selectedLesson?.title}</h3>
+            <div className="h-full p-8 flex flex-col">
+              <div className="text-center mb-8">
+                <div className="flex items-center justify-center gap-3 mb-3">
+                  <BookOpen className="h-8 w-8 text-amber-600" />
+                  <h3 className="text-2xl font-bold text-amber-800">{selectedLesson?.title}</h3>
                 </div>
                 <div className="h-px bg-amber-300 w-3/4 mx-auto"></div>
               </div>
@@ -157,32 +159,37 @@ export function DevocionalDailyLayout({
       );
     }
 
-    // Para o Dia 01, usar o sistema de páginas
+    // Para o Dia 01, usar o sistema de páginas integrado com vídeo
     return (
-      <div className="relative h-full">
+      <div className="relative h-full min-h-[800px]">
         <div className="absolute inset-0 bg-gradient-to-r from-amber-50 to-amber-100 rounded-lg shadow-lg border border-amber-200">
-          <div className="h-full p-6 flex flex-col">
+          <div className="h-full p-8 flex flex-col">
             {/* Cabeçalho do livro com navegação */}
-            <div className="text-center mb-6">
-              <div className="flex items-center justify-center gap-3 mb-2">
-                <BookOpen className="h-6 w-6 text-amber-600" />
-                <h3 className="text-xl font-bold text-amber-800">{selectedLesson?.title}</h3>
+            <div className="text-center mb-8">
+              <div className="flex items-center justify-center gap-3 mb-3">
+                <BookOpen className="h-8 w-8 text-amber-600" />
+                <h3 className="text-2xl font-bold text-amber-800">{selectedLesson?.title}</h3>
               </div>
-              <div className="h-px bg-amber-300 w-3/4 mx-auto"></div>
+              <div className="h-px bg-amber-300 w-3/4 mx-auto mb-4"></div>
+              
+              {/* Vídeo integrado no layout do livro */}
+              <div className="mb-8 mx-auto max-w-2xl">
+                {renderVideoPlayer()}
+              </div>
               
               {/* Indicador de página */}
-              <div className="flex items-center justify-center mt-4 space-x-2">
+              <div className="flex items-center justify-center space-x-4">
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={handlePrevPage}
                   disabled={currentPage === 0}
-                  className="h-8 w-8 text-amber-600 hover:text-amber-800"
+                  className="h-10 w-10 text-amber-600 hover:text-amber-800 border border-amber-300"
                 >
-                  <ChevronLeft className="h-4 w-4" />
+                  <ChevronLeft className="h-5 w-5" />
                 </Button>
                 
-                <span className="text-sm text-amber-700 font-medium">
+                <span className="text-base text-amber-700 font-medium px-4 py-2 bg-amber-200/30 rounded-lg">
                   Página {currentPage + 1} de {totalPages}
                 </span>
                 
@@ -191,9 +198,9 @@ export function DevocionalDailyLayout({
                   size="icon"
                   onClick={handleNextPage}
                   disabled={currentPage === totalPages - 1}
-                  className="h-8 w-8 text-amber-600 hover:text-amber-800"
+                  className="h-10 w-10 text-amber-600 hover:text-amber-800 border border-amber-300"
                 >
-                  <ChevronRight className="h-4 w-4" />
+                  <ChevronRight className="h-5 w-5" />
                 </Button>
               </div>
             </div>
@@ -202,12 +209,12 @@ export function DevocionalDailyLayout({
             <div className="flex-1 overflow-y-auto">
               <div className="text-amber-900 leading-relaxed">
                 <div className="text-center mb-8">
-                  <h4 className="text-lg font-semibold mb-4">🎯 Reflexões do Dia</h4>
-                  <div className="h-px bg-amber-300 w-1/2 mx-auto mb-4"></div>
+                  <h4 className="text-xl font-semibold mb-4">🎯 Reflexões do Dia</h4>
+                  <div className="h-px bg-amber-300 w-1/2 mx-auto mb-6"></div>
                 </div>
-                <div className="whitespace-pre-wrap font-serif text-lg space-y-4">
+                <div className="whitespace-pre-wrap font-serif text-lg space-y-6 max-w-4xl mx-auto">
                   {dia01Pages[currentPage].content.split('\n\n').map((paragraph, index) => (
-                    <p key={index} className="text-justify">
+                    <p key={index} className="text-justify leading-8">
                       {paragraph}
                     </p>
                   ))}
@@ -215,9 +222,9 @@ export function DevocionalDailyLayout({
                 
                 {/* Pergunta reflexiva apenas na última página */}
                 {currentPage === totalPages - 1 && (
-                  <div className="mt-8 p-4 bg-amber-200/30 rounded-lg border border-amber-300">
-                    <h5 className="font-semibold text-amber-800 mb-2">💭 Para refletir:</h5>
-                    <p className="text-amber-700 italic">
+                  <div className="mt-8 p-6 bg-amber-200/30 rounded-lg border border-amber-300 max-w-4xl mx-auto">
+                    <h5 className="font-semibold text-amber-800 mb-3 text-lg">💭 Para refletir:</h5>
+                    <p className="text-amber-700 italic text-base">
                       O que na sua vida precisa de renovo? O que precisa de restauração?
                     </p>
                   </div>
@@ -226,14 +233,14 @@ export function DevocionalDailyLayout({
             </div>
             
             {/* Rodapé do livro */}
-            <div className="mt-8 pt-4 border-t border-amber-300 text-center text-sm text-amber-700/70">
+            <div className="mt-8 pt-6 border-t border-amber-300 text-center text-base text-amber-700/70">
               <p>Devocional 2026 - Livi Skov</p>
             </div>
           </div>
         </div>
         
         {/* Efeito de páginas */}
-        <div className="absolute -right-1 top-0 bottom-0 w-2 bg-amber-800 rounded-r-lg opacity-20"></div>
+        <div className="absolute -right-1 top-0 bottom-0 w-3 bg-amber-800 rounded-r-lg opacity-20"></div>
       </div>
     );
   };
@@ -242,7 +249,7 @@ export function DevocionalDailyLayout({
     <div className="flex min-h-screen bg-background">
       <Sidebar collapsible="icon" className="border-r">
         <SidebarHeader>
-          <div className="flex items-center justify-center gap-4 p-2">
+          <div className="flex items-center justify-center gap-4 p-4">
             <Image 
               src="/images/logo4branco.fw.png" 
               alt="Logo Livi Skov" 
@@ -257,7 +264,7 @@ export function DevocionalDailyLayout({
           {sidebarContent}
         </SidebarContent>
         <SidebarFooter>
-          <div className="flex flex-col gap-2 p-2">
+          <div className="flex flex-col gap-2 p-4">
             <Button variant="ghost" className="justify-start gap-2" asChild>
               <Link href="/courses">
                 <Home className="h-4 w-4" />
@@ -296,20 +303,11 @@ export function DevocionalDailyLayout({
                 <p className="text-muted-foreground">Selecione um dia para começar o devocional.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 min-h-[600px]">
-                {/* Coluna esquerda - Vídeo */}
-                <div className="flex justify-center lg:justify-end">
-                  {selectedLesson.id.startsWith('day-') && renderVideoPlayer()}
-                </div>
-                
-                {/* Coluna direita - Livro */}
-                <div className="h-[600px] relative">
-                  {renderBookContent()}
-                </div>
+              <div className="min-h-[800px]">
+                {/* Conteúdo do livro integrado com vídeo */}
+                {renderBookContent()}
               </div>
             )}
-            
-            {/* Removida a seção de texto descritivo abaixo do conteúdo */}
           </div>
         </main>
       </div>
