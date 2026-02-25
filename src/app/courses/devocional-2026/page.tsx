@@ -43,10 +43,11 @@ const generateDailyLessons = (): UnifiedLesson[] => {
     { day: '19', title: 'Dia 19 – Aprender a esperar sem desistir', videoId: 'K7wVPZo3n2A', description: 'Desenvolvendo paciência e perseverança para esperar nos tempos de Deus sem perder a fé.' },
     { day: '20', title: 'Dia 20 — Quando Deus pede silêncio', videoId: '9AKKMzWtkfU', description: 'Aprendendo quando Deus nos pede para ficar em silêncio e quais lições podemos extrair desses momentos.' },
     { day: '21', title: 'Dia 21 — Renovados: a renovação da nossa mente (Metanoia)', videoId: 'yQN4UH0z6qE', description: 'Descobrindo o poder da metamorfose espiritual através da renovação constante da nossa mente em Deus.' },
+    { day: '22', title: 'Dia 22 – Quando a graça redefine a força', videoId: 'jB14yNTiFl8', description: 'Explorando como a graça de Deus pode redefinir nossa compreensão de força e poder pessoal.' },
   ];
 
-  // Dias de 22 a 31 com título padrão
-  for (let i = 22; i <= 31; i++) {
+  // Dias de 23 a 31 com título padrão
+  for (let i = 23; i <= 31; i++) {
     const day = String(i).padStart(2, '0');
     daysConfig.push({ 
       day: day, 
