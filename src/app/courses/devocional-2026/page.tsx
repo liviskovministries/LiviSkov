@@ -23,7 +23,7 @@ const generateDailyLessons = (): UnifiedLesson[] => {
     const day = String(i).padStart(2, '0');
     const dayText = i === 1 ? 'Dia 01 - Um (Re)novo em Deus' : `Devocional - Dia ${day}`;
     const dayDescription = i === 1 
-      ? 'Primeiro dia do devocional! Começamos nossa jornada de renovação e crescimento espiritual.' 
+      ? '' // Removido o texto descritivo para o Dia 01
       : `Bem-vindo ao devocional do Dia ${day}! Hoje, vamos mergulhar na palavra e encontrar inspiração para sua jornada.`;
     
     // Extrair o ID do vídeo para o Dia 01 da URL fornecida

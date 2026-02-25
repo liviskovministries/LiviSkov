@@ -309,16 +309,7 @@ export function DevocionalDailyLayout({
               </div>
             )}
             
-            {selectedLesson && (
-              <div className="mt-8">
-                <h2 className="text-2xl font-bold text-primary">
-                  {selectedLesson.subtitle}
-                </h2>
-                <div className="mt-4 text-muted-foreground">
-                  {selectedLesson.description}
-                </div>
-              </div>
-            )}
+            {/* Removida a seção de texto descritivo abaixo do conteúdo */}
           </div>
         </main>
       </div>
