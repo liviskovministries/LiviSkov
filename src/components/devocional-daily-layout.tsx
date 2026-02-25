@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import YouTube from 'react-youtube';
-import { Home, LogOut } from 'lucide-react';
+import { Home, LogOut, Heart, Share2, MessageCircle, BookOpen } from 'lucide-react';
 import { 
   Sidebar, 
   SidebarContent, 
@@ -49,25 +49,68 @@ export function DevocionalDailyLayout({
 }: DevocionalDailyLayoutProps) {
   const sidebar = useSidebar();
 
-  const renderVideoPlayer = () => {
+  const renderSocialMediaVideo = () => {
     if (!selectedLesson?.videoId) return null;
     
     return (
-      <div className="w-full max-w-md mx-auto lg:max-w-none">
-        <div className="bg-black rounded-lg overflow-hidden shadow-lg">
+      <div className="w-full max-w-sm mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+        {/* Header do post */}
+        <div className="flex items-center p-4 border-b">
+          <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+            <BookOpen className="h-6 w-6 text-white" />
+          </div>
+          <div className="ml-3">
+            <h4 className="font-semibold text-gray-900">Livi Skov</h4>
+            <p className="text-sm text-gray-500">Devocional 2026</p>
+          </div>
+          <div className="ml-auto">
+            <span className="text-xs text-gray-500">Hoje</span>
+          </div>
+        </div>
+        
+        {/* Vídeo */}
+        <div className="w-full aspect-[9/16] bg-black">
           <YouTube 
             videoId={selectedLesson.videoId} 
-            className="w-full aspect-video" 
+            className="w-full h-full" 
             iframeClassName="w-full h-full"
             onEnd={handleVideoEnd}
             opts={{
               playerVars: {
                 modestbranding: 1,
                 rel: 0,
-                showinfo: 0
+                showinfo: 0,
+                controls: 1
               }
             }}
           />
+        </div>
+        
+        {/* Ações do post */}
+        <div className="p-4 border-t">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <Button variant="ghost" size="icon" className="text-gray-600 hover:text-red-500">
+                <Heart className="h-5 w-5" />
+              </Button>
+              <Button variant="ghost" size="icon" className="text-gray-600 hover:text-blue-500">
+                <MessageCircle className="h-5 w-5" />
+              </Button>
+              <Button variant="ghost" size="icon" className="text-gray-600 hover:text-green-500">
+                <Share2 className="h-5 w-5" />
+              </Button>
+            </div>
+            <div className="text-xs text-gray-500">
+              {Math.floor(Math.random() * 1000) + 100} visualizações
+            </div>
+          </div>
+          
+          {/* Descrição */}
+          <div className="mt-3">
+            <p className="text-sm font-medium text-gray-900">Livi Skov</p>
+            <p className="text-gray-700 text-sm mt-1">{selectedLesson.description}</p>
+            <p className="text-gray-500 text-xs mt-2">#Devocional2026 #Renovação #Deus</p>
+          </div>
         </div>
       </div>
     );
@@ -160,8 +203,8 @@ export function DevocionalDailyLayout({
               </div>
             ) : (
               <div className="space-y-8">
-                {/* Vídeo */}
-                {selectedLesson.type === 'video' && renderVideoPlayer()}
+                {/* Vídeo estilo rede social */}
+                {selectedLesson.type === 'video' && renderSocialMediaVideo()}
                 
                 {/* Conteúdo do livro */}
                 {renderContent()}
