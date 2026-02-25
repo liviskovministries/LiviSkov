@@ -54,13 +54,8 @@ export function DevocionalDailyLayout({
     
     return (
       <div className="w-full max-w-md mx-auto lg:mx-0 lg:flex-1">
-        <div className="relative bg-black rounded-lg overflow-hidden shadow-lg">
-          {/* Simulação de interface de rede social */}
-          <div className="bg-gray-900 px-4 py-2 flex items-center gap-3">
-            <div className="w-8 h-8 bg-gray-600 rounded-full"></div>
-            <div className="text-white text-sm font-medium">devotional.day</div>
-          </div>
-          
+        <div className="relative rounded-lg overflow-hidden shadow-lg">
+          {/* Vídeo limpo sem simulação de rede social */}
           <YouTube 
             videoId={selectedLesson.videoId} 
             className="w-full aspect-[9/16]" 
@@ -74,16 +69,6 @@ export function DevocionalDailyLayout({
               }
             }}
           />
-          
-          {/* Rodapé da interface simulada */}
-          <div className="bg-gray-900 px-4 py-3 text-white text-sm">
-            <div className="flex gap-4 mb-2">
-              <span>❤️</span>
-              <span>💬</span>
-              <span>↗️</span>
-            </div>
-            <div className="text-gray-400">Devocional do Dia - Livi Skov</div>
-          </div>
         </div>
       </div>
     );
@@ -197,7 +182,7 @@ export function DevocionalDailyLayout({
               </div>
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 min-h-[600px]">
-                {/* Coluna esquerda - Vídeo no formato de rede social */}
+                {/* Coluna esquerda - Vídeo limpo */}
                 <div className="flex justify-center lg:justify-end">
                   {selectedLesson.id.startsWith('day-') && renderVideoPlayer()}
                 </div>
