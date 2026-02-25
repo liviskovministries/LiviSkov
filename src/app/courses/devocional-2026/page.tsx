@@ -26,6 +26,38 @@ const generateDailyLessons = (): UnifiedLesson[] => {
       ? 'Primeiro dia do devocional! Começamos nossa jornada de renovação e crescimento espiritual.' 
       : `Bem-vindo ao devocional do Dia ${day}! Hoje, vamos mergulhar na palavra e encontrar inspiração para sua jornada.`;
     
+    // Texto específico para o Dia 01
+    const day01BookText = i === 1 ? `As misericórdias do SENHOR são a causa de não sermos consumidos, porque as suas misericórdias não têm fim; renovam-se cada manhã. Grande é a tua fidelidade.”
+Lamentações 3:22–23 (ARA)
+
+DEVOCIONAL
+
+Renovo, como o próprio nome diz, é fazer novo — de novo. É quando o velho homem morre e renasce com Cristo. Mas também é quando mudamos de estação, de trabalho ou de direção, e precisamos começar algo novo do zero.
+
+Muitas vezes, precisamos nos dar permissão para recomeçar. Para renovar, refazer e reconstruir. As misericórdias do Senhor nos dão essa chance todos os dias. Deus não nos chama para viver presos ao ontem, mas para confiar que hoje Ele está fazendo algo novo.
+
+Existem coisas na nossa vida — como maus hábitos, mentiras e inseguranças — que precisam ser deixadas para trás. O renovo, às vezes, exige desapego. Cair e levantar faz parte do processo, e recomeçar não é sinal de fracasso, mas de coragem.
+Já a restauração é diferente.
+
+Restauração é quando algo que foi quebrado não é descartado, mas cuidado com amor e intenção. Ninguém jogaria fora uma obra de Michelangelo só porque é antiga ou foi danificada. 
+
+Pelo contrário, especialistas gastam tempo, recursos e delicadeza para remover camadas de sujeira e revelar novamente as cores originais do artista.
+
+o Japão, existe uma arte chamada Kintsugi, em que vasos quebrados são restaurados com ouro. As marcas do passado não são escondidas — elas são valorizadas. A história continua, agora com ainda mais significado. Assim também é conosco. Algumas áreas da nossa vida não precisam ser renovadas, mas restauradas. E toda restauração exige tempo, cuidado e pessoas certas ao nosso redor. 
+
+Deus usa ferramentas, processos e relacionamentos para nos curar. Psicologia, médicos, igreja, amigos, família — e, acima de tudo, Jesus. Eles são o ouro que Deus usa para restaurar nosso coração. As misericórdias do Senhor se renovam a cada manhã porque Ele acredita no processo. E a fidelidade dEle garante que aquilo que Ele começou, Ele vai completar.
+
+Para refletir e escrever:
+
+Em que área da minha vida Deus está me chamando para recomeçar?
+O que precisa ser jogado fora para que o renovo aconteça?
+Que áreas não precisam de renovo, mas de restauração cuidadosa?
+Tenho permitido que Deus use pessoas e processos para me restaurar?
+
+Oração
+
+“Senhor, obrigado porque as Tuas misericórdias se renovam hoje sobre a minha vida. Eu recebo o Teu renovo e entrego diante de Ti tudo aquilo que precisa morrer para que o novo nasça. Cura o que está quebrado, restaura o que foi ferido e me ensina a confiar no Teu processo. Coloca ao meu redor as pessoas certas e me dá um coração ensinável. Eu creio que a Tua fidelidade me sustenta em cada recomeço. Em nome de Jesus, amém.”` : `Texto do livro para o Dia ${day} será adicionado em breve.\n\nEste espaço conterá o conteúdo completo do devocional correspondente ao dia ${day}, incluindo reflexões, passagens bíblicas e perguntas para sua jornada espiritual.`;
+    
     // Extrair o ID do vídeo para o Dia 01 da URL fornecida
     const videoId = i === 1 ? 'v2TBVoIbHrw' : 'Dc4EBMJXQgg';
     
@@ -36,7 +68,7 @@ const generateDailyLessons = (): UnifiedLesson[] => {
       type: 'video' as const,
       videoId: videoId,
       description: dayDescription,
-      bookText: `Texto do livro para o Dia ${day} será adicionado em breve.\n\nEste espaço conterá o conteúdo completo do devocional correspondente ao dia ${day}, incluindo reflexões, passagens bíblicas e perguntas para sua jornada espiritual.`
+      bookText: day01BookText
     });
   }
   return lessons;
