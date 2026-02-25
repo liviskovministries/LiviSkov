@@ -309,7 +309,8 @@ export default function Devocional2026Page() {
                        selectedLesson?.id === 'day-19' || selectedLesson?.id === 'day-20' ||
                        selectedLesson?.id === 'day-21' || selectedLesson?.id === 'day-22' ||
                        selectedLesson?.id === 'day-23' || selectedLesson?.id === 'day-24' ||
-                       selectedLesson?.id === 'day-25' || selectedLesson?.id === 'day-26'; // Adicionei o Dia 26 aqui
+                       selectedLesson?.id === 'day-25' || selectedLesson?.id === 'day-26' ||
+                       selectedLesson?.id === 'day-27'; // Adicionei o Dia 27 aqui
 
   // Conversão segura para tipos específicos
   const lessonsAsDevocionalType: DevocionalDailyLesson[] = devocionalCourseData.modules[0].lessons.map(lesson => ({
@@ -350,7 +351,7 @@ export default function Devocional2026Page() {
     );
   }
 
-  // Usar o layout específico para os dias especiais (01-26)
+  // Usar o layout específico para os dias especiais (01-27)
   if (isSpecialDay) {
     return (
       <SidebarProvider>
