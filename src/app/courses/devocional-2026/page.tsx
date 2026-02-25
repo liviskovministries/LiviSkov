@@ -41,10 +41,11 @@ const generateDailyLessons = (): UnifiedLesson[] => {
     { day: '17', title: 'Dia 17 — Quando Deus não explica, mas sustenta', videoId: 'R2fdG9iTs_E', description: 'Aprendendo a confiar que mesmo quando Deus não explica as razões, Ele sempre nos sustenta em cada passo.' },
     { day: '18', title: 'Dia 18 – O valor do processo', videoId: '_gKZ0b2_hXA', description: 'Descobrindo a importância e o propósito divino por trás de cada processo que Deus nos conduz.' },
     { day: '19', title: 'Dia 19 – Aprender a esperar sem desistir', videoId: 'K7wVPZo3n2A', description: 'Desenvolvendo paciência e perseverança para esperar nos tempos de Deus sem perder a fé.' },
+    { day: '20', title: 'Dia 20 — Quando Deus pede silêncio', videoId: '9AKKMzWtkfU', description: 'Aprendendo quando Deus nos pede para ficar em silêncio e quais lições podemos extrair desses momentos.' },
   ];
 
-  // Dias de 20 a 31 com título padrão
-  for (let i = 20; i <= 31; i++) {
+  // Dias de 21 a 31 com título padrão
+  for (let i = 21; i <= 31; i++) {
     const day = String(i).padStart(2, '0');
     daysConfig.push({ 
       day: day, 
@@ -296,7 +297,7 @@ export default function Devocional2026Page() {
                        selectedLesson?.id === 'day-13' || selectedLesson?.id === 'day-14' ||
                        selectedLesson?.id === 'day-15' || selectedLesson?.id === 'day-16' ||
                        selectedLesson?.id === 'day-17' || selectedLesson?.id === 'day-18' ||
-                       selectedLesson?.id === 'day-19';
+                       selectedLesson?.id === 'day-19' || selectedLesson?.id === 'day-20';
 
   // Conversão segura para tipos específicos
   const lessonsAsDevocionalType: DevocionalDailyLesson[] = devocionalCourseData.modules[0].lessons.map(lesson => ({
@@ -337,7 +338,7 @@ export default function Devocional2026Page() {
     );
   }
 
-  // Usar o layout específico para os dias especiais (01-19)
+  // Usar o layout específico para os dias especiais (01-20)
   if (isSpecialDay) {
     return (
       <SidebarProvider>
