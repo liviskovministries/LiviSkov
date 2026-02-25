@@ -1,9 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import YouTube from 'react-youtube';
-import { Home, LogOut, BookOpen } from 'lucide-react';
+import { Home, LogOut, BookOpen, ChevronLeft, ChevronRight } from 'lucide-react';
 import { 
   Sidebar, 
   SidebarContent, 
@@ -38,6 +38,33 @@ interface DevocionalDailyLayoutProps {
   sidebarContent: React.ReactNode;
 }
 
+// Páginas do devocional para o Dia 01
+const dia01Pages = [
+  {
+    content: `"As misericórdias do SENHOR são a causa de não sermos consumidos, porque as suas misericórdias não têm fim; renovam-se cada manhã. Grande é a tua fidelidade."
+Lamentações 3:22–23 (ARA)
+
+DEVOCIONAL
+
+Renovo, como o próprio nome diz, é fazer novo — de novo. É quando o velho homem morre e renasce com Cristo. Mas também é quando mudamos de estação, de trabalho ou de direção, e precisamos começar algo novo do zero.
+
+Muitas vezes, precisamos nos dar permissão para recomeçar. Para renovar, refazer e reconstruir. As misericórdias do Senhor nos dão essa chance todos os dias. Deus não nos chama para viver presos ao ontem, mas para confiar que hoje Ele está fazendo algo novo.
+
+Existem coisas na nossa vida — como maus hábitos, mentiras e inseguranças — que precisam ser deixadas para trás. O renovo, às vezes, exige desapego. Cair e levantar faz parte do processo, e recomeçar não é sinal de fracasso, mas de coragem.`
+  },
+  {
+    content: `Já a restauração é diferente.
+
+Restauração é quando algo que foi quebrado não é descartado, mas cuidado com amor e intenção. Ninguém jogaria fora uma obra de Michelangelo só porque é antiga ou foi danificada. 
+
+Pelo contrário, especialistas gastam tempo, recursos e delicadeza para remover camadas de sujeira e revelar novamente as cores originais do artista.
+
+Restaurar é investir em algo que já esteve em sua glória. Se você sente que está desgastado, empoeirado ou quebrado, não ache que Deus vai te descartar. Ele é o Grande Restaurador.
+
+Pense: o que na sua vida precisa de renovo? O que precisa de restauração?`
+  }
+];
+
 export function DevocionalDailyLayout({
   selectedLesson,
   supabaseUser,
@@ -48,6 +75,20 @@ export function DevocionalDailyLayout({
   sidebarContent,
 }: DevocionalDailyLayoutProps) {
   const sidebar = useSidebar();
+  const [currentPage, setCurrentPage] = useState(0);
+  const totalPages = dia01Pages.length;
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   const renderVideoPlayer = () => {
     if (!selectedLesson?.videoId) return null;
@@ -55,7 +96,6 @@ export function DevocionalDailyLayout({
     return (
       <div className="w-full max-w-md mx-auto lg:mx-0 lg:flex-1">
         <div className="relative rounded-lg overflow-hidden shadow-lg">
-          {/* Vídeo limpo sem simulação de rede social */}
           <YouTube 
             videoId={selectedLesson.videoId} 
             className="w-full aspect-[9/16]" 
@@ -75,43 +115,119 @@ export function DevocionalDailyLayout({
   };
 
   const renderBookContent = () => {
+    if (!selectedLesson?.id.startsWith('day-01')) {
+      // Para outros dias, usar a versão padrão
+      return (
+        <div className="relative h-full">
+          <div className="absolute inset-0 bg-gradient-to-r from-amber-50 to-amber-100 rounded-lg shadow-lg border border-amber-200">
+            <div className="h-full p-6 flex flex-col">
+              <div className="text-center mb-6">
+                <div className="flex items-center justify-center gap-3 mb-2">
+                  <BookOpen className="h-6 w-6 text-amber-600" />
+                  <h3 className="text-xl font-bold text-amber-800">{selectedLesson?.title}</h3>
+                </div>
+                <div className="h-px bg-amber-300 w-3/4 mx-auto"></div>
+              </div>
+              
+              <div className="flex-1 overflow-y-auto">
+                {!selectedLesson?.bookText ? (
+                  <div className="text-center py-12">
+                    <p className="text-amber-700/80">Conteúdo do livro em desenvolvimento...</p>
+                  </div>
+                ) : (
+                  <div className="text-amber-900 leading-relaxed">
+                    <div className="text-center mb-8">
+                      <h4 className="text-lg font-semibold mb-4">🎯 Reflexões do Dia</h4>
+                      <div className="h-px bg-amber-300 w-1/2 mx-auto mb-4"></div>
+                    </div>
+                    <div className="whitespace-pre-wrap font-serif text-lg">
+                      {selectedLesson.bookText}
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              <div className="mt-8 pt-4 border-t border-amber-300 text-center text-sm text-amber-700/70">
+                <p>Devocional 2026 - Livi Skov</p>
+              </div>
+            </div>
+          </div>
+          <div className="absolute -right-1 top-0 bottom-0 w-2 bg-amber-800 rounded-r-lg opacity-20"></div>
+        </div>
+      );
+    }
+
+    // Para o Dia 01, usar o sistema de páginas
     return (
       <div className="relative h-full">
-        {/* Simulação de livro aberto */}
         <div className="absolute inset-0 bg-gradient-to-r from-amber-50 to-amber-100 rounded-lg shadow-lg border border-amber-200">
-          {/* Margem interna do livro */}
           <div className="h-full p-6 flex flex-col">
-            {/* Cabeçalho do livro */}
+            {/* Cabeçalho do livro com navegação */}
             <div className="text-center mb-6">
               <div className="flex items-center justify-center gap-3 mb-2">
                 <BookOpen className="h-6 w-6 text-amber-600" />
                 <h3 className="text-xl font-bold text-amber-800">{selectedLesson?.title}</h3>
               </div>
               <div className="h-px bg-amber-300 w-3/4 mx-auto"></div>
+              
+              {/* Indicador de página */}
+              <div className="flex items-center justify-center mt-4 space-x-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handlePrevPage}
+                  disabled={currentPage === 0}
+                  className="h-8 w-8 text-amber-600 hover:text-amber-800"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                
+                <span className="text-sm text-amber-700 font-medium">
+                  Página {currentPage + 1} de {totalPages}
+                </span>
+                
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages - 1}
+                  className="h-8 w-8 text-amber-600 hover:text-amber-800"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
             
-            {/* Conteúdo do livro */}
+            {/* Conteúdo da página atual */}
             <div className="flex-1 overflow-y-auto">
-              {!selectedLesson?.bookText ? (
-                <div className="text-center py-12">
-                  <p className="text-amber-700/80">Conteúdo do livro em desenvolvimento...</p>
+              <div className="text-amber-900 leading-relaxed">
+                <div className="text-center mb-8">
+                  <h4 className="text-lg font-semibold mb-4">🎯 Reflexões do Dia</h4>
+                  <div className="h-px bg-amber-300 w-1/2 mx-auto mb-4"></div>
                 </div>
-              ) : (
-                <div className="text-amber-900 leading-relaxed">
-                  <div className="text-center mb-8">
-                    <h4 className="text-lg font-semibold mb-4">🎯 Reflexões do Dia</h4>
-                    <div className="h-px bg-amber-300 w-1/2 mx-auto mb-4"></div>
-                  </div>
-                  <div className="whitespace-pre-wrap font-serif text-lg">
-                    {selectedLesson.bookText}
-                  </div>
-                  
-                  {/* Rodapé do livro */}
-                  <div className="mt-8 pt-4 border-t border-amber-300 text-center text-sm text-amber-700/70">
-                    <p>Devocional 2026 - Livi Skov</p>
-                  </div>
+                <div className="whitespace-pre-wrap font-serif text-lg space-y-4">
+                  {dia01Pages[currentPage].content.split('\n\n').map((paragraph, index) => (
+                    <p key={index} className="text-justify">
+                      {paragraph}
+                    </p>
+                  ))}
                 </div>
-              )}
+                
+                {/* Pergunta reflexiva apenas na última página */}
+                {currentPage === totalPages - 1 && (
+                  <div className="mt-8 p-4 bg-amber-200/30 rounded-lg border border-amber-300">
+                    <h5 className="font-semibold text-amber-800 mb-2">💭 Para refletir:</h5>
+                    <p className="text-amber-700 italic">
+                      O que na sua vida precisa de renovo? O que precisa de restauração?
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            {/* Rodapé do livro */}
+            <div className="mt-8 pt-4 border-t border-amber-300 text-center text-sm text-amber-700/70">
+              <p>Devocional 2026 - Livi Skov</p>
             </div>
           </div>
         </div>
@@ -159,7 +275,6 @@ export function DevocionalDailyLayout({
       <div className="flex-1">
         <header className="flex h-16 items-center justify-between border-b bg-background px-4 md:px-6">
           <div className="flex items-center gap-4">
-            {/* Botão do menu hamburguer para mobile */}
             <SidebarTrigger className="md:hidden" variant="default">
               <span className="font-semibold">Menu</span>
             </SidebarTrigger>
@@ -182,12 +297,12 @@ export function DevocionalDailyLayout({
               </div>
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 min-h-[600px]">
-                {/* Coluna esquerda - Vídeo limpo */}
+                {/* Coluna esquerda - Vídeo */}
                 <div className="flex justify-center lg:justify-end">
                   {selectedLesson.id.startsWith('day-') && renderVideoPlayer()}
                 </div>
                 
-                {/* Coluna direita - Livro aberto */}
+                {/* Coluna direita - Livro */}
                 <div className="h-[600px] relative">
                   {renderBookContent()}
                 </div>
