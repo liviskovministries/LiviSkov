@@ -16,29 +16,40 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 // Criando um tipo unificado que pode ser usado em ambos os layouts
 type UnifiedLesson = DevocionalDailyLesson & Lesson;
 
-// Função para gerar as 31 aulas diárias com texto placeholder
+// Função para gerar as 31 aulas diárias
 const generateDailyLessons = (): UnifiedLesson[] => {
   const lessons: UnifiedLesson[] = [];
-  for (let i = 1; i <= 31; i++) {
+  
+  // Dias específicos com título personalizado
+  const daysConfig = [
+    { day: '01', title: 'Dia 01 - Um (Re)novo em Deus', videoId: 'v2TBVoIbHrw', description: 'Primeiro dia do devocional! Começamos nossa jornada de renovação e crescimento espiritual.' },
+    { day: '02', title: 'Dia 02 | Aprendendo a ouvir a voz de Deus', videoId: 'bYWG7Z3jtkM', description: 'Aprendendo a discernir e ouvir a voz de Deus em meio ao ruído do mundo.' },
+  ];
+
+  // Dias de 3 a 31 com título padrão
+  for (let i = 3; i <= 31; i++) {
     const day = String(i).padStart(2, '0');
-    const dayText = i === 1 ? 'Dia 01 - Um (Re)novo em Deus' : `Devocional - Dia ${day}`;
-    const dayDescription = i === 1 
-      ? 'Primeiro dia do devocional! Começamos nossa jornada de renovação e crescimento espiritual.' 
-      : `Bem-vindo ao devocional do Dia ${day}!`;
-    
-    // Extrair o ID do vídeo para o Dia 01 da URL fornecida
-    const videoId = i === 1 ? 'v2TBVoIbHrw' : 'Dc4EBMJXQgg';
-    
-    lessons.push({
-      id: `day-${day}`,
-      title: dayText,
-      subtitle: `Dia ${day}`,
-      type: 'video' as const,
-      videoId: videoId,
-      description: dayDescription,
-      bookText: '' // Texto vazio para remover o conteúdo do livro
+    daysConfig.push({ 
+      day: day, 
+      title: `Devocional - Dia ${day}`, 
+      videoId: 'Dc4EBMJXQgg', 
+      description: `Bem-vindo ao devocional do Dia ${day}!` 
     });
   }
+
+  // Criar as lições baseadas na configuração
+  daysConfig.forEach(config => {
+    lessons.push({
+      id: `day-${config.day}`,
+      title: config.title,
+      subtitle: `Dia ${config.day}`,
+      type: 'video' as const,
+      videoId: config.videoId,
+      description: config.description,
+      bookText: '' // Texto vazio para remover o conteúdo do livro
+    });
+  });
+
   return lessons;
 };
 
@@ -258,8 +269,8 @@ export default function Devocional2026Page() {
     }
   };
 
-  // Identificar se é o Dia 01 específicamente
-  const isDay01 = selectedLesson?.id === 'day-01';
+  // Identificar se é um dos dias que usa o layout especial
+  const isSpecialDay = selectedLesson?.id === 'day-01' || selectedLesson?.id === 'day-02';
 
   // Conversão segura para tipos específicos
   const lessonsAsDevocionalType: DevocionalDailyLesson[] = devocionalCourseData.modules[0].lessons.map(lesson => ({
@@ -300,8 +311,8 @@ export default function Devocional2026Page() {
     );
   }
 
-  // Usar o layout específico APENAS para o Dia 01
-  if (isDay01) {
+  // Usar o layout específico para os dias especiais (01 e 02)
+  if (isSpecialDay) {
     return (
       <SidebarProvider>
         <DevocionalDailyLayout
