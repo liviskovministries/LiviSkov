@@ -8,27 +8,22 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import { useSupabaseAuth, useSupabaseUser } from '@/integrations/supabase/supabase-provider';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { DevocionalDailyLayout, DevocionalDailyLesson } from '@/components/devocional-daily-layout';
 import { CourseLayout, Lesson, CourseData } from '@/components/course-layout';
-import { DevocionalNavigation } from '@/components/devocional-navigation';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { DevocionalNavigation } from '@/components/devocional-navigation'; // Importar o novo componente de navegação
+import { PlaceHolderImages } from '@/lib/placeholder-images'; // Importar PlaceHolderImages
 
-// Criando um tipo unificado que pode ser usado em ambos os layouts
-type UnifiedLesson = DevocionalDailyLesson & Lesson;
-
-// Função para gerar as 31 aulas diárias com texto placeholder
-const generateDailyLessons = (): UnifiedLesson[] => {
-  const lessons: UnifiedLesson[] = [];
+// Função para gerar as 31 aulas diárias
+const generateDailyLessons = () => {
+  const lessons: Lesson[] = [];
   for (let i = 1; i <= 31; i++) {
     const day = String(i).padStart(2, '0');
     lessons.push({
       id: `day-${day}`,
-      title: `Devocional - Dia ${day}`,
-      subtitle: `Dia ${day}: Um novo recomeço`,
+      title: `Dia ${day}`,
       type: 'video' as const,
-      videoId: 'Dc4EBMJXQgg',
+      videoId: 'Dc4EBMJXQgg', // Placeholder video ID para cada dia
+      subtitle: `Devocional do Dia ${day}`,
       description: `Bem-vindo ao devocional do Dia ${day}! Hoje, vamos mergulhar na palavra e encontrar inspiração para sua jornada.`,
-      bookText: `Texto do livro para o Dia ${day} será adicionado em breve.\n\nEste espaço conterá o conteúdo completo do devocional correspondente ao dia ${day}, incluindo reflexões, passagens bíblicas e perguntas para sua jornada espiritual.`
     });
   }
   return lessons;
@@ -39,7 +34,7 @@ const devocionalCourseData: CourseData = {
   modules: [
     {
       id: 'devocional-content',
-      title: 'Conteúdo do Devocional',
+      title: 'Conteúdo do Devocional', // Um único módulo para conter tudo
       lessons: [
         {
           id: 'devocional-pdf',
@@ -48,7 +43,7 @@ const devocionalCourseData: CourseData = {
           subtitle: 'Sobre o Livro Um ano novo, recomeço',
           description: `Este devocional de 31 dias foi cuidadosamente preparado para guiar sua jornada espiritual ao longo de um mês completo de reflexão e crescimento.\n\n📖 O QUE VOCÊ ENCONTRARÁ NO LIVRO:\n\n• 31 devocionais diários com mensagens inspiradoras\n• Espaços para suas próprias reflexões e anotações\n• Passagens bíblicas selecionadas para cada tema\n• Perguntas que estimulam a introspecção\n\n🎯 COMO UTILIZAR:\n\nCada devocional foi pensado para ser acompanhado pelos vídeos correspondentes. Leia o texto do livro, assista o vídeo do dia, e depois volte ao livro para registrar suas reflexões e insights pessoais.\n\nEsta é uma jornada transformadora que combina a profundidade da leitura reflexiva com a dinâmica do conteúdo em vídeo, criando uma experiência completa de aprendizado espiritual.`
         },
-        ...generateDailyLessons(),
+        ...generateDailyLessons(), // Adicionar todas as 31 aulas diárias
       ],
     },
   ],
@@ -61,14 +56,14 @@ export default function Devocional2026Page() {
   const firestore = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
-  const [selectedLesson, setSelectedLesson] = useState<UnifiedLesson | null>(devocionalCourseData.modules[0].lessons[0] as UnifiedLesson);
+  const [selectedLesson, setSelectedLesson] = useState<Lesson>(devocionalCourseData.modules[0].lessons[0]);
   const [completionStatus, setCompletionStatus] = useState<Record<string, boolean>>({});
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isDownloading, setIsDownloading] = useState(false);
   const [currentTime, setCurrentTime] = useState<Date>(new Date());
   
-  const courseId = 'devocional-2026';
+  const courseId = 'devocional-2026'; // ID do curso para o Devocional
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -101,7 +96,7 @@ export default function Devocional2026Page() {
       try {
         const { data, error } = await supabase
           .from('users')
-          .select('devocional_2026_access')
+          .select('devocional_2026_access') // Verificar acesso específico para o Devocional 2026
           .eq('id', supabaseUser.id)
           .single();
         
@@ -148,7 +143,7 @@ export default function Devocional2026Page() {
     }, { merge: true });
   };
 
-  const handleLessonClick = (lesson: UnifiedLesson) => {
+  const handleLessonClick = (lesson: Lesson) => {
     setSelectedLesson(lesson);
     if (lesson.type !== 'video') {
       markLessonAsComplete(lesson.id);
@@ -196,6 +191,7 @@ export default function Devocional2026Page() {
 
       console.log("[Devocional2026Page] Downloading watermarked PDF for:", { firstName, lastName, email });
 
+      // Chamar a nova função Edge para o Devocional
       const response = await fetch('https://rxvcxqfnkvqfxwzbujka.supabase.co/functions/v1/watermark-devocional-pdf', {
         method: 'POST',
         headers: {
@@ -250,32 +246,21 @@ export default function Devocional2026Page() {
     }
   };
 
-  // Identificar se é uma aula de vídeo (dias 01-31)
-  const isDailyLesson = selectedLesson?.id.startsWith('day-');
-
-  // Conversão segura para tipos específicos
-  const lessonsAsDevocionalType: DevocionalDailyLesson[] = devocionalCourseData.modules[0].lessons.map(lesson => ({
-    ...lesson,
-    bookText: (lesson as any).bookText || ''
-  }));
-
-  const selectedLessonAsDevocional: DevocionalDailyLesson | null = selectedLesson ? {
-    ...selectedLesson,
-    bookText: (selectedLesson as any).bookText || ''
-  } : null;
+  // Extrair todas as aulas do único módulo para a navegação personalizada
+  const allDevocionalLessons = useMemo(() => devocionalCourseData.modules[0].lessons, []);
 
   // Conteúdo da sidebar para o Devocional 2026
   const devocionalSidebarContent = useMemo(() => (
     <DevocionalNavigation
-      lessons={lessonsAsDevocionalType}
-      selectedLesson={selectedLessonAsDevocional}
+      lessons={allDevocionalLessons}
+      selectedLesson={selectedLesson}
       completionStatus={completionStatus}
       handleLessonClick={handleLessonClick}
       currentTime={currentTime}
     />
-  ), [lessonsAsDevocionalType, selectedLessonAsDevocional, completionStatus, handleLessonClick, currentTime]);
+  ), [allDevocionalLessons, selectedLesson, completionStatus, handleLessonClick, currentTime]);
 
-  // Retornos condicionais
+  // Retornos condicionais movidos para depois de todas as chamadas de hooks
   if (isSupabaseUserLoading || !supabaseUser || isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
@@ -292,37 +277,10 @@ export default function Devocional2026Page() {
     );
   }
 
-  // Usar o layout específico para dias 01-31
-  if (isDailyLesson) {
-    return (
-      <SidebarProvider>
-        <DevocionalDailyLayout
-          selectedLesson={selectedLessonAsDevocional}
-          supabaseUser={supabaseUser}
-          completionStatus={completionStatus}
-          handleLessonClick={handleLessonClick}
-          handleVideoEnd={handleVideoEnd}
-          handleLogout={handleLogout}
-          sidebarContent={devocionalSidebarContent}
-        />
-      </SidebarProvider>
-    );
-  }
-
-  // Para o download do livro, usar o layout original com conversão de tipos
-  const selectedLessonAsLesson: Lesson | null = selectedLesson ? {
-    id: selectedLesson.id,
-    title: selectedLesson.title,
-    type: selectedLesson.type,
-    subtitle: selectedLesson.subtitle,
-    description: selectedLesson.description,
-    videoId: selectedLesson.videoId
-  } : null;
-
   return (
     <SidebarProvider>
       <CourseLayout
-        selectedLesson={selectedLessonAsLesson}
+        selectedLesson={selectedLesson}
         courseData={devocionalCourseData}
         supabaseUser={supabaseUser}
         completionStatus={completionStatus}
@@ -334,7 +292,7 @@ export default function Devocional2026Page() {
         handleLogout={handleLogout}
         courseLogoPath="/images/logo4branco.fw.png"
         resourceCoverPath={PlaceHolderImages.find(img => img.id === 'devocional-2026-cover')?.imageUrl || '/images/devocional-2026-banner.jpg'}
-        sidebarContent={devocionalSidebarContent}
+        sidebarContent={devocionalSidebarContent} // Passar o conteúdo personalizado da sidebar
       />
     </SidebarProvider>
   );
