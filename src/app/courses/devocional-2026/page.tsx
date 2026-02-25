@@ -32,10 +32,11 @@ const generateDailyLessons = (): UnifiedLesson[] => {
     { day: '08', title: 'Dia 8 | Filhos do Rei | Noiva de Cristo | Amigos do Espírito Santo', videoId: 'PzMtVOuVIJI', description: 'Descobrindo nossa identidade divina como filhos do Rei, noiva de Cristo e amigos do Espírito Santo.' },
     { day: '09', title: 'DIA 9 — Deus nos processos', videoId: 'yZogeLVkDys', description: 'Entendendo como Deus está presente e atuando em todos os processos da nossa vida.' },
     { day: '10', title: 'DIA 10 — Quando Deus parece em silêncio', videoId: 'AEE7zZHEydc', description: 'Aprendendo a confiar em Deus mesmo quando Ele parece estar em silêncio em nossas vidas.' },
+    { day: '11', title: 'Dia 11 — Descansar também é fé', videoId: '2iiLpr89Nno', description: 'Aprendendo que descansar também é um ato de fé e confiança em Deus.' },
   ];
 
-  // Dias de 11 a 31 com título padrão
-  for (let i = 11; i <= 31; i++) {
+  // Dias de 12 a 31 com título padrão
+  for (let i = 12; i <= 31; i++) {
     const day = String(i).padStart(2, '0');
     daysConfig.push({ 
       day: day, 
@@ -282,7 +283,8 @@ export default function Devocional2026Page() {
                        selectedLesson?.id === 'day-03' || selectedLesson?.id === 'day-04' ||
                        selectedLesson?.id === 'day-05' || selectedLesson?.id === 'day-06' ||
                        selectedLesson?.id === 'day-07' || selectedLesson?.id === 'day-08' ||
-                       selectedLesson?.id === 'day-09' || selectedLesson?.id === 'day-10';
+                       selectedLesson?.id === 'day-09' || selectedLesson?.id === 'day-10' ||
+                       selectedLesson?.id === 'day-11';
 
   // Conversão segura para tipos específicos
   const lessonsAsDevocionalType: DevocionalDailyLesson[] = devocionalCourseData.modules[0].lessons.map(lesson => ({
@@ -323,7 +325,7 @@ export default function Devocional2026Page() {
     );
   }
 
-  // Usar o layout específico para os dias especiais (01-10)
+  // Usar o layout específico para os dias especiais (01-11)
   if (isSpecialDay) {
     return (
       <SidebarProvider>
