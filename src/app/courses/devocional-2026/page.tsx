@@ -26,12 +26,15 @@ const generateDailyLessons = (): UnifiedLesson[] => {
       ? 'Primeiro dia do devocional! Começamos nossa jornada de renovação e crescimento espiritual.' 
       : `Bem-vindo ao devocional do Dia ${day}! Hoje, vamos mergulhar na palavra e encontrar inspiração para sua jornada.`;
     
+    // Extrair o ID do vídeo para o Dia 01 da URL fornecida
+    const videoId = i === 1 ? 'v2TBVoIbHrw' : 'Dc4EBMJXQgg';
+    
     lessons.push({
       id: `day-${day}`,
       title: dayText,
       subtitle: `Dia ${day}`,
       type: 'video' as const,
-      videoId: 'Dc4EBMJXQgg',
+      videoId: videoId,
       description: dayDescription,
       bookText: `Texto do livro para o Dia ${day} será adicionado em breve.\n\nEste espaço conterá o conteúdo completo do devocional correspondente ao dia ${day}, incluindo reflexões, passagens bíblicas e perguntas para sua jornada espiritual.`
     });
