@@ -49,10 +49,11 @@ const generateDailyLessons = (): UnifiedLesson[] => {
     { day: '25', title: 'Dia 25 – Enraizados no Rio de Deus', videoId: 'FOztnSieiBM', description: 'Descobrindo como nos manter firmemente conectados à fonte divina que sustenta nossa jornada espiritual.' },
     { day: '26', title: 'Dia 26 – Filhos antes de Qualquer outra coisa', videoId: '9jsUGKA3LZo', description: 'Compreendendo nossa identidade fundamental como filhos de Deus antes de qualquer outra função ou papel na vida.' },
     { day: '27', title: 'Dia 27 – Curando a identidade', videoId: 'Kj6fgmxbBl0', description: 'A jornada de cura e restauração da nossa verdadeira identidade em Deus.' },
+    { day: '28', title: 'Dia 28 — Quando a identidade é curada, o destino se organiza', videoId: 'iJXH10qdOEA', description: 'Descobrindo como uma identidade curada em Deus organiza e direciona nosso propósito e destino espiritual.' },
   ];
 
-  // Dias de 28 a 31 com título padrão
-  for (let i = 28; i <= 31; i++) {
+  // Dias de 29 a 31 com título padrão
+  for (let i = 29; i <= 31; i++) {
     const day = String(i).padStart(2, '0');
     daysConfig.push({ 
       day: day, 
