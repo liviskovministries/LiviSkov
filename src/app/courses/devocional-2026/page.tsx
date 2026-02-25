@@ -29,8 +29,8 @@ const generateDailyLessons = (): UnifiedLesson[] => {
     { day: '05', title: 'Dia 05 — CURANDO AS FERIDAS DO CORAÇÃO', videoId: 'K-gmfSH39Lg', description: 'Trazendo cura e restauração para as áreas feridas do nosso coração através do amor de Deus.' },
     { day: '06', title: 'Dia 06 — A força da vulnerabilidade', videoId: 'EOmSm-JLDlA', description: 'Descobrindo a força que existe em nos mostrarmos vulneráveis diante de Deus e dos outros.' },
     { day: '07', title: 'DIA 7 | Quem somos em Deus', videoId: 'JNk8vNtMDMA', description: 'Explorando nossa verdadeira identidade em Deus e compreendendo quem somos Nele.' },
-    { day: '08', title: 'Dia 8 | Filhos do Rei | Noiva de Cristo | Amigos do Espírito Santo', videoId: 'PzMtVOuVIJI', description: 'Descobrindo nossa identidade divina como filhos do Rei, noiva de Cristo e amigos do Espírito Santo.' },
-    { day: '09', title: 'DIA 9 — Deus nos processos', videoId: 'yZogeLVkDys', description: 'Entendendo como Deus está presente e atuando em todos os processos da nossa vida.' },
+    { day: '08', title: 'Dia 08 | Filhos do Rei | Noiva de Cristo | Amigos do Espírito Santo', videoId: 'PzMtVOuVIJI', description: 'Descobrindo nossa identidade divina como filhos do Rei, noiva de Cristo e amigos do Espírito Santo.' },
+    { day: '09', title: 'DIA 09 — Deus nos processos', videoId: 'yZogeLVkDys', description: 'Entendendo como Deus está presente e atuando em todos os processos da nossa vida.' },
     { day: '10', title: 'DIA 10 — Quando Deus parece em silêncio', videoId: 'AEE7zZHEydc', description: 'Aprendendo a confiar em Deus mesmo quando Ele parece estar em silêncio em nossas vidas.' },
     { day: '11', title: 'Dia 11 — Descansar também é fé', videoId: '2iiLpr89Nno', description: 'Aprendendo que descansar também é um ato de fé e confiança em Deus.' },
     { day: '12', title: 'Dia 12 — Quando Deus nos chama pra confiar', videoId: 'rjL3g723O48', description: 'Reconhecendo os momentos em que Deus nos chama para confiar completamente Nele, mesmo quando não entendemos o caminho.' },
@@ -44,10 +44,11 @@ const generateDailyLessons = (): UnifiedLesson[] => {
     { day: '20', title: 'Dia 20 — Quando Deus pede silêncio', videoId: '9AKKMzWtkfU', description: 'Aprendendo quando Deus nos pede para ficar em silêncio e quais lições podemos extrair desses momentos.' },
     { day: '21', title: 'Dia 21 — Renovados: a renovação da nossa mente (Metanoia)', videoId: 'yQN4UH0z6qE', description: 'Descobrindo o poder da metamorfose espiritual através da renovação constante da nossa mente em Deus.' },
     { day: '22', title: 'Dia 22 – Quando a graça redefine a força', videoId: 'jB14yNTiFl8', description: 'Explorando como a graça de Deus pode redefinir nossa compreensão de força e poder pessoal.' },
+    { day: '23', title: 'Dia 23 — O dia em que me posicionei', videoId: 'rW2Z8kMA64E', description: 'Refletindo sobre como o posicionamento espiritual pode transformar nossa jornada com Deus.' },
   ];
 
-  // Dias de 23 a 31 com título padrão
-  for (let i = 23; i <= 31; i++) {
+  // Dias de 24 a 31 com título padrão
+  for (let i = 24; i <= 31; i++) {
     const day = String(i).padStart(2, '0');
     daysConfig.push({ 
       day: day, 
