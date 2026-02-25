@@ -9,7 +9,8 @@ import {
   SidebarContent, 
   SidebarHeader, 
   SidebarFooter,
-  useSidebar
+  useSidebar,
+  SidebarTrigger
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -173,6 +174,10 @@ export function DevocionalDailyLayout({
       <div className="flex-1">
         <header className="flex h-16 items-center justify-between border-b bg-background px-4 md:px-6">
           <div className="flex items-center gap-4">
+            {/* Botão do menu hamburguer para mobile */}
+            <SidebarTrigger className="md:hidden" variant="default">
+              <span className="font-semibold">Menu</span>
+            </SidebarTrigger>
             <h1 className="text-xl font-bold text-primary">
               {selectedLesson ? selectedLesson.title : 'Devocional 2026'}
             </h1>
