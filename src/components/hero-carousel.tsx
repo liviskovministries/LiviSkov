@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Lock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import useEmblaCarousel from 'embla-carousel-react';
-import { useSupabaseUser } from '@/integrations/supabase/supabase-provider';
+import { useSupabaseUser } from '@/integrations/supabase/supabase-provider'; // Importar useSupabaseUser
 
 interface HeroSlide {
   id: string;
@@ -19,7 +19,7 @@ interface HeroSlide {
   buttonHref?: string;
   showEnrollmentMessage?: boolean;
   enrollmentDeadline?: Date;
-  showAuthButtons?: boolean;
+  showAuthButtons?: boolean; // Nova propriedade para mostrar botões de Login/Cadastro
 }
 
 interface HeroCarouselProps {
@@ -30,7 +30,7 @@ interface HeroCarouselProps {
 export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-  const { user, isUserLoading } = useSupabaseUser();
+  const { user, isUserLoading } = useSupabaseUser(); // Obter status do usuário
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
@@ -82,33 +82,33 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
                   data-ai-hint={slide.imageHint}
                 />
                 <div className="absolute inset-0 bg-black/50" />
-                <div className="container relative z-10 flex h-full flex-col items-center justify-center text-center px-4">
-                  <h1 className="text-2xl sm:text-3xl font-bold md:text-6xl">
+                <div className="container relative z-10 flex h-full flex-col items-center justify-center text-center">
+                  <h1 className="text-4xl font-bold md:text-6xl">
                     {slide.title}
                   </h1>
-                  <p className="mt-3 max-w-2xl text-sm sm:text-base md:text-xl px-2">
+                  <p className="mt-4 max-w-2xl text-lg md:text-xl">
                     {slide.description}
                   </p>
 
                   {showLoginSignup ? (
-                    <div className="mt-3 sm:mt-4 md:mt-6 flex flex-col sm:flex-row gap-2 md:gap-4">
-                      <Button asChild size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 text-xs md:text-base h-10 md:h-12 w-full sm:w-auto">
+                    <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                      <Button asChild size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">
                         <Link href="/login">Login</Link>
                       </Button>
-                      <Button asChild variant="outline" size="lg" className="border-primary-foreground/50 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground text-xs md:text-base h-10 md:h-12 w-full sm:w-auto">
+                      <Button asChild variant="outline" size="lg" className="border-primary-foreground/50 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground">
                         <Link href="/signup">Cadastre-se</Link>
                       </Button>
                     </div>
                   ) : slide.showEnrollmentMessage && hasEnrollmentEnded ? (
-                    <div className="mt-3 sm:mt-4 md:mt-6 max-w-2xl text-sm md:text-lg text-white bg-red-600/80 p-3 md:p-4 rounded-lg shadow-lg">
-                      <p className="font-bold flex items-center justify-center gap-2 text-xs md:text-base">
-                        <Lock className="h-4 w-4 md:h-6 md:w-6" /> Inscrições Encerradas
+                    <div className="mt-8 max-w-2xl text-lg text-white bg-red-600/80 p-4 rounded-lg shadow-lg">
+                      <p className="font-bold flex items-center justify-center gap-2">
+                        <Lock className="h-6 w-6" /> Inscrições Encerradas
                       </p>
                     </div>
                   ) : (
                     slide.buttonText && slide.buttonHref && (
                       <Link href={slide.buttonHref}>
-                        <Button size="lg" className="mt-3 sm:mt-4 md:mt-6 bg-primary hover:bg-primary/90 text-primary-foreground text-xs md:text-base h-10 md:h-12">
+                        <Button size="lg" className="mt-8 bg-primary hover:bg-primary/90 text-primary-foreground">
                           {slide.buttonText}
                         </Button>
                       </Link>

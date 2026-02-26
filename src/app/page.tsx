@@ -46,7 +46,7 @@ export default function Home() {
       imageUrl: devocionalBannerImage?.imageUrl || '/images/mulher-pensativa-noite-urbana.png',
       imageHint: devocionalBannerImage?.imageHint || 'thoughtful woman urban night',
       title: 'Devocional 2026 - Um novo ano, um recomeço',
-      description: 'Adquira já o e-book e tenha acesso aos 31 vídeos que acompanham você nessa jornada. Tudo por apenas R$35,00. Cadastre-se e adquira já!',
+      description: 'Adquira já o e-book e tenha acesso aos 31 vídeos que acompanham você nessa jornada. Tudo por apenas R$35,00. Faça login e adquira já!',
       showAuthButtons: true, // Mostrar botões de login/cadastro
     },
   ];
