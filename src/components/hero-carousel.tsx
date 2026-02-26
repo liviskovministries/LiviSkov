@@ -61,7 +61,7 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
   }, [emblaApi]);
 
   return (
-    <section id="inicio" className="relative h-[50vh] min-h-[350px] w-full text-white overflow-hidden sm:h-[60vh] sm:min-h-[400px]">
+    <section id="inicio" className="relative h-[65vh] min-h-[450px] w-full text-white overflow-hidden sm:h-[70vh] sm:min-h-[500px]">
       <div className="embla h-full w-full" ref={emblaRef}>
         <div className="embla__container flex h-full">
           {slides.map((slide) => {
@@ -82,11 +82,11 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
                   data-ai-hint={slide.imageHint}
                 />
                 <div className="absolute inset-0 bg-black/50" />
-                <div className="container relative z-10 flex h-full flex-col items-center justify-center text-center px-4">
+                <div className="container relative z-10 flex h-full flex-col items-center justify-center text-center px-4 pb-8">
                   <h1 className="text-2xl sm:text-4xl font-bold md:text-6xl">
                     {slide.title}
                   </h1>
-                  <p className="mt-3 max-w-2xl text-sm sm:text-lg md:text-xl px-2">
+                  <p className="mt-3 max-w-2xl text-base sm:text-lg md:text-xl px-2">
                     {slide.description}
                   </p>
 
