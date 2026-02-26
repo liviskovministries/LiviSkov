@@ -16,15 +16,17 @@ import { Button } from '@/components/ui/button';
 import { User } from '@supabase/supabase-js';
 import Link from 'next/link';
 import { DevocionalNavigation } from './devocional-navigation';
+import { PlaceHolderImages } from '@/lib/placeholder-images'; // Importar PlaceHolderImages
 
 export interface DevocionalDailyLesson {
   id: string;
   title: string;
-  type: 'video' | 'resource' | 'content'; // Adicionado o tipo 'content'
+  type: 'video' | 'resource' | 'content';
   subtitle?: string;
   description: string;
   videoId?: string;
   bookText?: string;
+  coverImageId?: string; // Adicionado coverImageId
 }
 
 interface DevocionalDailyLayoutProps {
@@ -117,6 +119,10 @@ export function DevocionalDailyLayout({
     );
   };
 
+  const introImage = selectedLesson?.coverImageId 
+    ? PlaceHolderImages.find(img => img.id === selectedLesson.coverImageId) 
+    : null;
+
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar collapsible="icon" className="border-r">
@@ -176,7 +182,21 @@ export function DevocionalDailyLayout({
                 <p className="text-muted-foreground">Selecione um dia para começar o devocional.</p>
               </div>
             ) : (
-              <div className="w-full flex justify-center">
+              <div className="w-full flex justify-center flex-col items-center">
+                {/* Renderizar a imagem de capa se for a introdução e tiver uma imagem */}
+                {selectedLesson.type === 'content' && introImage && (
+                  <div className="mb-8 w-full max-w-2xl">
+                    <Image
+                      src={introImage.imageUrl}
+                      alt={introImage.description}
+                      width={800}
+                      height={450}
+                      layout="responsive"
+                      className="rounded-lg shadow-lg"
+                      data-ai-hint={introImage.imageHint}
+                    />
+                  </div>
+                )}
                 {/* Vídeo estilo rede social */}
                 {selectedLesson.type === 'video' && renderSocialMediaVideo()}
                 {/* Se for tipo 'content', apenas o description será renderizado abaixo */}

@@ -24,13 +24,13 @@ const generateDailyLessons = (): UnifiedLesson[] => {
   lessons.push({
     id: 'intro-devocional',
     title: 'Introdução ao Devocional 2026',
-    type: 'content' as const, // Alterado para 'content'
+    type: 'content' as const,
     subtitle: 'Início da jornada',
     description: `Sobre o Devocional 2026 - Um novo ano, um recomeço
 
 Este devocional nasceu em um lugar que poucos veem: o lugar do processo.
 
-Não foi construído a partir de respostas prontas, mas de perguntas sinceras. Não surgiu em um tempo de estabilidade, mas em meio a transições, rupturas, recomeços e decisões que exigiram fé quando a lógica já não fazia sentido.
+Não foi construído a partir de respostas prontas, mas de perguntas sinceras. Não surgiu em um tempo de estabilidade, mas em meio a transições, rupturas, recomeços e decisões que exigiram fé quando a lógica já no fazia sentido.
 
 Durante muitos anos, aprendi a ministrar para pessoas. Nos últimos tempos, porém, Deus me ensinou algo ainda mais profundo: antes de ministrar, eu precisava permanecer. Permanecer n’Ele quando nada fazia sentido. Permanecer quando portas se fecharam. Permanecer quando o silêncio parecia mais alto que as promessas.
 
@@ -47,8 +47,9 @@ Seja bem-vindo(a).
 Que esta caminhada não termine 31 dias, mas continue transformando você muito além destas páginas.
 
 — Livi Skov`,
-    videoId: undefined, // Vídeo removido
-    bookText: ''
+    videoId: undefined,
+    bookText: '',
+    coverImageId: 'devocional-intro-image' // Adicionando a referência da imagem
   });
   
   // Dias específicos com título personalizado
@@ -408,7 +409,8 @@ export default function Devocional2026Page() {
     type: selectedLesson.type,
     subtitle: selectedLesson.subtitle,
     description: selectedLesson.description,
-    videoId: selectedLesson.videoId
+    videoId: selectedLesson.videoId,
+    coverImageId: selectedLesson.coverImageId // Incluir coverImageId aqui
   } : null;
 
   return (

@@ -23,10 +23,11 @@ import { User } from '@supabase/supabase-js';
 export type Lesson = {
   id: string;
   title: string;
-  type: 'video' | 'resource' | 'content'; // Adicionado o tipo 'content'
+  type: 'video' | 'resource' | 'content';
   subtitle?: string;
   description: string;
   videoId?: string;
+  coverImageId?: string; // Adicionado coverImageId aqui
 };
 
 export interface CourseData {
