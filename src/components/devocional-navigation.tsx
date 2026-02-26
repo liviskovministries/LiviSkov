@@ -61,7 +61,6 @@ export function DevocionalNavigation({
           <span className="flex-1 truncate font-bold text-base">{introLesson.title}</span>
           {completionStatus[introLesson.id] && <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />}
         </button>
-        {/* Descrição removida do menu lateral */}
       </div>
 
       {/* Download do Livro */}
@@ -142,6 +141,8 @@ export function DevocionalNavigation({
       </div>
 
       {/* Tooltip para mostrar o título completo do dia selecionado */}
+      {/* REMOVIDO: O bloco abaixo foi removido para não exibir o título e subtítulo do dia selecionado no menu lateral. */}
+      {/*
       {selectedLesson && selectedLesson.id.startsWith('day-') && (
         <div className="mt-4 p-3 bg-sidebar-accent/10 rounded-lg border border-sidebar-border/20">
           <p className="text-sm font-medium text-sidebar-foreground">{selectedLesson.title}</p>
@@ -150,6 +151,7 @@ export function DevocionalNavigation({
           )}
         </div>
       )}
+      */}
     </div>
   );
 }
