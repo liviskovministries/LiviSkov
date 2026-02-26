@@ -82,7 +82,7 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
                   data-ai-hint={slide.imageHint}
                 />
                 <div className="absolute inset-0 bg-black/50" />
-                <div className="container relative z-10 flex h-full flex-col items-center justify-center text-center">
+                <div className="container relative z-10 flex h-full flex-col items-center justify-end text-center pb-8"> {/* Alterado justify-center para justify-end e adicionado pb-8 */}
                   <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold">
                     {slide.title}
                   </h1>
@@ -91,7 +91,7 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
                   </p>
 
                   {showLoginSignup ? (
-                    <div className="mt-6 flex flex-col sm:flex-row gap-4 flex-wrap justify-center"> {/* Margem superior ajustada e adicionado flex-wrap justify-center */}
+                    <div className="mt-6 flex flex-col sm:flex-row gap-4 flex-wrap justify-center">
                       <Button asChild size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">
                         <Link href="/login">Login</Link>
                       </Button>
