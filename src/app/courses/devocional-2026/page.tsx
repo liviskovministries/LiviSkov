@@ -26,7 +26,27 @@ const generateDailyLessons = (): UnifiedLesson[] => {
     title: 'Introdução ao Devocional 2026',
     type: 'video' as const,
     subtitle: 'Início da jornada',
-    description: 'Conheça o propósito e estrutura deste devocional de 31 dias que vai renovar sua fé e propósito em 2026.',
+    description: `Sobre o Devocional 2026 - Um novo ano, um recomeço
+
+Este devocional nasceu em um lugar que poucos veem: o lugar do processo.
+
+Não foi construído a partir de respostas prontas, mas de perguntas sinceras. Não surgiu em um tempo de estabilidade, mas em meio a transições, rupturas, recomeços e decisões que exigiram fé quando a lógica já não fazia sentido.
+
+Durante muitos anos, aprendi a ministrar para pessoas. Nos últimos tempos, porém, Deus me ensinou algo ainda mais profundo: antes de ministrar, eu precisava permanecer. Permanecer n’Ele quando nada fazia sentido. Permanecer quando portas se fecharam. Permanecer quando o silêncio parecia mais alto que as promessas.
+
+Este espaço é um convite para uma jornada de 31 dias de verdade — verdade sobre dores, esperas, renúncias, identidade, visão, serviço, descanso e esperança. Não escrevo como alguém que já chegou, mas como alguém que decidiu continuar caminhando com Deus, mesmo sem todas as respostas.
+
+Ao longo desses dias, você encontrará momentos leves e momentos confrontadores. Haverá consolo, mas também ajustes. Haverá silêncio, mas também decisões. Por isso, permita-se viver essa experiência com calma e com o coração aberto. Se possível, tenha um caderno por perto para registrar processos, orações, perguntas e tudo aquilo que o Espírito Santo ministrar ao seu coração.
+
+Este não é um devocional para ser apenas lido.
+É um devocional para ser vivido.
+
+Que, ao longo dessa jornada, você se permita entregar o controle, descansar nos processos e alinhar novamente o seu coração àquilo que Deus está fazendo — mesmo quando ainda não consegue ver com clareza.
+
+Seja bem-vindo(a).
+Que esta caminhada não termine 31 dias, mas continue transformando você muito além destas páginas.
+
+— Livi Skov`,
     videoId: 'Dc4EBMJXQgg',
     bookText: ''
   });
