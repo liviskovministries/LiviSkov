@@ -35,12 +35,6 @@
       "description": "Capa do livro Devocional 2026 - Um novo ano, um recomeço.",
       "imageUrl": "/images/capa_devocional_2026.jpg",
       "imageHint": "Devocional 2026 book cover"
-    },
-    {
-      "id": "devocional-intro-image",
-      "description": "Imagem de introdução para o Devocional 2026.",
-      "imageUrl": "/images/devocional-capa.png",
-      "imageHint": "Devocional 2026 intro image"
     }
   ]
 }

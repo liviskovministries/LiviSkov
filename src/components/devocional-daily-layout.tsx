@@ -16,7 +16,6 @@ import { Button } from '@/components/ui/button';
 import { User } from '@supabase/supabase-js';
 import Link from 'next/link';
 import { DevocionalNavigation } from './devocional-navigation';
-import { PlaceHolderImages } from '@/lib/placeholder-images'; // Importar PlaceHolderImages
 
 export interface DevocionalDailyLesson {
   id: string;
@@ -118,33 +117,6 @@ export function DevocionalDailyLayout({
     );
   };
 
-  const renderIntroImage = () => {
-    const introImage = PlaceHolderImages.find(img => img.id === 'devocional-intro-image');
-    if (!introImage) return null;
-
-    return (
-      <div className="w-full flex justify-center">
-        <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-          <Image
-            src={introImage.imageUrl}
-            alt={introImage.description}
-            width={1000} // Ajuste conforme a proporção da imagem
-            height={562} // Ajuste conforme a proporção da imagem (ex: 16:9 para 1000px de largura)
-            layout="responsive"
-            className="rounded-t-xl"
-            data-ai-hint={introImage.imageHint}
-          />
-          <div className="p-6">
-            <h2 className="text-2xl font-bold text-primary mb-4">{selectedLesson?.title}</h2>
-            <div className="text-muted-foreground space-y-4 whitespace-pre-wrap">
-              {selectedLesson?.description}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar collapsible="icon" className="border-r">
@@ -203,8 +175,6 @@ export function DevocionalDailyLayout({
               <div className="text-center py-12">
                 <p className="text-muted-foreground">Selecione um dia para começar o devocional.</p>
               </div>
-            ) : selectedLesson.id === 'intro-devocional' ? (
-              renderIntroImage()
             ) : (
               <div className="w-full flex justify-center">
                 {/* Vídeo estilo rede social */}
