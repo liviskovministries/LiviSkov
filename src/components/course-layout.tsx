@@ -54,6 +54,7 @@ interface CourseLayoutProps {
   courseLogoPath: string;
   resourceCoverPath?: string;
   sidebarContent: React.ReactNode; // Nova prop para o conteúdo da sidebar
+  introImageComponent?: React.ReactNode; // Nova prop para a imagem de introdução no conteúdo principal
 }
 
 export function CourseLayout({
@@ -70,6 +71,7 @@ export function CourseLayout({
   courseLogoPath,
   resourceCoverPath,
   sidebarContent, // Destruturar a nova prop
+  introImageComponent, // Destruturar a nova prop
 }: CourseLayoutProps) {
   const sidebar = useSidebar();
 
@@ -183,6 +185,9 @@ export function CourseLayout({
         </header>
         <main className="p-4 md:p-6 lg:p-8">
           <div className="mx-auto max-w-4xl">
+            {/* Renderiza a imagem de introdução aqui, se for a lição de introdução */}
+            {selectedLesson?.id === 'intro-devocional' && introImageComponent}
+
             {renderLessonContent()}
             <div className="mt-8">
               <h2 className="text-2xl font-bold text-primary">
