@@ -60,7 +60,7 @@ export default function Home() {
 
         {/* Restante do código permanece igual */}
         {/* Testimonials Section */}
-        <section id="testimonials" className="bg-secondary py-20">
+        {/* <section id="testimonials" className="bg-secondary py-20">
           <div className="container text-center">
             <h2 className="text-3xl font-bold text-primary">O que dizem sobre o curso Estações Espirituais</h2>
             <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
@@ -89,7 +89,7 @@ export default function Home() {
               </Card>
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* Sobre Section */}
         <section id="sobre" className="bg-background py-20">
