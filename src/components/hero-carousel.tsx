@@ -61,7 +61,7 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
   }, [emblaApi]);
 
   return (
-    <section id="inicio" className="relative h-[65vh] min-h-[450px] w-full text-white overflow-hidden sm:h-[70vh] sm:min-h-[500px]">
+    <section id="inicio" className="relative h-[60vh] min-h-[400px] w-full text-white overflow-hidden">
       <div className="embla h-full w-full" ref={emblaRef}>
         <div className="embla__container flex h-full">
           {slides.map((slide) => {
@@ -82,33 +82,33 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
                   data-ai-hint={slide.imageHint}
                 />
                 <div className="absolute inset-0 bg-black/50" />
-                <div className="container relative z-10 flex h-full flex-col items-center justify-center text-center px-4 pb-8">
-                  <h1 className="text-2xl sm:text-4xl font-bold md:text-6xl">
+                <div className="container relative z-10 flex h-full flex-col items-center justify-center text-center px-4">
+                  <h1 className="text-3xl font-bold md:text-6xl">
                     {slide.title}
                   </h1>
-                  <p className="mt-3 max-w-2xl text-base sm:text-lg md:text-xl px-2">
+                  <p className="mt-4 max-w-2xl text-base md:text-xl px-2">
                     {slide.description}
                   </p>
 
                   {showLoginSignup ? (
-                    <div className="mt-4 sm:mt-6 md:mt-8 flex flex-row justify-center gap-2 md:gap-4 w-full">
-                      <Button asChild size="default" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 h-10 text-sm sm:h-12 sm:text-base md:h-14 md:text-lg px-6">
+                    <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3 md:gap-4">
+                      <Button asChild size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 text-sm md:text-base">
                         <Link href="/login">Login</Link>
                       </Button>
-                      <Button asChild variant="outline" size="default" className="border-primary-foreground/50 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground h-10 text-sm sm:h-12 sm:text-base md:h-14 md:text-lg px-6">
+                      <Button asChild variant="outline" size="lg" className="border-primary-foreground/50 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground text-sm md:text-base">
                         <Link href="/signup">Cadastre-se</Link>
                       </Button>
                     </div>
                   ) : slide.showEnrollmentMessage && hasEnrollmentEnded ? (
-                    <div className="mt-4 sm:mt-6 md:mt-8 max-w-2xl text-sm md:text-lg text-white bg-red-600/80 p-3 md:p-4 rounded-lg shadow-lg">
-                      <p className="font-bold flex items-center justify-center gap-2 text-sm md:text-base">
-                        <Lock className="h-4 w-4 md:h-6 md:w-6" /> Inscrições Encerradas
+                    <div className="mt-6 md:mt-8 max-w-2xl text-base md:text-lg text-white bg-red-600/80 p-4 rounded-lg shadow-lg">
+                      <p className="font-bold flex items-center justify-center gap-2">
+                        <Lock className="h-5 w-5 md:h-6 md:w-6" /> Inscrições Encerradas
                       </p>
                     </div>
                   ) : (
                     slide.buttonText && slide.buttonHref && (
                       <Link href={slide.buttonHref}>
-                        <Button size="default" className="mt-4 sm:mt-6 md:mt-8 bg-primary hover:bg-primary/90 text-primary-foreground h-10 text-sm sm:h-12 sm:text-base md:h-14 md:text-lg">
+                        <Button size="lg" className="mt-6 md:mt-8 bg-primary hover:bg-primary/90 text-primary-foreground text-sm md:text-base">
                           {slide.buttonText}
                         </Button>
                       </Link>
