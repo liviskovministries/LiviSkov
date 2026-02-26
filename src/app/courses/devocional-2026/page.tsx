@@ -47,7 +47,7 @@ Seja bem-vindo(a).
 Que esta caminhada não termine 31 dias, mas continue transformando você muito além destas páginas.
 
 — Livi Skov`,
-    videoId: 'Dc4EBMJXQgg',
+    videoId: undefined, // Vídeo removido
     bookText: ''
   });
   
