@@ -54,9 +54,9 @@ serve(async (req: Request) => {
     }
 
     console.log("[watermark-pdf] Parameters received:", { firstName, lastName, email, bucketName, filePath, outputFileName });
+    console.log(`[watermark-pdf] Attempting to create signed URL for bucket: '${bucketName}', filePath: '${filePath}'`);
 
     // Generate a new signed URL for the private PDF using the service role key
-    console.log(`[watermark-pdf] Generating signed URL for bucket: ${bucketName}, path: ${filePath}`);
     const { data: signedUrlData, error: signedUrlError } = await supabaseAdmin
       .storage
       .from(bucketName)
