@@ -281,6 +281,7 @@ export default function CoursePage() {
 
       console.log("[CoursePage] Downloading watermarked PDF for:", { firstName, lastName, email });
 
+      // Usar a função watermark-pdf para Estações Espirituais
       const response = await fetch('https://rxvcxqfnkvqfxwzbujka.supabase.co/functions/v1/watermark-pdf', {
         method: 'POST',
         headers: {

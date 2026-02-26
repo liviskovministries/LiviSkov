@@ -275,7 +275,8 @@ export default function Devocional2026Page() {
 
       console.log("[Devocional2026Page] Downloading watermarked PDF for:", { firstName, lastName, email });
 
-      const response = await fetch('https://rxvcxqfnkvqfxwzbujka.supabase.co/functions/v1/watermark-pdf', {
+      // Usar a função específica para Devocional 2026
+      const response = await fetch('https://rxvcxqfnkvqfxwzbujka.supabase.co/functions/v1/watermark-pdf-devocional', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -284,8 +285,6 @@ export default function Devocional2026Page() {
           firstName,
           lastName,
           email,
-          bucketName: 'Devocional 2026', // Specific bucket name
-          filePath: 'Livi-Skov-Devocional-2026.pdf', // Specific file path
           outputFileName: `Livi-Skov-Devocional-2026-${firstName}-${lastName}.pdf`,
         }),
       });
