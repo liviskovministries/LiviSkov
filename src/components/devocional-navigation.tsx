@@ -38,19 +38,19 @@ export function DevocionalNavigation({
     <div className="flex flex-col gap-4 p-4">
       {/* Download do Livro */}
       {downloadLesson && (
-        <div className="mb-4">
+        <div className="mb-4 border-b pb-4 border-sidebar-border/30">
           <button
             onClick={() => handleLessonClick(downloadLesson)}
             className={cn(
               "w-full text-left text-sm p-3 rounded-md flex items-center gap-3 transition-colors",
               selectedLesson?.id === downloadLesson.id 
-                ? 'bg-sidebar-accent text-sidebar-foreground font-semibold' 
-                : 'hover:bg-sidebar-accent text-sidebar-foreground/70'
+                ? 'bg-sidebar-accent text-sidebar-foreground font-semibold shadow-sm' 
+                : 'hover:bg-sidebar-accent/20 text-sidebar-foreground/90 hover:text-sidebar-foreground'
             )}
           >
             <FileText className="h-5 w-5 flex-shrink-0" />
             <span className="flex-1 truncate font-bold">{downloadLesson.title}</span>
-            {completionStatus[downloadLesson.id] && <CheckCircle className="h-5 w-5 text-green-500" />}
+            {completionStatus[downloadLesson.id] && <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />}
           </button>
         </div>
       )}
@@ -68,32 +68,40 @@ export function DevocionalNavigation({
           const dayButton = (
             <Button
               key={lessonId}
-              variant={selectedLesson?.id === lessonId ? 'default' : 'ghost'}
+              variant={selectedLesson?.id === lessonId ? 'default' : 'secondary'}
               size="icon"
               className={cn(
-                "w-full h-10 text-sidebar-foreground",
-                selectedLesson?.id === lessonId ? "bg-sidebar-accent hover:bg-sidebar-accent/80" : "hover:bg-sidebar-accent/20",
+                "w-full h-10 transition-all duration-200",
+                selectedLesson?.id === lessonId 
+                  ? "bg-primary text-primary-foreground shadow-md scale-105" 
+                  : "bg-sidebar-accent/10 hover:bg-sidebar-accent/30 text-sidebar-foreground border border-transparent hover:border-sidebar-border",
                 isLocked && "opacity-50 cursor-not-allowed"
               )}
               onClick={() => lesson && handleLessonClick(lesson)}
               disabled={isLocked}
             >
               {isCompleted ? (
-                <CheckCircle className="h-4 w-4 text-green-500" />
+                <div className="flex items-center justify-center">
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                </div>
               ) : isLocked ? (
-                <Lock className="h-4 w-4" />
+                <div className="flex items-center justify-center">
+                  <Lock className="h-4 w-4" />
+                </div>
               ) : (
-                String(dayNum).padStart(2, '0')
+                <span className="font-medium text-sm">
+                  {String(dayNum).padStart(2, '0')}
+                </span>
               )}
             </Button>
           );
 
           return (
-            <div key={dayNum}>
+            <div key={dayNum} className="flex flex-col items-center">
               {isLocked ? (
-                <Tooltip>
+                <Tooltip delayDuration={300}>
                   <TooltipTrigger asChild>{dayButton}</TooltipTrigger>
-                  <TooltipContent>
+                  <TooltipContent className="bg-background text-foreground border border-border">
                     <p>Em breve</p>
                   </TooltipContent>
                 </Tooltip>
@@ -104,6 +112,16 @@ export function DevocionalNavigation({
           );
         })}
       </div>
+
+      {/* Tooltip para mostrar o título completo do dia selecionado */}
+      {selectedLesson && selectedLesson.id.startsWith('day-') && (
+        <div className="mt-4 p-3 bg-sidebar-accent/10 rounded-lg border border-sidebar-border/20">
+          <p className="text-sm font-medium text-sidebar-foreground">{selectedLesson.title}</p>
+          {selectedLesson.subtitle && (
+            <p className="text-xs text-sidebar-foreground/70 mt-1">{selectedLesson.subtitle}</p>
+          )}
+        </div>
+      )}
     </div>
   );
 }
