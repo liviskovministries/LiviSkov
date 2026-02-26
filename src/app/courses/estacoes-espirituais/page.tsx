@@ -290,6 +290,9 @@ export default function CoursePage() {
           firstName,
           lastName,
           email,
+          bucketName: 'Estacoes Espirituais', // Specific bucket name
+          filePath: 'Livi-Skov-Estacoes-Espirituais.pdf', // Specific file path
+          outputFileName: `Livi-Skov-Estacoes-Espirituais-${firstName}-${lastName}.pdf`,
         }),
       });
 

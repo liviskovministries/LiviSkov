@@ -23,10 +23,6 @@ const supabaseAdmin = createClient(
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
 );
 
-// Define the bucket and file path for the PDF
-const BUCKET_NAME = 'Estacoes Espirituais'; // Assuming this is the correct bucket name
-const FILE_PATH = 'Livi-Skov-Estacoes-Espirituais.pdf'; // Assuming this is the correct file path
-
 serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
     console.log("[watermark-pdf] OPTIONS request received.");
@@ -47,24 +43,24 @@ serve(async (req: Request) => {
       });
     }
 
-    const { firstName, lastName, email } = requestBody; // pdfUrl is no longer expected
+    const { firstName, lastName, email, bucketName, filePath, outputFileName } = requestBody;
 
-    if (!firstName || !lastName || !email) {
-      console.error("[watermark-pdf] Missing required parameters", { firstName, lastName, email });
-      return new Response(JSON.stringify({ error: 'Missing required parameters: firstName, lastName, email' }), {
+    if (!firstName || !lastName || !email || !bucketName || !filePath || !outputFileName) {
+      console.error("[watermark-pdf] Missing required parameters", { firstName, lastName, email, bucketName, filePath, outputFileName });
+      return new Response(JSON.stringify({ error: 'Missing required parameters: firstName, lastName, email, bucketName, filePath, outputFileName' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    console.log("[watermark-pdf] Parameters received:", { firstName, lastName, email });
+    console.log("[watermark-pdf] Parameters received:", { firstName, lastName, email, bucketName, filePath, outputFileName });
 
     // Generate a new signed URL for the private PDF using the service role key
-    console.log(`[watermark-pdf] Generating signed URL for bucket: ${BUCKET_NAME}, path: ${FILE_PATH}`);
+    console.log(`[watermark-pdf] Generating signed URL for bucket: ${bucketName}, path: ${filePath}`);
     const { data: signedUrlData, error: signedUrlError } = await supabaseAdmin
       .storage
-      .from(BUCKET_NAME)
-      .createSignedUrl(FILE_PATH, 60); // URL valid for 60 seconds
+      .from(bucketName)
+      .createSignedUrl(filePath, 60); // URL valid for 60 seconds
 
     if (signedUrlError) {
       console.error("[watermark-pdf] Error generating signed URL:", signedUrlError.message);
@@ -158,7 +154,7 @@ serve(async (req: Request) => {
       headers: {
         ...corsHeaders,
         'Content-Type': 'application/pdf',
-        'Content-Disposition': 'attachment; filename="Livi-Skov-Estacoes-Espirituais-Watermarked.pdf"',
+        'Content-Disposition': `attachment; filename="${outputFileName}"`,
       },
     });
 

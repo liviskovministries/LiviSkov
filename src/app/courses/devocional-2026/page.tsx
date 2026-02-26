@@ -76,7 +76,7 @@ Que esta caminhada não termine 31 dias, mas continue transformando você muito 
     { day: '19', title: 'Dia 19 – Aprender a esperar sem desistir', videoId: 'K7wVPZo3n2A', description: 'Desenvolvendo paciência e perseverança para esperar nos tempos de Deus sem perder a fé.' },
     { day: '20', title: 'Dia 20 — Quando Deus pede silêncio', videoId: '9AKKMzWtkfU', description: 'Aprendendo quando Deus nos pede para ficar em silêncio e quais lições podemos extrair desses momentos.' },
     { day: '21', title: 'Dia 21 — Renovados: a renovação da nossa mente (Metanoia)', videoId: 'yQN4UH0z6qE', description: 'Descobrindo o poder da metamorfose espiritual através da renovação constante da nossa mente em Deus.' },
-    { day: '22', title: 'Dia 22 – Quando a graça redefine a força', videoId: 'jB14yNTiFl8', description: 'Explorando como a graça de Deus pode redefinir nossa compreensão de força e poder personal.' },
+    { day: '22', title: 'Dia 22 – Quando a graça redefine a força', videoId: 'jB14yNTiFl8', description: 'Explorando como a graça de Deus pode redefinir nossa compreensão de força e poder pessoal.' },
     { day: '23', title: 'Dia 23 — O dia em que me posicionei', videoId: 'rW2Z8kMA64E', description: 'Refletindo sobre como o posicionamento espiritual pode transformar nossa jornada com Deus.' },
     { day: '24', title: 'Dia 24 — Firmados para seguir', videoId: 'nLaMtfEvs6o', description: 'Aprendendo a nos manter firmes e seguir em frente mesmo diante das dificuldades da jornada.' },
     { day: '25', title: 'Dia 25 – Enraizados no Rio de Deus', videoId: 'FOztnSieiBM', description: 'Descobrindo como nos manter firmemente conectados à fonte divina que sustenta nossa jornada espiritual.' },
@@ -275,7 +275,7 @@ export default function Devocional2026Page() {
 
       console.log("[Devocional2026Page] Downloading watermarked PDF for:", { firstName, lastName, email });
 
-      const response = await fetch('https://rxvcxqfnkvqfxwzbujka.supabase.co/functions/v1/watermark-devocional-pdf', {
+      const response = await fetch('https://rxvcxqfnkvqfxwzbujka.supabase.co/functions/v1/watermark-pdf', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -284,6 +284,9 @@ export default function Devocional2026Page() {
           firstName,
           lastName,
           email,
+          bucketName: 'Devocional 2026', // Specific bucket name
+          filePath: 'Livi-Skov-Devocional-2026.pdf', // Specific file path
+          outputFileName: `Livi-Skov-Devocional-2026-${firstName}-${lastName}.pdf`,
         }),
       });
 
