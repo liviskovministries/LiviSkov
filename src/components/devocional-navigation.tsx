@@ -34,15 +34,13 @@ export function DevocionalNavigation({
   const downloadLesson = lessons.find(lesson => lesson.id === 'devocional-pdf');
   const dailyLessons = lessons.filter(lesson => lesson.id.startsWith('day-'));
 
-  // Criando lição de introdução
-  const introLesson: DevocionalDailyLesson = {
-    id: 'intro-devocional',
-    title: 'Introdução ao Devocional 2026',
-    type: 'video',
-    subtitle: 'Início da jornada',
-    description: 'Conheça o propósito e estrutura deste devocional de 31 dias que vai renovar sua fé e propósito em 2026.',
-    videoId: 'Dc4EBMJXQgg' // Vídeo introdutório padrão
-  };
+  // Encontrar a lição de introdução a partir das props
+  const introLesson = lessons.find(lesson => lesson.id === 'intro-devocional');
+
+  if (!introLesson) {
+    console.error("[DevocionalNavigation] Lição de introdução não encontrada nas props.");
+    return null; // Ou renderizar um fallback apropriado
+  }
 
   return (
     <div className="flex flex-col gap-4 p-4">
@@ -57,7 +55,8 @@ export function DevocionalNavigation({
               : 'hover:bg-sidebar-accent/20 text-sidebar-foreground/90 hover:text-sidebar-foreground'
           )}
         >
-          <PlayCircle className="h-5 w-5 flex-shrink-0" />
+          {/* O ícone pode ser PlayCircle ou FileText, dependendo da preferência para 'resource' */}
+          <PlayCircle className="h-5 w-5 flex-shrink-0" /> 
           <span className="flex-1 truncate font-bold text-base">{introLesson.title}</span>
           {completionStatus[introLesson.id] && <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />}
         </button>
@@ -139,19 +138,6 @@ export function DevocionalNavigation({
           );
         })}
       </div>
-
-      {/* Tooltip para mostrar o título completo do dia selecionado */}
-      {/* REMOVIDO: O bloco abaixo foi removido para não exibir o título e subtítulo do dia selecionado no menu lateral. */}
-      {/*
-      {selectedLesson && selectedLesson.id.startsWith('day-') && (
-        <div className="mt-4 p-3 bg-sidebar-accent/10 rounded-lg border border-sidebar-border/20">
-          <p className="text-sm font-medium text-sidebar-foreground">{selectedLesson.title}</p>
-          {selectedLesson.subtitle && (
-            <p className="text-xs text-sidebar-foreground/70 mt-1">{selectedLesson.subtitle}</p>
-          )}
-        </div>
-      )}
-      */}
     </div>
   );
 }

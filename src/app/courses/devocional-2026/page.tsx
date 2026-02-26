@@ -24,7 +24,7 @@ const generateDailyLessons = (): UnifiedLesson[] => {
   lessons.push({
     id: 'intro-devocional',
     title: 'Introdução ao Devocional 2026',
-    type: 'video' as const, // Mantemos o tipo como 'video' para o layout, mas sem videoId
+    type: 'resource' as const, // Alterado para 'resource'
     subtitle: 'Início da jornada',
     description: `Sobre o Devocional 2026 - Um novo ano, um recomeço
 
@@ -74,7 +74,7 @@ Que esta caminhada não termine 31 dias, mas continue transformando você muito 
     { day: '19', title: 'Dia 19 – Aprender a esperar sem desistir', videoId: 'K7wVPZo3n2A', description: 'Desenvolvendo paciência e perseverança para esperar nos tempos de Deus sem perder a fé.' },
     { day: '20', title: 'Dia 20 — Quando Deus pede silêncio', videoId: '9AKKMzWtkfU', description: 'Aprendendo quando Deus nos pede para ficar em silêncio e quais lições podemos extrair desses momentos.' },
     { day: '21', title: 'Dia 21 — Renovados: a renovação da nossa mente (Metanoia)', videoId: 'yQN4UH0z6qE', description: 'Descobrindo o poder da metamorfose espiritual através da renovação constante da nossa mente em Deus.' },
-    { day: '22', title: 'Dia 22 – Quando a graça redefine a força', videoId: 'jB14yNTiFl8', description: 'Explorando como a graça de Deus pode redefinir nossa compreensão de força e poder personal.' },
+    { day: '22', title: 'Dia 22 – Quando a graça redefine a força', videoId: 'jB14yNTiFl8', description: 'Explorando como a graça de Deus pode redefinir nossa compreensão de força e poder pessoal.' },
     { day: '23', title: 'Dia 23 — O dia em que me posicionei', videoId: 'rW2Z8kMA64E', description: 'Refletindo sobre como o posicionamento espiritual pode transformar nossa jornada com Deus.' },
     { day: '24', title: 'Dia 24 — Firmados para seguir', videoId: 'nLaMtfEvs6o', description: 'Aprendendo a nos manter firmes e seguir em frente mesmo diante das dificuldades da jornada.' },
     { day: '25', title: 'Dia 25 – Enraizados no Rio de Deus', videoId: 'FOztnSieiBM', description: 'Descobrindo como nos manter firmemente conectados à fonte divina que sustenta nossa jornada espiritual.' },
@@ -135,12 +135,9 @@ export default function Devocional2026Page() {
   const { toast } = useToast();
   
   // Inicializar selectedLesson para a aula de introdução (que não tem vídeo)
-  const [selectedLesson, setSelectedLesson] = useState<UnifiedLesson | null>(() => {
-    const introLesson = devocionalCourseData.modules[0].lessons.find((lesson: UnifiedLesson) => lesson.id === 'intro-devocional') as UnifiedLesson;
-    console.log("[Devocional2026Page] Initializing selectedLesson:", introLesson);
-    console.log("[Devocional2026Page] Initial selectedLesson.videoId:", introLesson?.videoId);
-    return introLesson;
-  });
+  const [selectedLesson, setSelectedLesson] = useState<UnifiedLesson | null>(() => 
+    devocionalCourseData.modules[0].lessons.find((lesson: UnifiedLesson) => lesson.id === 'intro-devocional') as UnifiedLesson
+  );
   
   const [completionStatus, setCompletionStatus] = useState<Record<string, boolean>>({});
   const [isEnrolled, setIsEnrolled] = useState(false);
