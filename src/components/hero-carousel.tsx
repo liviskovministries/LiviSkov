@@ -61,7 +61,7 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
   }, [emblaApi]);
 
   return (
-    <section id="inicio" className="relative h-[60vh] min-h-[400px] w-full text-white overflow-hidden">
+    <section id="inicio" className="relative h-[70vh] sm:h-[60vh] w-full text-white overflow-hidden"> {/* Ajustado a altura para mobile */}
       <div className="embla h-full w-full" ref={emblaRef}>
         <div className="embla__container flex h-full">
           {slides.map((slide) => {
@@ -83,15 +83,15 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
                 />
                 <div className="absolute inset-0 bg-black/50" />
                 <div className="container relative z-10 flex h-full flex-col items-center justify-center text-center">
-                  <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold"> {/* Ajustado para mobile */}
+                  <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold">
                     {slide.title}
                   </h1>
-                  <p className="mt-4 max-w-2xl text-base sm:text-lg md:text-xl"> {/* Ajustado para mobile */}
+                  <p className="mt-4 max-w-2xl text-base sm:text-lg md:text-xl">
                     {slide.description}
                   </p>
 
                   {showLoginSignup ? (
-                    <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                    <div className="mt-6 flex flex-col sm:flex-row gap-4 flex-wrap justify-center"> {/* Margem superior ajustada e adicionado flex-wrap justify-center */}
                       <Button asChild size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">
                         <Link href="/login">Login</Link>
                       </Button>
