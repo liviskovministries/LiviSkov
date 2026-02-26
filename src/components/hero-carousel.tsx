@@ -83,10 +83,10 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
                 />
                 <div className="absolute inset-0 bg-black/50" />
                 <div className="container relative z-10 flex h-full flex-col items-center justify-center text-center">
-                  <h1 className="text-4xl font-bold md:text-6xl">
+                  <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold"> {/* Ajustado para mobile */}
                     {slide.title}
                   </h1>
-                  <p className="mt-4 max-w-2xl text-lg md:text-xl">
+                  <p className="mt-4 max-w-2xl text-base sm:text-lg md:text-xl"> {/* Ajustado para mobile */}
                     {slide.description}
                   </p>
 
