@@ -91,24 +91,24 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
                   </p>
 
                   {showLoginSignup ? (
-                    <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3 md:gap-4">
-                      <Button asChild size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 text-sm md:text-base">
+                    <div className="mt-4 md:mt-6 flex flex-col sm:flex-row gap-2 md:gap-4">
+                      <Button asChild size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 text-xs md:text-base h-10 md:h-12 w-full sm:w-auto">
                         <Link href="/login">Login</Link>
                       </Button>
-                      <Button asChild variant="outline" size="lg" className="border-primary-foreground/50 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground text-sm md:text-base">
+                      <Button asChild variant="outline" size="lg" className="border-primary-foreground/50 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground text-xs md:text-base h-10 md:h-12 w-full sm:w-auto">
                         <Link href="/signup">Cadastre-se</Link>
                       </Button>
                     </div>
                   ) : slide.showEnrollmentMessage && hasEnrollmentEnded ? (
-                    <div className="mt-6 md:mt-8 max-w-2xl text-base md:text-lg text-white bg-red-600/80 p-4 rounded-lg shadow-lg">
-                      <p className="font-bold flex items-center justify-center gap-2">
-                        <Lock className="h-5 w-5 md:h-6 md:w-6" /> Inscrições Encerradas
+                    <div className="mt-4 md:mt-6 max-w-2xl text-sm md:text-lg text-white bg-red-600/80 p-3 md:p-4 rounded-lg shadow-lg">
+                      <p className="font-bold flex items-center justify-center gap-2 text-xs md:text-base">
+                        <Lock className="h-4 w-4 md:h-6 md:w-6" /> Inscrições Encerradas
                       </p>
                     </div>
                   ) : (
                     slide.buttonText && slide.buttonHref && (
                       <Link href={slide.buttonHref}>
-                        <Button size="lg" className="mt-6 md:mt-8 bg-primary hover:bg-primary/90 text-primary-foreground text-sm md:text-base">
+                        <Button size="lg" className="mt-4 md:mt-6 bg-primary hover:bg-primary/90 text-primary-foreground text-xs md:text-base h-10 md:h-12">
                           {slide.buttonText}
                         </Button>
                       </Link>
