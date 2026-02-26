@@ -12,6 +12,7 @@ import { DevocionalDailyLayout, DevocionalDailyLesson } from '@/components/devoc
 import { CourseLayout, Lesson, CourseData } from '@/components/course-layout';
 import { DevocionalNavigation } from '@/components/devocional-navigation';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import Image from 'next/image';
 
 // Definindo a interface UnifiedLesson localmente
 interface UnifiedLesson extends Lesson, DevocionalDailyLesson {}
@@ -368,6 +369,27 @@ export default function Devocional2026Page() {
     />
   ), [lessonsAsDevocionalType, selectedLessonAsDevocional, completionStatus, handleLessonClick, currentTime]);
 
+  // Function to render the introduction cover image above the text
+  const renderIntroCoverImage = () => {
+    if (selectedLesson?.id === 'intro-devocional') {
+      return (
+        <div className="mb-8 w-full flex justify-center">
+          <div className="max-w-2xl">
+            <Image
+              src="/images/devocional-capa.jpg"
+              alt="Devocional 2026 Capa"
+              width={800}
+              height={450}
+              className="rounded-lg shadow-lg object-cover"
+              data-ai-hint="Devocional 2026 introduction cover image"
+            />
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
   // Retornos condicionais
   if (isSupabaseUserLoading || !supabaseUser || isLoading) {
     return (
@@ -428,7 +450,13 @@ export default function Devocional2026Page() {
         handleLogout={handleLogout}
         courseLogoPath="/images/logo4branco.fw.png"
         resourceCoverPath={PlaceHolderImages.find(img => img.id === 'devocional-2026-cover')?.imageUrl || '/images/devocional-2026-banner.jpg'}
-        sidebarContent={devocionalSidebarContent}
+        sidebarContent={
+          <>
+            {devocionalSidebarContent}
+            {/* Add the cover image above the introduction text */}
+            {selectedLesson?.id === 'intro-devocional' && renderIntroCoverImage()}
+          </>
+        }
       />
     </SidebarProvider>
   );
