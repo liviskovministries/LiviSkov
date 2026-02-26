@@ -61,11 +61,7 @@ export function DevocionalNavigation({
           <span className="flex-1 truncate font-bold text-base">{introLesson.title}</span>
           {completionStatus[introLesson.id] && <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />}
         </button>
-        {selectedLesson?.id === introLesson.id && (
-          <p className="text-xs text-sidebar-foreground/70 mt-2 px-3">
-            {introLesson.description}
-          </p>
-        )}
+        {/* Descrição removida do menu lateral */}
       </div>
 
       {/* Download do Livro */}
