@@ -23,7 +23,7 @@ import { User } from '@supabase/supabase-js';
 export type Lesson = {
   id: string;
   title: string;
-  type: 'video' | 'resource';
+  type: 'video' | 'resource' | 'content'; // Adicionado o tipo 'content'
   subtitle?: string;
   description: string;
   videoId?: string;
@@ -123,6 +123,8 @@ export function CourseLayout({
             </CardContent>
           </Card>
         );
+      case 'content': // Novo tipo 'content'
+        return null; // Não renderiza nada aqui, o texto é renderizado abaixo
       default:
         return <p>Selecione uma aula para começar.</p>;
     }

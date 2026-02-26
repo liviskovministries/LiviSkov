@@ -20,7 +20,7 @@ import { DevocionalNavigation } from './devocional-navigation';
 export interface DevocionalDailyLesson {
   id: string;
   title: string;
-  type: 'video' | 'resource';
+  type: 'video' | 'resource' | 'content'; // Adicionado o tipo 'content'
   subtitle?: string;
   description: string;
   videoId?: string;
@@ -179,6 +179,7 @@ export function DevocionalDailyLayout({
               <div className="w-full flex justify-center">
                 {/* Vídeo estilo rede social */}
                 {selectedLesson.type === 'video' && renderSocialMediaVideo()}
+                {/* Se for tipo 'content', apenas o description será renderizado abaixo */}
               </div>
             )}
           </div>

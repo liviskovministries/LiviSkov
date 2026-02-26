@@ -2,14 +2,14 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { FileText, CheckCircle, Lock, PlayCircle } from 'lucide-react';
+import { FileText, CheckCircle, Lock, PlayCircle, BookOpen } from 'lucide-react'; // Importar BookOpen
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 export interface DevocionalDailyLesson {
   id: string;
   title: string;
-  type: 'video' | 'resource';
+  type: 'video' | 'resource' | 'content'; // Adicionado o tipo 'content'
   subtitle?: string;
   description: string;
   videoId?: string;
@@ -55,8 +55,7 @@ export function DevocionalNavigation({
               : 'hover:bg-sidebar-accent/20 text-sidebar-foreground/90 hover:text-sidebar-foreground'
           )}
         >
-          {/* O ícone pode ser PlayCircle ou FileText, dependendo da preferência para 'resource' */}
-          <PlayCircle className="h-5 w-5 flex-shrink-0" /> 
+          <BookOpen className="h-5 w-5 flex-shrink-0" /> {/* Ícone alterado para BookOpen */}
           <span className="flex-1 truncate font-bold text-base">{introLesson.title}</span>
           {completionStatus[introLesson.id] && <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />}
         </button>

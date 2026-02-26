@@ -24,7 +24,7 @@ const generateDailyLessons = (): UnifiedLesson[] => {
   lessons.push({
     id: 'intro-devocional',
     title: 'Introdução ao Devocional 2026',
-    type: 'resource' as const, // Alterado para 'resource'
+    type: 'content' as const, // Alterado para 'content'
     subtitle: 'Início da jornada',
     description: `Sobre o Devocional 2026 - Um novo ano, um recomeço
 
