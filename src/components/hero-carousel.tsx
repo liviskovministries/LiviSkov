@@ -91,7 +91,7 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
                   </p>
 
                   {showLoginSignup ? (
-                    <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3 md:gap-4">
+                    <div className="mt-6 md:mt-8 flex flex-row gap-3 md:gap-4"> {/* Alterado para flex-row */}
                       <Button asChild size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 text-sm md:text-base">
                         <Link href="/login">Login</Link>
                       </Button>
