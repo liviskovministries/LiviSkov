@@ -9,7 +9,7 @@ import { useSupabaseAuth, useSupabaseUser } from '@/integrations/supabase/supaba
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { DevocionalDailyLayout, DevocionalDailyLesson } from '@/components/devocional-daily-layout';
-import { CourseLayout, Lesson } from '@/components/course-layout';
+import { CourseLayout, Lesson, CourseData } from '@/components/course-layout'; // Importar CourseData
 import { DevocionalNavigation } from '@/components/devocional-navigation';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
@@ -24,7 +24,7 @@ const generateDailyLessons = (): UnifiedLesson[] => {
   lessons.push({
     id: 'intro-devocional',
     title: 'Introdução ao Devocional 2026',
-    type: 'video' as const,
+    type: 'video' as const, // Mantemos o tipo como 'video' para o layout, mas sem videoId
     subtitle: 'Início da jornada',
     description: `Sobre o Devocional 2026 - Um novo ano, um recomeço
 
@@ -41,7 +41,7 @@ Ao longo desses dias, você encontrará momentos leves e momentos confrontadores
 Este não é um devocional para ser apenas lido.
 É um devocional para ser vivido.
 
-Que, ao longo dessa jornada, você se permita entregar o controle, descansar nos processos e alinhar novamente o seu coração àquilo que Deus está fazendo — mesmo quando ainda não consegue ver com clareza.
+Que, ao longo dessa jornada, você se permita entregar o controle, descansar nos processos e alinhar novamente o seu coração àquilo que Deus está fazendo — mesmo quando ainda no consegue ver com clareza.
 
 Seja bem-vindo(a).
 Que esta caminhada não termine 31 dias, mas continue transformando você muito além destas páginas.
@@ -51,7 +51,6 @@ Que esta caminhada não termine 31 dias, mas continue transformando você muito 
     bookText: ''
   });
   
-  // ... resto do código da função mantido
   // Dias específicos com título personalizado
   const daysConfig = [
     { day: '01', title: 'Dia 01 - Um (Re)novo em Deus', videoId: 'v2TBVoIbHrw', description: 'Primeiro dia do devocional! Começamos nossa jornada de renovação e crescimento espiritual.' },
@@ -103,8 +102,11 @@ Que esta caminhada não termine 31 dias, mas continue transformando você muito 
   return lessons;
 };
 
-// Mantém o resto do código EXATAMENTE como estava
-const devocionalCourseData = {
+// Gerar todas as aulas uma única vez
+const allDevocionalLessons = generateDailyLessons();
+
+// Definir os dados do curso de forma estável
+const devocionalCourseData: CourseData = {
   title: 'Devocional 2026',
   modules: [
     {
@@ -118,21 +120,25 @@ const devocionalCourseData = {
           subtitle: 'Sobre o Livro Um ano novo, recomeço',
           description: `Este devocional de 31 dias foi cuidadosamente preparado para guiar sua jornada espiritual.\n\nBaixe o livro completo para acompanhar os devocionais diários.`
         },
-        ...generateDailyLessons(),
+        ...allDevocionalLessons, // Usar as aulas pré-geradas
       ],
     },
   ],
 };
 
 export default function Devocional2026Page() {
-  // ... o resto do código da página mantido igual
   const { user: firebaseUser, isUserLoading: isFirebaseUserLoading } = useUser();
   const { user: supabaseUser, isUserLoading: isSupabaseUserLoading } = useSupabaseUser();
   const supabaseAuth = useSupabaseAuth();
   const firestore = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
-  const [selectedLesson, setSelectedLesson] = useState<UnifiedLesson | null>(devocionalCourseData.modules[0].lessons[1] as UnifiedLesson); // Começar com Dia 01
+  
+  // Inicializar selectedLesson para a aula de introdução (que não tem vídeo)
+  const [selectedLesson, setSelectedLesson] = useState<UnifiedLesson | null>(
+    devocionalCourseData.modules[0].lessons.find((lesson: UnifiedLesson) => lesson.id === 'intro-devocional') as UnifiedLesson
+  );
+  
   const [completionStatus, setCompletionStatus] = useState<Record<string, boolean>>({});
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -340,7 +346,7 @@ export default function Devocional2026Page() {
                        selectedLesson?.id === 'day-31';
 
   // Conversão segura para tipos específicos
-  const lessonsAsDevocionalType: DevocionalDailyLesson[] = devocionalCourseData.modules[0].lessons.map(lesson => ({
+  const lessonsAsDevocionalType: DevocionalDailyLesson[] = devocionalCourseData.modules[0].lessons.map((lesson: UnifiedLesson) => ({
     ...lesson,
     bookText: (lesson as any).bookText || ''
   }));
