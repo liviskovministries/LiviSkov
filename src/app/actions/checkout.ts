@@ -27,7 +27,7 @@ export async function createCheckoutSession(userId: string, courseId: string, us
     if (courseId === 'estacoes-espirituais') {
       stripePaymentLink = 'https://buy.stripe.com/6oUbJ37bDbe46U0fbM5ZC00'; // Link para Estações Espirituais
     } else if (courseId === 'devocional-2026') {
-      stripePaymentLink = 'https://buy.stripe.com/replace_with_devocional_link'; // **SUBSTITUA ESTE LINK PELO SEU LINK DE PAGAMENTO DO STRIPE PARA O DEVOCIONAL 2026**
+      stripePaymentLink = 'https://buy.stripe.com/00w5kFeE52Hyems9Rs5ZC02'; // **LINK ATUALIZADO**
     } else {
       return { error: 'Course not found.' };
     }
