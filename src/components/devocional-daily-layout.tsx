@@ -185,12 +185,13 @@ export function DevocionalDailyLayout({
               <div className="w-full flex justify-center flex-col items-center">
                 {/* Renderizar a imagem de capa se for a introdução e tiver uma imagem */}
                 {selectedLesson.type === 'content' && introImage && (
-                  <div className="mb-8 w-full max-w-2xl relative h-60 md:h-96"> {/* Adicionado relative e altura */}
+                  <div className="mb-8 w-full max-w-2xl"> {/* Removido relative e altura fixa */}
                     <Image
                       src={introImage.imageUrl}
                       alt={introImage.description}
-                      fill // Usando fill
-                      className="rounded-lg shadow-lg object-cover" // Adicionado object-cover
+                      width={800} // Usando width explícito
+                      height={450} // Usando height explícito
+                      className="rounded-lg shadow-lg object-cover"
                       data-ai-hint={introImage.imageHint}
                     />
                   </div>
