@@ -30,7 +30,7 @@ const generateDailyLessons = (): UnifiedLesson[] => {
 
 Este devocional nasceu em um lugar que poucos veem: o lugar do processo.
 
-Não foi construído a partir de respostas prontas, mas de perguntas sinceras. Não surgiu em um tempo de estabilidade, mas em meio a transições, rupturas, recomeços e decisões que exigiram fé quando a lógica já não fazia sentido.
+Não foi construído a partir de respostas prontas, mas de perguntas sinceras. Não surgiu em um tempo de estabilidade, mas em meio a transições, rupturas, recomeços e decisões que exigiram fé quando a lógica já no fazia sentido.
 
 Durante muitos anos, aprendi a ministrar para pessoas. Nos últimos tempos, porém, Deus me ensinou algo ainda mais profundo: antes de ministrar, eu precisava permanecer. Permanecer n’Ele quando nada fazia sentido. Permanecer quando portas se fecharam. Permanecer quando o silêncio parecia mais alto que as promessas.
 
@@ -132,7 +132,8 @@ export default function Devocional2026Page() {
   const firestore = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
-  const [selectedLesson, setSelectedLesson] = useState<UnifiedLesson | null>(devocionalCourseData.modules[0].lessons[1] as UnifiedLesson); // Começar com Dia 01
+  // ALTERAÇÃO AQUI: Começar com a lição de introdução (índice 0)
+  const [selectedLesson, setSelectedLesson] = useState<UnifiedLesson | null>(devocionalCourseData.modules[0].lessons[0] as UnifiedLesson); 
   const [completionStatus, setCompletionStatus] = useState<Record<string, boolean>>({});
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
