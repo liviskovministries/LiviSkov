@@ -82,16 +82,16 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
                   data-ai-hint={slide.imageHint}
                 />
                 <div className="absolute inset-0 bg-black/50" />
-                <div className="container relative z-10 flex h-full flex-col items-center justify-start text-center px-4 pt-16"> {/* Alterado justify-center para justify-start e adicionado pt-16 */}
-                  <h1 className="mt-4 text-2xl sm:text-3xl font-bold md:text-6xl"> {/* Adicionado mt-4 */}
+                <div className="container relative z-10 flex h-full flex-col items-center justify-center text-center px-4">
+                  <h1 className="text-2xl sm:text-3xl font-bold md:text-6xl">
                     {slide.title}
                   </h1>
-                  <p className="mt-2 max-w-2xl text-sm sm:text-base md:text-xl px-2"> {/* Reduzido mt-3 para mt-2 */}
+                  <p className="mt-3 max-w-2xl text-sm sm:text-base md:text-xl px-2">
                     {slide.description}
                   </p>
 
                   {showLoginSignup ? (
-                    <div className="mt-4 sm:mt-4 md:mt-6 flex flex-col sm:flex-row gap-2 md:gap-4"> {/* Reduzido mt-3 para mt-4 */}
+                    <div className="mt-3 sm:mt-4 md:mt-6 flex flex-col sm:flex-row gap-2 md:gap-4">
                       <Button asChild size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 text-xs md:text-base h-10 md:h-12 w-full sm:w-auto">
                         <Link href="/login">Login</Link>
                       </Button>
@@ -100,7 +100,7 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
                       </Button>
                     </div>
                   ) : slide.showEnrollmentMessage && hasEnrollmentEnded ? (
-                    <div className="mt-4 sm:mt-4 md:mt-6 max-w-2xl text-sm md:text-lg text-white bg-red-600/80 p-3 md:p-4 rounded-lg shadow-lg"> {/* Reduzido mt-3 para mt-4 */}
+                    <div className="mt-3 sm:mt-4 md:mt-6 max-w-2xl text-sm md:text-lg text-white bg-red-600/80 p-3 md:p-4 rounded-lg shadow-lg">
                       <p className="font-bold flex items-center justify-center gap-2 text-xs md:text-base">
                         <Lock className="h-4 w-4 md:h-6 md:w-6" /> Inscrições Encerradas
                       </p>
@@ -108,7 +108,7 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
                   ) : (
                     slide.buttonText && slide.buttonHref && (
                       <Link href={slide.buttonHref}>
-                        <Button size="lg" className="mt-4 sm:mt-4 md:mt-6 bg-primary hover:bg-primary/90 text-primary-foreground text-xs md:text-base h-10 md:h-12"> {/* Reduzido mt-3 para mt-4 */}
+                        <Button size="lg" className="mt-3 sm:mt-4 md:mt-6 bg-primary hover:bg-primary/90 text-primary-foreground text-xs md:text-base h-10 md:h-12">
                           {slide.buttonText}
                         </Button>
                       </Link>
