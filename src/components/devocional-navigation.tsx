@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { FileText, CheckCircle, Lock } from 'lucide-react';
+import { FileText, CheckCircle, Lock, PlayCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -34,8 +34,40 @@ export function DevocionalNavigation({
   const downloadLesson = lessons.find(lesson => lesson.id === 'devocional-pdf');
   const dailyLessons = lessons.filter(lesson => lesson.id.startsWith('day-'));
 
+  // Criando lição de introdução
+  const introLesson: DevocionalDailyLesson = {
+    id: 'intro-devocional',
+    title: 'Introdução ao Devocional 2026',
+    type: 'video',
+    subtitle: 'Início da jornada',
+    description: 'Conheça o propósito e estrutura deste devocional de 31 dias que vai renovar sua fé e propósito em 2026.',
+    videoId: 'Dc4EBMJXQgg' // Vídeo introdutório padrão
+  };
+
   return (
     <div className="flex flex-col gap-4 p-4">
+      {/* Introdução ao Devocional */}
+      <div className="mb-2 pb-2 border-b border-sidebar-border/30">
+        <button
+          onClick={() => handleLessonClick(introLesson)}
+          className={cn(
+            "w-full text-left text-sm p-3 rounded-md flex items-center gap-3 transition-colors",
+            selectedLesson?.id === introLesson.id 
+              ? 'bg-sidebar-accent text-sidebar-foreground font-semibold shadow-sm' 
+              : 'hover:bg-sidebar-accent/20 text-sidebar-foreground/90 hover:text-sidebar-foreground'
+          )}
+        >
+          <PlayCircle className="h-5 w-5 flex-shrink-0" />
+          <span className="flex-1 truncate font-bold text-base">{introLesson.title}</span>
+          {completionStatus[introLesson.id] && <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />}
+        </button>
+        {selectedLesson?.id === introLesson.id && (
+          <p className="text-xs text-sidebar-foreground/70 mt-2 px-3">
+            {introLesson.description}
+          </p>
+        )}
+      </div>
+
       {/* Download do Livro */}
       {downloadLesson && (
         <div className="mb-4 border-b pb-4 border-sidebar-border/30">

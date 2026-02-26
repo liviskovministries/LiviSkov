@@ -9,17 +9,29 @@ import { useSupabaseAuth, useSupabaseUser } from '@/integrations/supabase/supaba
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { DevocionalDailyLayout, DevocionalDailyLesson } from '@/components/devocional-daily-layout';
-import { CourseLayout, Lesson, CourseData } from '@/components/course-layout';
+import { CourseLayout, Lesson } from '@/components/course-layout';
 import { DevocionalNavigation } from '@/components/devocional-navigation';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
-// Criando um tipo unificado que pode ser usado em ambos os layouts
-type UnifiedLesson = DevocionalDailyLesson & Lesson;
+// Definindo a interface UnifiedLesson localmente
+interface UnifiedLesson extends Lesson, DevocionalDailyLesson {}
 
-// Função para gerar as 31 aulas diárias
+// Função para gerar as 31 aulas diárias + introdução
 const generateDailyLessons = (): UnifiedLesson[] => {
   const lessons: UnifiedLesson[] = [];
   
+  // Primeiro adicionamos a lição de introdução
+  lessons.push({
+    id: 'intro-devocional',
+    title: 'Introdução ao Devocional 2026',
+    type: 'video' as const,
+    subtitle: 'Início da jornada',
+    description: 'Conheça o propósito e estrutura deste devocional de 31 dias que vai renovar sua fé e propósito em 2026.',
+    videoId: 'Dc4EBMJXQgg',
+    bookText: ''
+  });
+  
+  // ... resto do código da função mantido
   // Dias específicos com título personalizado
   const daysConfig = [
     { day: '01', title: 'Dia 01 - Um (Re)novo em Deus', videoId: 'v2TBVoIbHrw', description: 'Primeiro dia do devocional! Começamos nossa jornada de renovação e crescimento espiritual.' },
@@ -55,7 +67,7 @@ const generateDailyLessons = (): UnifiedLesson[] => {
     { day: '31', title: 'Dia 31 - Descansa, Ele continua', videoId: '7nu7cgp8bl8', description: 'Último dia do devocional! Momento de descansar e confiar que Deus continua guiando cada passo da sua jornada.' },
   ];
 
-  // Criar as lições baseadas na configuração
+  // Adicionar os dias à lista de lições
   daysConfig.forEach(config => {
     lessons.push({
       id: `day-${config.day}`,
@@ -71,7 +83,8 @@ const generateDailyLessons = (): UnifiedLesson[] => {
   return lessons;
 };
 
-const devocionalCourseData: CourseData = {
+// Mantém o resto do código EXATAMENTE como estava
+const devocionalCourseData = {
   title: 'Devocional 2026',
   modules: [
     {
@@ -92,6 +105,7 @@ const devocionalCourseData: CourseData = {
 };
 
 export default function Devocional2026Page() {
+  // ... o resto do código da página mantido igual
   const { user: firebaseUser, isUserLoading: isFirebaseUserLoading } = useUser();
   const { user: supabaseUser, isUserLoading: isSupabaseUserLoading } = useSupabaseUser();
   const supabaseAuth = useSupabaseAuth();
@@ -303,7 +317,7 @@ export default function Devocional2026Page() {
                        selectedLesson?.id === 'day-25' || selectedLesson?.id === 'day-26' ||
                        selectedLesson?.id === 'day-27' || selectedLesson?.id === 'day-28' ||
                        selectedLesson?.id === 'day-29' || selectedLesson?.id === 'day-30' ||
-                       selectedLesson?.id === 'day-31'; // FINALMENTE ADICIONEI O DIA 31!
+                       selectedLesson?.id === 'day-31';
 
   // Conversão segura para tipos específicos
   const lessonsAsDevocionalType: DevocionalDailyLesson[] = devocionalCourseData.modules[0].lessons.map(lesson => ({
