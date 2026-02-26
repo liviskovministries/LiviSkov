@@ -57,7 +57,7 @@ serve(async (req: Request) => {
 
     // Configurações específicas para o Devocional 2026
     const bucketName = 'Devocional 2026';
-    const filePath = 'Livi-Skov-Devocional-2026.pdf';
+    const filePath = 'Devocional-2026-Livi-Skov.pdf'; // CORRIGIDO: Nome do arquivo atualizado
     
     console.log(`[watermark-pdf-devocional] Using bucket: '${bucketName}', filePath: '${filePath}'`);
 
