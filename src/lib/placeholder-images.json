@@ -41,6 +41,12 @@
       "description": "Imagem de introdução para o Devocional 2026.",
       "imageUrl": "/images/devocional-capa.jpg",
       "imageHint": "Devocional 2026 introduction image"
+    },
+    {
+      "id": "devocional-2026-hero-banner",
+      "description": "Mulher pensativa em noite urbana, banner para o Devocional 2026.",
+      "imageUrl": "/images/mulher-pensativa-noite-urbana.png",
+      "imageHint": "thoughtful woman urban night"
     }
   ]
 }

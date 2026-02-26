@@ -8,14 +8,15 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Mail, MessageSquare } from 'lucide-react'; // O ícone Lock agora é tratado pelo HeroCarousel
+import { Mail, MessageSquare } from 'lucide-react';
 
-import { HeroCarousel } from '@/components/hero-carousel'; // Importar o novo componente de carrossel
+import { HeroCarousel } from '@/components/hero-carousel';
 
 export default function Home() {
   const heroImage = PlaceHolderImages.find(img => img.id === 'hero-background');
   const testimonialImage = PlaceHolderImages.find(img => img.id === 'testimonial-1');
   const contactImage = PlaceHolderImages.find(img => img.id === 'contact-background');
+  const devocionalBannerImage = PlaceHolderImages.find(img => img.id === 'devocional-2026-hero-banner');
 
   // Definir a data limite para as inscrições (ex: 19 de Julho de 2024)
   const enrollmentDeadline = new Date('2024-07-19T23:59:59'); // Exemplo: 19 de Julho de 2024, 23:59:59
@@ -33,7 +34,7 @@ export default function Home() {
   const heroSlides = [
     {
       id: 'welcome-banner',
-      imageUrl: '/images/livi-skov-welcome-banner.png', // Nova imagem
+      imageUrl: '/images/livi-skov-welcome-banner.png',
       imageHint: 'Livi Skov welcome banner',
       title: 'Bem-vindo(a) ao meu website!',
       description: 'Descubra uma jornada de fé, propósito e transformação.',
@@ -41,15 +42,12 @@ export default function Home() {
       buttonHref: '/#sobre',
     },
     {
-      id: 'estacoes-espirituais-banner',
-      imageUrl: heroImage?.imageUrl || '/images/fundo.jpg', // Imagem existente
-      imageHint: heroImage?.imageHint || 'seasonal elements background',
-      title: 'Curso Estações Espirituais 2026',
-      description: 'Aprenda a reconhecer e a viver plenamente cada estação da sua vida com Deus.',
-      buttonText: 'Cadastre-se e adquira já',
-      buttonHref: '/signup',
-      showEnrollmentMessage: true,
-      enrollmentDeadline: enrollmentDeadline, // Passar a data limite
+      id: 'devocional-2026-banner',
+      imageUrl: devocionalBannerImage?.imageUrl || '/images/mulher-pensativa-noite-urbana.png',
+      imageHint: devocionalBannerImage?.imageHint || 'thoughtful woman urban night',
+      title: 'Devocional 2026 - Um novo ano, um recomeço',
+      description: 'Adquira já o e-book e tenha acesso aos 31 vídeos que acompanham você nessa jornada. Tudo por apenas R$35,00.',
+      showAuthButtons: true, // Mostrar botões de login/cadastro
     },
   ];
 
