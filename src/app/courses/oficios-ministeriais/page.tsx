@@ -125,9 +125,17 @@ Muitas pessoas nesse ofício têm facilidade para fazer planos, mas encontram di
           id: 'apostolo-1',
           title: 'O Ofício de Apóstolo',
           type: 'video' as const,
-          videoId: 'QEx5SiEROtg',
-          subtitle: 'O Apóstolo: Fundador e Estabelecedor',
-          description: 'O apóstolo é um dos ofícios mais importantes no corpo de Cristo. Eles são responsáveis por estabelecer novas igrejas, treinar líderes e garantir que a doutrina seja correta. Nesta lição, você aprenderá sobre o papel do apóstolo e como ele funciona no ministério.',
+          videoId: 'oaCRnb7yh4E',
+          subtitle: 'O Apóstolo',
+          description: `O ofício do Apóstolo está profundamente ligado à capacidade de gerir, liderar e coordenar não apenas o trabalho e as pessoas ao seu redor, mas também suas próprias emoções. Diferente do Pastor, que lidera com alimento, amor e cuidado, o Apóstolo lidera com visão e ação intensa.
+
+O Apóstolo é, por natureza, revolucionário. Ele nunca se contenta com o comum e acredita que as coisas podem, e devem, mudar. Sonhador, ele muitas vezes se perde em seus sonhos, esquecendo-se de que, para alcançar o sonho, é necessário investir na realidade. Ele não tem medo de mudar, de se reinventar, e é, talvez, o que mais sabe lidar com derrotas e dificuldades. Mas, por ser um sonhador, ele precisa de um propósito claro para viver — seja o trabalho, a família, o ministério ou até mesmo seus hobbies. Uma vez com o foco alinhado, se não conseguir mudar a cidade, ele mudará de cidade!
+
+Ele tem uma visão além do alcance, mas não se ocupa com microgestão. Ele vê o futuro, constrói o necessário e segue para o próximo desafio. Delegar é uma habilidade que ele domina, assim como a capacidade de cobrar o que é preciso.
+
+Apóstolos são raros. Muitas vezes, a pessoa pode ter o ofício apostólico, mas é necessário passar por uma jornada de aprendizado para viver a excelência desse ofício. Isso porque, frequentemente, alguém com o ofício apostólico precisa aprender a fluir em outros ofícios antes de poder operar plenamente no seu próprio, e para aceitar-se por completo como é.
+
+Jesus é o Apóstolo supremo, e Ele é a referência que temos do verdadeiro apostolado (Efésios 3:1).`,
         },
       ],
     },
