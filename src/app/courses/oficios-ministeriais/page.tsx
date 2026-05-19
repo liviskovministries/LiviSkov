@@ -47,15 +47,22 @@ Existe uma grande diferença entre ter um ofício e exercê-lo. Como assim? Todo
           type: 'video' as const,
           videoId: '0sW_n79aHsk',
           subtitle: 'Entendendo o Conceito',
-          description: `Este curso é uma jornada profunda para compreender os cinco dons de Cristo descritos em Efésios 4:11: Apóstolos, Profetas, Evangelistas, Pastores e Mestres.
+          description: `“E ele mesmo concedeu uns para apóstolos, outros para profetas, outros para evangelistas, outros para pastores e mestres, com vistas ao aperfeiçoamento dos santos para o desempenho do seu serviço, para a edificação do corpo de Cristo.”
+Efésios 4:11-12
 
-🔍 O que você vai aprender?
+Pastor, Evangelista, Mestre, Apóstolo e Profeta.
 
-✔️ Como identificar o seu ofício principal (o seu "ponto neutro").
-✔️ Como cada um dos cinco ministérios opera e se complementa.
-✔️ Como ativar o seu chamado para servir ao corpo de Cristo com liberdade e clareza.
+Tudo o que você está lendo aqui é fruto da minha caminhada com Deus, de anos de estudo em dois seminários, com muito aprendizado e consagração. Mas, uma das lições mais importantes que aprendi é que a vida é feita de ciclos. Hoje, sei muito mais do que há 10 anos, e muitas certezas que eu tinha, hoje aprendi a ceder e permitir mudanças saudáveis.
 
-Que esta caminhada traga revelação, alinhamento e ativação para o seu propósito! 🙏`,
+Hoje, você pode se considerar um grande evangelista e, daqui a 10 anos, descobrir que se tornou um profeta de ofício. O amadurecimento nos permite enxergar que podemos e devemos mudar.
+
+O que você está aprendendo aqui não é um horóscopo ou um teste de personalidade que te exime da responsabilidade de crescer como pessoa. Ao contrário, é um convite para se permitir ir além dos seus ofícios. Multiplique os talentos que Deus te deu e veja como Ele pode te honrar com muito mais do que você imagina. Leia Mateus 25:15-30 e medite na parábola dos talentos. Isso pode te ajudar a não temer as mudanças que podem surgir em sua vida.
+
+E COMO EU DESCUBRO?
+
+Criei um teste simples para te ajudar a encontrar as primeiras pistas sobre o ofício ao qual você pertence. Você pode se surpreender (ou não) com a resposta, mas lembre-se: ela é apenas uma bússola para te ajudar a se conectar com sua identidade. Normalmente, os dois primeiros ofícios são mais marcantes em sua vida, mas apenas um se manifesta quando você está em "ponto morto".
+
+Aproveite estes dias de curso para refletir e escrever sobre como você se sente e vê o mundo ao seu redor.`,
         },
         {
           id: 'intro-3',
