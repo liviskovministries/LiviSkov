@@ -39,7 +39,7 @@ No meu caso, por exemplo, tenho o dom de profetizar. Já vivi grandes experiênc
 
 Neste momento, estou ensinando, o que é uma das ações presentes nos 5 ministérios. Mas a diferença está no PORQUÊ eu ensino. À medida que você ler os capítulos e assistir às aulas, entenderá de onde vem meu desejo de capacitar outras pessoas.
 
-Existe uma grande diferença entre ter um ofício e exercê-lo. Como assim? Todos nós temos um ofício que exercemos de maneira natural, sem espaço, porque ele faz parte da nossa identidade. Por exemplo, há algumas semanas, soube que quatro moças estavam sem lugar para ficar por conta de um problema no hotel. Eu as acolhi em minha casa, preparei a mesa, organizei os quartos e cuidei delas, oferecendo tudo o que precisavam. Agir assim é algo que vem naturalmente, sem pensar duas vezes. Exercer os dons de profetizar, ensinar, pastorear, evangelizar e discipular (apostolado) é algo para todos nós!`,
+Existe uma grande diferença entre ter um ofício e exercê-lo. Como assim? Todos nós temos um ofício que exercemos de maneira natural, sem esforço, porque ele faz parte da nossa identidade. Por exemplo, há algumas semanas, soube que quatro moças estavam sem lugar para ficar por conta de um problema no hotel. Eu as acolhi em minha casa, preparei a mesa, organizei os quartos e cuidei delas, oferecendo tudo o que precisavam. Agir assim é algo que vem naturalmente, sem pensar duas vezes. Exercer os dons de profetizar, ensinar, pastorear, evangelizar e discipular (apostolado) é algo para todos nós!`,
         },
         {
           id: 'intro-2',
@@ -134,7 +134,7 @@ O Apóstolo é, por natureza, revolucionário. Ele nunca se contenta com o comum
 
 Ele tem uma visão além do alcance, mas não se ocupa com microgestão. Ele vê o futuro, constrói o necessário e segue para o próximo desafio. Delegar é uma habilidade que ele domina, assim como a capacidade de cobrar o que é preciso.
 
-Apóstolos são raros. Muitas vezes, a pessoa pode ter o ofício apostólico, mas é necessário passar por uma jornada de aprendizado para viver a excelência desse ofício. Isso porque, frequentemente, alguém com o ofício apostólico precisa aprender a fluir em outros ofícios antes de poder operar plenamente no seu próprio, e para aceitar-se por completo como é.
+Apóstolos são raros. Muitas vezes, a pessoa pode ter o ofício apostólico, mas é necessário passar por uma jornada de aprendizado para viver a excelência desse ofício. Isso porque, frequentemente, alguém com o ofício apostólico precisa aprender a fluir in outros ofícios antes de poder operar plenamente no seu próprio, e para aceitar-se por completo como é.
 
 Jesus é o Apóstolo supremo, e Ele é a referência que temos do verdadeiro apostolado (Efésios 3:1).`,
         },
@@ -160,7 +160,7 @@ Ele é preto no branco, não se permitindo os 500 milhões de tons de cinza. Iss
 
 Todas as profissões exatas estão profundamente conectadas ao dom do Mestre, porque a verdade precisa ser absoluta. Se na engenharia o cálculo estiver errado, a ponte cai. Apesar de muitas vezes não valorizarmos a beleza daqueles que amam as exatas, precisamos deles para que as coisas aconteçam de maneira linear e contínua. E é nesse lugar que o Mestre revela sua beleza criativa.
 
-Ele é criativo, mas essa criatividade é direcionada para o bem comum. Ama a arte e se torna o curador de um museum, o paleontólogo que estuda dinossauros ou o museólogo que transforma a experiência das pessoas ao visitarem o museu. Ele usa seu talento logístico e, quando somado à sua criatividade, transborda para além das ciências exatas.
+Ele é criativo, mas essa criatividade é direcionada para o bem comum. Ama a arte e se torna o curador de um museu, o paleontólogo que estuda dinossauros ou o museólogo que transforma a experiência das pessoas ao visitarem o museu. Ele usa seu talento logístico e, quando somado à sua criatividade, transborda para além das ciências exatas.
 
 Se o evangelista pode ser visto em um policial, o Mestre pode ser representado por um advogado ou até mesmo um juiz, pois um executa a lei que o outro decreta. São ofícios complementares — um fortalecendo o outro, para alcançar a excelência de todos.`,
         },
@@ -515,7 +515,7 @@ export default function OficiosMinisteriaisPage() {
         handleVideoEnd={handleVideoEnd}
         handleDownloadResource={handleDownloadWatermarkedPdf}
         handleLogout={handleLogout}
-        courseLogoPath="/images/logo-oficios-ministeriais.png"
+        courseLogoPath="/images/logo4branco.fw.png"
         resourceCoverPath={PlaceHolderImages.find(img => img.id === 'oficios-ministeriais-cover')?.imageUrl || '/images/capa-5-oficios.jpg'}
         sidebarContent={sidebarContent}
       />
