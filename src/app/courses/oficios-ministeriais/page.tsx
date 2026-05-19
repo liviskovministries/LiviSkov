@@ -17,7 +17,7 @@ import Image from 'next/image';
 
 // Define the course data structure
 const courseData: CourseData = {
-  title: 'Os 5 Ofícios Ministeriais',
+  title: 'Curso Os 5 Ofícios Ministeriais',
   modules: [
     {
       id: 'modulo-introducao',

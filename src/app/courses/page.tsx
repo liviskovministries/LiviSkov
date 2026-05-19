@@ -36,7 +36,7 @@ const courses = [
   },
   {
       id: 'oficios-ministeriais',
-      title: 'Os 5 Ofícios Ministeriais',
+      title: 'Curso Os 5 Ofícios Ministeriais',
       description: 'Desenvolva uma vida ministerial com os cinco ofícios do ministério: Apóstolo, Profeta, Evangelista, Pastor e Mestre.',
       imageUrl: PlaceHolderImages.find(img => img.id === 'oficios-ministeriais-logo')?.imageUrl || '/images/logo-oficios-ministeriais.png',
       imageHint: PlaceHolderImages.find(img => img.id === 'oficios-ministeriais-logo')?.imageHint || 'Os 5 Ofícios Ministeriais logo',
