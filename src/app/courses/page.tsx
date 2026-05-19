@@ -28,7 +28,7 @@ const courses = [
   {
     id: 'oficios-ministeriais',
     title: 'Curso Os 5 Ofícios Ministeriais',
-    description: 'Desenvolva uma vida ministerial com os comics ofícios do ministério: Apóstolo, Profeta, Evangelista, Pastor e Mestre.',
+    description: 'Descubra quem você é em Deus e viva seu chamado com clareza e liberdade.',
     imageUrl: PlaceHolderImages.find(img => img.id === 'oficios-ministeriais-logo')?.imageUrl || '/images/logo-oficios-ministeriais.png',
     imageHint: PlaceHolderImages.find(img => img.id === 'oficios-ministeriais-logo')?.imageHint || 'Os 5 Ofícios Ministeriais logo',
     stripePaymentLink: 'https://buy.stripe.com/placeholder-oficios-ministeriais',
