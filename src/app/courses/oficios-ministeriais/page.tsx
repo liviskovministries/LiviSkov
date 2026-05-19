@@ -27,7 +27,7 @@ const courseData: CourseData = {
           id: 'intro-1',
           title: 'Bem-vindo ao Curso',
           type: 'video' as const,
-          videoId: 'Dc4EBMJXQgg',
+          videoId: '0sW_n79aHsk',
           subtitle: 'Introdução ao curso',
           description: 'Bem-vindo ao curso Os 5 Ofícios Ministeriais! Nesta introdução, você entenderá a importância dos cinco ofícios ministeriais e como eles funcionam juntos para edificar o corpo de Cristo. Prepare-se para uma jornada de descoberta e crescimento espiritual.',
         },
