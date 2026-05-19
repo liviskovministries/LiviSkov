@@ -26,6 +26,15 @@ const courses = [
     enrollmentDeadline: new Date('2024-07-19T23:59:59'), // Exemplo: 19 de Julho de 2024, 23:59:59
   },
   {
+    id: 'oficios-ministeriais',
+    title: 'Curso Os 5 Ofícios Ministeriais',
+    description: 'Desenvolva uma vida ministerial com os comics ofícios do ministério: Apóstolo, Profeta, Evangelista, Pastor e Mestre.',
+    imageUrl: PlaceHolderImages.find(img => img.id === 'oficios-ministeriais-logo')?.imageUrl || '/images/logo-oficios-ministeriais.png',
+    imageHint: PlaceHolderImages.find(img => img.id === 'oficios-ministeriais-logo')?.imageHint || 'Os 5 Ofícios Ministeriais logo',
+    stripePaymentLink: 'https://buy.stripe.com/placeholder-oficios-ministeriais',
+    enrollmentDeadline: null,
+  },
+  {
     id: 'devocional-2026',
     title: 'Devocional 2026 - Um novo ano, um recomeço',
     description: '31 dias de encorajamento, renovo e recomeços na palavra',
@@ -33,16 +42,7 @@ const courses = [
     imageHint: PlaceHolderImages.find(img => img.id === 'devocional-2026-banner')?.imageHint || 'devotional new year new beginning',
     stripePaymentLink: 'https://buy.stripe.com/00w5kFeE52Hyems9Rs5ZC02', // **LINK ATUALIZADO**
     enrollmentDeadline: null, // Sem data limite para este curso, ou defina uma se houver
-  },
-  {
-      id: 'oficios-ministeriais',
-      title: 'Curso Os 5 Ofícios Ministeriais',
-      description: 'Desenvolva uma vida ministerial com os cinco ofícios do ministério: Apóstolo, Profeta, Evangelista, Pastor e Mestre.',
-      imageUrl: PlaceHolderImages.find(img => img.id === 'oficios-ministeriais-logo')?.imageUrl || '/images/logo-oficios-ministeriais.png',
-      imageHint: PlaceHolderImages.find(img => img.id === 'oficios-ministeriais-logo')?.imageHint || 'Os 5 Ofícios Ministeriais logo',
-      stripePaymentLink: 'https://buy.stripe.com/placeholder-oficios-ministeriais',
-      enrollmentDeadline: null,
-    }
+  }
 ];
 
 // Componente suspensível que usa useSearchParams
