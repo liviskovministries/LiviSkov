@@ -39,7 +39,7 @@ No meu caso, por exemplo, tenho o dom de profetizar. Já vivi grandes experiênc
 
 Neste momento, estou ensinando, o que é uma das ações presentes nos 5 ministérios. Mas a diferença está no PORQUÊ eu ensino. À medida que você ler os capítulos e assistir às aulas, entenderá de onde vem meu desejo de capacitar outras pessoas.
 
-Existe uma grande diferença entre ter um ofício e exercê-lo. Como assim? Todos nós temos um ofício que exercemos de maneira natural, sem esforço, porque ele faz parte da nossa identidade. Por exemplo, há algumas semanas, soube que quatro moças estavam sem lugar para ficar por conta de um problema no hotel. Eu as acolhi em minha casa, preparei a mesa, organizei os quartos e cuidei delas, oferecendo tudo o que precisavam. Agir assim é algo que vem naturalmente, sem pensar duas vezes. Exercer os dons de profetizar, ensinar, pastorear, evangelizar e discipular (apostolado) é algo para todos nós!`,
+Existe uma grande diferença entre ter um ofício e exercê-lo. Como assim? Todos nós temos um ofício que exercemos de maneira natural, sem espaço, porque ele faz parte da nossa identidade. Por exemplo, há algumas semanas, soube que quatro moças estavam sem lugar para ficar por conta de um problema no hotel. Eu as acolhi em minha casa, preparei a mesa, organizei os quartos e cuidei delas, oferecendo tudo o que precisavam. Agir assim é algo que vem naturalmente, sem pensar duas vezes. Exercer os dons de profetizar, ensinar, pastorear, evangelizar e discipular (apostolado) é algo para todos nós!`,
         },
         {
           id: 'intro-2',
@@ -56,7 +56,7 @@ Tudo o que você está lendo aqui é fruto da minha caminhada com Deus, de anos 
 
 Hoje, você pode se considerar um grande evangelista e, daqui a 10 anos, descobrir que se tornou um profeta de ofício. O amadurecimento nos permite enxergar que podemos e devemos mudar.
 
-O que você está aprendendo aqui não é um horóscopo ou um teste de personalidade que te exime da responsabilidade de crescer como pessoa. Ao contrário, é um convite para se permitir ir além dos seus ofícios. Multiplique os talentos que Deus te deu e veja como Ele pode te honrar com muito mais do que você imagina. Leia Mateus 25:15-30 e medite na parábola dos talentos. Isso pode te ajudar a não temer as mudanças que podem surgir in sua vida.
+O que você está aprendendo aqui não é um horóscopo ou um teste de personalidade que te exime da responsabilidade de crescer como pessoa. Ao contrário, é um convite para se permitir ir além dos seus ofícios. Multiplique os talentos que Deus te deu e veja como Ele pode te honrar com muito mais do que você imagina. Leia Mateus 25:15-30 e medite na parábola dos talentos. Isso pode te ajudar a não temer as mudanças que podem surgir em sua vida.
 
 E COMO EU DESCUBRO?
 
@@ -81,9 +81,19 @@ Aproveite estes dias de curso para refletir e escrever sobre como você se sente
           id: 'pastor-1',
           title: 'O Ofício de Pastor',
           type: 'video' as const,
-          videoId: '5rt6pkMFD2E',
-          subtitle: 'O Pastor: Guia e Cuidador',
-          description: 'O pastor é aquele que cuida do rebanho de Deus. Eles são responsáveis por alimentar, guiar e proteger as ovelhas. Nesta lição, você entenderá o papel do pastor e como ele pastoreia a igreja.',
+          videoId: 'vW5mFOnZpA4',
+          subtitle: 'O Pastor',
+          description: `O ofício de Pastor é algo que eu posso falar de trás para frente. É o que tenho na minha vida e a minha forma mais genuína de transbordar, seja no ministério ou na vida pessoal.
+
+O Pastor é aquele que ama o cuidado. Seja ao receber pessoas, protegê-las ou incentivá-las. Ele pensa muito mais nos outros do que em si mesmo.
+
+No ofício de Pastor, você será amado por aqueles que admiram sua capacidade de ver o mundo com compaixão e amor.
+
+O Pastor é o mais facilmente reconhecido pelos seus talentos e atributos. Muitas vezes, ele é visto como um bom amigo, conselheiro e alguém em quem se pode confiar. É um ofício que geralmente se torna uma referência positiva para as pessoas ao redor.
+
+No entanto, o Pastor muitas vezes comete o erro de não saber dizer não e criar limites saudáveis. Uma das maiores dificuldades desse ofício é lidar com a solidão. Uma das lições mais valiosas que aprendi, como alguém que tem o Pastor como ofício, é aprender a valorizar quando alguém verdadeiramente pergunta: "Como você está?"
+
+Não estou sendo piegas ou me vitimizando. O Pastor costuma colocar tudo e todos à frente de si, e por isso, não há muito espaço para se concentrar em suas próprias emoções. Essa é uma das razões pelas quais é difícil aprender a dizer não e reconhecer a solidão que vem de assumir tantas responsabilidades.`,
         },
       ],
     },
