@@ -66,10 +66,10 @@ Aproveite estes dias de curso para refletir e escrever sobre como você se sente
         },
         {
           id: 'intro-3',
-          title: 'Livro Os 5 Ofícios Ministeriais',
+          title: 'Apostila Os 5 Ofícios Ministeriais',
           type: 'resource' as const,
-          subtitle: 'Sobre o Livro de Apoio',
-          description: 'Acesse e baixe o material de apoio principal do curso. Este livro é a base da nossa jornada, aprofundando os temas abordados nas aulas e oferecendo exercícios práticos para cada ofício.',
+          subtitle: 'Sobre a Apostila de Apoio',
+          description: 'Acesse e baixe o material de apoio principal do curso. Esta apostila é a base da nossa jornada, aprofundando os temas abordados nas aulas e oferecendo exercícios práticos para cada ofício.',
         },
       ],
     },
@@ -133,7 +133,7 @@ O Apóstolo é, por natureza, revolucionário. Ele nunca se contenta com o comum
 
 Ele tem uma visão além do alcance, mas não se ocupa com microgestão. Ele vê o futuro, constrói o necessário e segue para o próximo desafio. Delegar é uma habilidade que ele domina, assim como a capacidade de cobrar o que é preciso.
 
-Apóstolos são raros. Muitas vezes, a pessoa pode ter o ofício apostólico, mas é necessário passar por uma jornada de aprendizado para viver a excelência desse ofício. Isso porque, frequentemente, alguém com o ofício apostólico precisa aprender a fluir in outros ofícios antes de poder operar plenamente no seu próprio, e para aceitar-se por completo como é.
+Apóstolos são raros. Muitas vezes, a pessoa pode ter o ofício apostólico, mas é necessário passar por uma jornada de aprendizado para viver a excelência desse ofício. Isso porque, frequentemente, alguém com o ofício apostólico precisa aprender a fluir em outros ofícios antes de poder operar plenamente no seu próprio, e para aceitar-se por completo como é.
 
 Jesus é o Apóstolo supremo, e Ele é a referência que temos do verdadeiro apostolado (Efésios 3:1).`,
         },
