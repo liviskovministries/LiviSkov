@@ -29,7 +29,7 @@ const courseData: CourseData = {
           type: 'video' as const,
           videoId: '0sW_n79aHsk',
           subtitle: 'Introdução ao curso',
-          description: `Há alguns anos atrás, enquanto era servia como Pastora Auxiliar no departamento internacional do BSSM, fui lavar o carro da minha pastora e o levei a um lava-jato automatizado, o que é bem comum nos Estados Unidos. Quando você posiciona o carro no lugar certo, eles não pedem para desligá-lo. Pelo contrário, pedem para mantê-lo ligado! Isso acontece por questões de segurança, afinal, todo carro manual possui o ponto morto, e no caso dos carros automáticos, a posição é "N" (de neutro). No lava-jato automatizado, é essencial que o carro esteja em ponto morto para ser levado até seu destino, pois, caso algo aconteça, você pode facilmente sair do lugar ao colocar a marcha certa.
+          description: `Há alguns anos atrás, enquanto eu servia como Pastora Auxiliar no departamento internacional do BSSM, fui lavar o carro da minha pastora e o levei a um lava-jato automatizado, o que é bem comum nos Estados Unidos. Quando você posiciona o carro no lugar certo, eles não pedem para desligá-lo. Pelo contrário, pedem para mantê-lo ligado! Isso acontece por questões de segurança, afinal, todo carro manual possui o ponto morto, e no caso dos carros automáticos, a posição é "N" (de neutro). No lava-jato automatizado, é essencial que o carro esteja em ponto morto para ser levado até seu destino, pois, caso algo aconteça, você pode facilmente sair do lugar ao colocar a marcha certa.
 
 Muitas vezes, ficamos tão familiarizados com os nossos ofícios que dificultamos o processo de entender nossa verdadeira identidade. Mas aqui vai uma dica, inspirada no funcionamento do lava-jato: sempre haverá um ofício que transbordará quando estivermos "no neutro".
 
@@ -39,7 +39,7 @@ No meu caso, por exemplo, tenho o dom de profetizar. Já vivi grandes experiênc
 
 Neste momento, estou ensinando, o que é uma das ações presentes nos 5 ministérios. Mas a diferença está no PORQUÊ eu ensino. À medida que você ler os capítulos e assistir às aulas, entenderá de onde vem meu desejo de capacitar outras pessoas.
 
-Existe uma grande diferença entre ter um ofício e exercê-lo. Como assim? Todos nós temos um ofício que exercemos de maneira natural, sem esforço, porque ele faz parte da nossa identidade. Por exemplo, há algumas semanas, soube que quatro moças estavam sem lugar para ficar por conta de um problema no hotel. Eu as acolhi em minha casa, preparei a mesa, organizei os quartos e cuidei delas, oferecendo tudo o que precisavam. Agir assim é algo que vem naturalmente, sem pensar duas vezes. Exercer os dons de profetizar, ensinar, pastorear, evangelizar e discipular (apostolado) é algo para todos nós!`,
+Existe uma grande diferença entre ter um ofício e exercê-lo. Como assim? Todos nós temos um ofício que exercemos de maneira natural, sem espaço, porque ele faz parte da nossa identidade. Por exemplo, há algumas semanas, soube que quatro moças estavam sem lugar para ficar por conta de um problema no hotel. Eu as acolhi em minha casa, preparei a mesa, organizei os quartos e cuidei delas, oferecendo tudo o que precisavam. Agir assim é algo que vem naturalmente, sem pensar duas vezes. Exercer os dons de profetizar, ensinar, pastorear, evangelizar e discipular (apostolado) é algo para todos nós!`,
         },
         {
           id: 'intro-2',
