@@ -39,7 +39,7 @@ No meu caso, por exemplo, tenho o dom de profetizar. Já vivi grandes experiênc
 
 Neste momento, estou ensinando, o que é uma das ações presentes nos 5 ministérios. Mas a diferença está no PORQUÊ eu ensino. À medida que você ler os capítulos e assistir às aulas, entenderá de onde vem meu desejo de capacitar outras pessoas.
 
-Existe uma grande diferença entre ter um ofício e exercê-lo. Como assim? Todos nós temos um ofício que exercemos de maneira natural, sem espaço, porque ele faz parte da nossa identidade. Por exemplo, há algumas semanas, soube que quatro moças estavam sem lugar para ficar por conta de um problema no hotel. Eu as acolhi em minha casa, preparei a mesa, organizei os quartos e cuidei delas, oferecendo tudo o que precisavam. Agir assim é algo que vem naturalmente, sem pensar duas vezes. Exercer os dons de profetizar, ensinar, pastorear, evangelizar e discipular (apostolado) é algo para todos nós!`,
+Existe uma grande diferença entre ter um ofício e exercê-lo. Como assim? Todos nós temos um ofício que exercemos de maneira natural, sem esforço, porque ele faz parte da nossa identidade. Por exemplo, há algumas semanas, soube que quatro moças estavam sem lugar para ficar por conta de um problema no hotel. Eu as acolhi em minha casa, preparei a mesa, organizei os quartos e cuidei delas, oferecendo tudo o que precisavam. Agir assim é algo que vem naturalmente, sem pensar duas vezes. Exercer os dons de profetizar, ensinar, pastorear, evangelizar e discipular (apostolado) é algo para todos nós!`,
         },
         {
           id: 'intro-2',
@@ -93,7 +93,7 @@ O Pastor é o mais facilmente reconhecido pelos seus talentos e atributos. Muita
 
 No entanto, o Pastor muitas vezes comete o erro de não saber dizer não e criar limites saudáveis. Uma das maiores dificuldades desse ofício é lidar com a solidão. Uma das lições mais valiosas que aprendi, como alguém que tem o Pastor como ofício, é aprender a valorizar quando alguém verdadeiramente pergunta: "Como você está?"
 
-Não estou sendo piegas ou me vitimizando. O Pastor costuma colocar tudo e todos à frente de si, e por isso, não há muito espaço para se concentrar em suas próprias emoções. Essa é uma das razões pelas quais é difícil aprender a dizer não e reconhecer a solidão que vem de assumir tantas responsabilidades.`,
+Não estou sendo piegas ou me vitimizando. O Pastor costuma colocar tudo e todos à frente de si, e por isso, não há muito espaço para se concentrar em suas próprias emoções. Essa é uma razões pelas quais é difícil aprender a dizer não e reconhecer a solidão que vem de assumir tantas responsabilidades.`,
         },
       ],
     },
@@ -129,7 +129,7 @@ Muitas pessoas nesse ofício têm facilidade para fazer planos, mas encontram di
           subtitle: 'O Apóstolo',
           description: `O ofício do Apóstolo está profundamente ligado à capacidade de gerir, liderar e coordenar não apenas o trabalho e as pessoas ao seu redor, mas também suas próprias emoções. Diferente do Pastor, que lidera com alimento, amor e cuidado, o Apóstolo lidera com visão e ação intensa.
 
-O Apóstolo é, por natureza, revolucionário. Ele nunca se contenta com o comum e acredita que as coisas podem, e devem, mudar. Sonhador, ele muitas vezes se perde in seus sonhos, esquecendo-se de que, para alcançar o sonho, é necessário investir na realidade. Ele não tem medo de mudar, de se reinventar, e é, talvez, o que mais sabe lidar com derrotas e dificuldades. Mas, por ser um sonhador, ele precisa de um propósito claro para viver — seja o trabalho, a família, o ministério ou até mesmo seus hobbies. Uma vez com o foco alinhado, se não conseguir mudar a cidade, ele mudará de cidade!
+O Apóstolo é, por natureza, revolucionário. Ele nunca se contenta com o comum e acredita que as coisas podem, e devem, mudar. Sonhador, ele muitas vezes se perde em seus sonhos, esquecendo-se de que, para alcançar o sonho, é necessário investir na realidade. Ele não tem medo de mudar, de se reinventar, e é, talvez, o que mais sabe lidar com derrotas e dificuldades. Mas, por ser um sonhador, ele precisa de um propósito claro para viver — seja o trabalho, a família, o ministério ou até mesmo seus hobbies. Uma vez com o foco alinhado, se não conseguir mudar a cidade, ele mudará de cidade!
 
 Ele tem uma visão além do alcance, mas não se ocupa com microgestão. Ele vê o futuro, constrói o necessário e segue para o próximo desafio. Delegar é uma habilidade que ele domina, assim como a capacidade de cobrar o que é preciso.
 
@@ -199,11 +199,20 @@ O Profeta é o meu segundo ofício mais forte. Aquele que eu sou e ajo naturalme
       lessons: [
         {
           id: 'conclusao-1',
-          title: 'Encerramento',
+          title: 'Live de Encerramento',
           type: 'video' as const,
-          videoId: '9dpajnxfsGg',
-          subtitle: 'Conclusão do Curso',
-          description: 'Nesta última lição, faremos um resumo de tudo o que aprendemos e discutiremos como você pode aplicar esses princípios em sua vida e ministério. Que Deus te abençoe ricamente!',
+          videoId: 'XuMjQLyPNjc',
+          subtitle: 'GRANDE ENCONTRO FINAL – Aulão ao Vivo no Zoom',
+          description: `Este foi o nosso último encontro, um momento de conexão e reflexão sobre tudo o que vivemos.
+
+💡 O que tivemos?
+
+✅ Compartilhamento de experiências.
+✅ Reflexões sobre cada Ofício.
+✅ Direcionamentos para o futuro.
+✅ Um tempo de comunhão e gratidão.
+
+🚀 Prepare-se para assistir a um GRANDE encerramento numa reunião maravilhosa no Zoom! 🎓🎊`,
         },
       ],
     },
