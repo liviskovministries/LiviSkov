@@ -422,7 +422,7 @@ export default function OficiosMinisteriaisPage() {
         handleVideoEnd={handleVideoEnd}
         handleDownloadResource={handleDownloadWatermarkedPdf}
         handleLogout={handleLogout}
-        courseLogoPath="/images/logo-oficios-ministeriais.jpg"
+        courseLogoPath="/images/logo-oficios-ministeriais.png"
         resourceCoverPath={PlaceHolderImages.find(img => img.id === 'oficios-ministeriais-cover')?.imageUrl || '/images/capa_devocional_2026.jpg'}
         sidebarContent={sidebarContent}
       />
