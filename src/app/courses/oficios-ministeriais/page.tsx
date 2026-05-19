@@ -93,7 +93,7 @@ O Pastor é o mais facilmente reconhecido pelos seus talentos e atributos. Muita
 
 No entanto, o Pastor muitas vezes comete o erro de não saber dizer não e criar limites saudáveis. Uma das maiores dificuldades desse ofício é lidar com a solidão. Uma das lições mais valiosas que aprendi, como alguém que tem o Pastor como ofício, é aprender a valorizar quando alguém verdadeiramente pergunta: "Como você está?"
 
-Não estou sendo piegas ou me vitimizando. O Pastor costuma colocar tudo e todos à frente de si, e por isso, não há muito espaço para se concentrar em suas próprias emoções. Essa é uma das razões pelas quais é difícil aprender a dizer não e reconhecer a solidão que vem de assumir tantas responsabilidades.`,
+Não estou sendo piegas ou me vitimizando. O Pastor costuma colocar tudo e todos à frente of si, e por isso, não há muito espaço para se concentrar em suas próprias emoções. Essa é uma das razões pelas quais é difícil aprender a dizer não e reconhecer a solidão que vem de assumir tantas responsabilidades.`,
         },
       ],
     },
@@ -147,9 +147,21 @@ Jesus é o Apóstolo supremo, e Ele é a referência que temos do verdadeiro apo
           id: 'mestre-1',
           title: 'O Ofício de Mestre',
           type: 'video' as const,
-          videoId: 'DewkwZFGMXY',
-          subtitle: 'O Mestre: Ensina e Instrui',
-          description: 'O mestre é aquele que ensina a palavra de Deus de forma clara e compreensível. Eles são responsáveis por instruir, corrigir e edificar o corpo de Cristo. Nesta lição, você aprenderá sobre o papel do mestre e como ele contribui para o crescimento espiritual.',
+          videoId: 'kTNZrqY6k14',
+          subtitle: 'O Mestre',
+          description: `O ofício de Mestre é, entre todos, o que mais costuma ser mal interpretado.
+
+Ser professor, ensinar e capacitar são apenas ramos de uma árvore imensa.
+
+O Mestre busca a VERDADE em sua essência. Ele não aceita nada menos do que a verdade pura e genuína. Dedica sua vida ao crescimento contínuo e ao esforço incansável para fazer o que é certo.
+
+Ele é preto no branco, não se permitindo os 500 milhões de tons de cinza. Isso faz dele alguém em quem se pode confiar, mas também alguém com grande dificuldade para mudar.
+
+Todas as profissões exatas estão profundamente conectadas ao dom do Mestre, porque a verdade precisa ser absoluta. Se na engenharia o cálculo estiver errado, a ponte cai. Apesar de muitas vezes não valorizarmos a beleza daqueles que amam as exatas, precisamos deles para que as coisas aconteçam de maneira linear e contínua. E é nesse lugar que o Mestre revela sua beleza criativa.
+
+Ele é criativo, mas essa criatividade é direcionada para o bem comum. Ama a arte e se torna o curador de um museu, o paleontólogo que estuda dinossauros ou o museólogo que transforma a experiência das pessoas ao visitarem o museu. Ele usa seu talento logístico e, quando somado à sua criatividade, transborda para além das ciências exatas.
+
+Se o evangelista pode ser visto em um policial, o Mestre pode ser representado por um advogado ou até mesmo um juiz, pois um executa a lei que o outro decreta. São ofícios complementares — um fortalecendo o outro, para alcançar a excelência de todos.`,
         },
       ],
     },
