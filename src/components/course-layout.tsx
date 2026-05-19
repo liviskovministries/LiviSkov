@@ -94,37 +94,49 @@ export function CourseLayout({
         );
       case 'resource':
         return (
-          <Card className="bg-card overflow-hidden">
-            <CardContent className="p-6 flex flex-col md:flex-row items-center justify-center gap-6 text-center md:text-left">
-              {resourceCoverPath && (
-                <div className="w-48 flex-shrink-0">
-                  <Image 
-                    src={resourceCoverPath} 
-                    alt={`Capa do Livro ${courseData.title}`} 
-                    width={300} 
-                    height={450} 
-                    className="rounded-lg shadow-lg" 
-                    data-ai-hint="book cover"
-                  />
-                </div>
-              )}
-              <div className="flex flex-col items-center md:items-start">
-                <h3 className="text-2xl font-bold text-foreground">{selectedLesson.title}</h3>
-                <p className="text-muted-foreground mt-2">Material de Apoio Principal</p>
-                <Button 
-                  onClick={handleDownloadResource} 
-                  size="lg" 
-                  className="mt-4"
-                  disabled={isDownloading}
-                >
-                  {isDownloading ? 'Gerando...' : 'Baixar Material em PDF'}
-                </Button>
-                <p className="text-sm text-muted-foreground mt-4">
-                  O material será baixado com uma marca d'água personalizada com seu nome e email.
-                </p>
+          <div className="space-y-6">
+            {selectedLesson.videoId && (
+              <div className="w-full aspect-video rounded-lg overflow-hidden mb-6">
+                <YouTube 
+                  videoId={selectedLesson.videoId} 
+                  className="w-full h-full" 
+                  iframeClassName="w-full h-full"
+                  onEnd={handleVideoEnd}
+                />
               </div>
-            </CardContent>
-          </Card>
+            )}
+            <Card className="bg-card overflow-hidden">
+              <CardContent className="p-6 flex flex-col md:flex-row items-center justify-center gap-6 text-center md:text-left">
+                {resourceCoverPath && (
+                  <div className="w-48 flex-shrink-0">
+                    <Image 
+                      src={resourceCoverPath} 
+                      alt={`Capa do Livro ${courseData.title}`} 
+                      width={300} 
+                      height={450} 
+                      className="rounded-lg shadow-lg" 
+                      data-ai-hint="book cover"
+                    />
+                  </div>
+                )}
+                <div className="flex flex-col items-center md:items-start">
+                  <h3 className="text-2xl font-bold text-foreground">{selectedLesson.title}</h3>
+                  <p className="text-muted-foreground mt-2">Material de Apoio Principal</p>
+                  <Button 
+                    onClick={handleDownloadResource} 
+                    size="lg" 
+                    className="mt-4"
+                    disabled={isDownloading}
+                  >
+                    {isDownloading ? 'Gerando...' : 'Baixar Material em PDF'}
+                  </Button>
+                  <p className="text-sm text-muted-foreground mt-4">
+                    O material será baixado com uma marca d'água personalizada com seu nome e email.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         );
       case 'content': // Novo tipo 'content'
         return null; // Não renderiza nada aqui, o texto é renderizado abaixo

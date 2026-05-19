@@ -68,6 +68,7 @@ Aproveite estes dias de curso para refletir e escrever sobre como você se sente
           id: 'intro-3',
           title: 'Apostila Os 5 Ofícios Ministeriais',
           type: 'resource' as const,
+          videoId: 'nWRteCjnTuI',
           subtitle: 'Sobre a Apostila de Apoio',
           description: 'Acesse e baixe o material de apoio principal do curso. Esta apostila é a base da nossa jornada, aprofundando os temas abordados nas aulas e oferecendo exercícios práticos para cada ofício.',
         },
@@ -111,7 +112,7 @@ Não estou sendo piegas ou me vitimizando. O Pastor costuma colocar tudo e todos
 
 Por enxergar fora da caixa, acaba sendo visto como alguém “chato”, porque acredita tanto na sua causa que tenta provar seu ponto de vista para todos ao seu redor. O evangelista enfrenta muitas lutas internas por ser desmerecido por pessoas que não entendem o valor do seu trabalho, sentindo-se desmotivado pela falta de honra daqueles que não enxergam seu esforço.
 
-Para o evangelista, o esforço é a prova do seu caráter. O esforço está acima do talento. Se você disser a um evangelista que ele não consegue fazer algo, ou que é inadequado para determinada atividade, é exatamente aí que ele vai querer provar que consegue. Ainda que não haja custo-benefício, o importante para ele é demonstrar que estava certo desde o início.
+Para o evangelista, o effort é a prova do seu caráter. O esforço está acima do talento. Se você disser a um evangelista que ele não consegue fazer algo, ou que é inadequado para determinada atividade, é exatamente aí que ele vai querer provar que consegue. Ainda que não haja custo-benefício, o importante para ele é demonstrar que estava certo desde o início.
 
 Muitas pessoas nesse ofício têm facilidade para fazer planos, mas encontram dificuldade para sonhar. Isso porque “sonhar” depende de pessoas, depende de Deus e de acreditar em algo que não se faz sozinho. São pessoas de natureza visionária, mas não necessariamente sonhadoras.`,
         },
