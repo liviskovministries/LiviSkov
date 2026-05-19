@@ -46,3 +46,4 @@ firestore-debug.log
 
 # Allow .env.local for production environment variables
 !.env.local
+.dyad/
