@@ -39,7 +39,7 @@ No meu caso, por exemplo, tenho o dom de profetizar. Já vivi grandes experiênc
 
 Neste momento, estou ensinando, o que é uma das ações presentes nos 5 ministérios. Mas a diferença está no PORQUÊ eu ensino. À medida que você ler os capítulos e assistir às aulas, entenderá de onde vem meu desejo de capacitar outras pessoas.
 
-Existe uma grande diferença entre ter um ofício e exercê-lo. Como assim? Todos nós temos um ofício que exercemos de maneira natural, sem esforço, porque ele faz parte da nossa identidade. Por exemplo, há algumas semanas, soube que quatro moças estavam sem lugar para ficar por conta de um problema no hotel. Eu as acolhi em minha casa, preparei a mesa, organizei os quartos e cuidei delas, oferecendo tudo o que precisavam. Agir assim é algo que vem naturalmente, sem pensar duas vezes. Exercer os dons de profetizar, ensinar, pastorear, evangelizar e discipular (apostolado) é algo para todos nós!`,
+Existe uma grande diferença entre ter um ofício e exercê-lo. Como assim? Todos nós temos um ofício que exercemos de maneira natural, sem espaço, porque ele faz parte da nossa identidade. Por exemplo, há algumas semanas, soube que quatro moças estavam sem lugar para ficar por conta de um problema no hotel. Eu as acolhi em minha casa, preparei a mesa, organizei os quartos e cuidei delas, oferecendo tudo o que precisavam. Agir assim é algo que vem naturalmente, sem pensar duas vezes. Exercer os dons de profetizar, ensinar, pastorear, evangelizar e discipular (apostolado) é algo para todos nós!`,
         },
         {
           id: 'intro-2',
@@ -93,7 +93,7 @@ O Pastor é o mais facilmente reconhecido pelos seus talentos e atributos. Muita
 
 No entanto, o Pastor muitas vezes comete o erro de não saber dizer não e criar limites saudáveis. Uma das maiores dificuldades desse ofício é lidar com a solidão. Uma das lições mais valiosas que aprendi, como alguém que tem o Pastor como ofício, é aprender a valorizar quando alguém verdadeiramente pergunta: "Como você está?"
 
-Não estou sendo piegas ou me vitimizando. O Pastor costuma colocar tudo e todos à frente of si, e por isso, não há muito espaço para se concentrar em suas próprias emoções. Essa é uma das razões pelas quais é difícil aprender a dizer não e reconhecer a solidão que vem de assumir tantas responsabilidades.`,
+Não estou sendo piegas ou me vitimizando. O Pastor costuma colocar tudo e todos à frente de si, e por isso, não há muito espaço para se concentrar em suas próprias emoções. Essa é uma das razões pelas quais é difícil aprender a dizer não e reconhecer a solidão que vem de assumir tantas responsabilidades.`,
         },
       ],
     },
@@ -129,7 +129,7 @@ Muitas pessoas nesse ofício têm facilidade para fazer planos, mas encontram di
           subtitle: 'O Apóstolo',
           description: `O ofício do Apóstolo está profundamente ligado à capacidade de gerir, liderar e coordenar não apenas o trabalho e as pessoas ao seu redor, mas também suas próprias emoções. Diferente do Pastor, que lidera com alimento, amor e cuidado, o Apóstolo lidera com visão e ação intensa.
 
-O Apóstolo é, por natureza, revolucionário. Ele nunca se contenta com o comum e acredita que as coisas podem, e devem, mudar. Sonhador, ele muitas vezes se perde em seus sonhos, esquecendo-se de que, para alcançar o sonho, é necessário investir na realidade. Ele não tem medo de mudar, de se reinventar, e é, talvez, o que mais sabe lidar com derrotas e dificuldades. Mas, por ser um sonhador, ele precisa de um propósito claro para viver — seja o trabalho, a família, o ministério ou até mesmo seus hobbies. Uma vez com o foco alinhado, se não conseguir mudar a cidade, ele mudará de cidade!
+O Apóstolo é, por natureza, revolucionário. Ele nunca se contenta com o comum e acredita que as coisas podem, e devem, mudar. Sonhador, ele muitas vezes se perde in seus sonhos, esquecendo-se de que, para alcançar o sonho, é necessário investir na realidade. Ele não tem medo de mudar, de se reinventar, e é, talvez, o que mais sabe lidar com derrotas e dificuldades. Mas, por ser um sonhador, ele precisa de um propósito claro para viver — seja o trabalho, a família, o ministério ou até mesmo seus hobbies. Uma vez com o foco alinhado, se não conseguir mudar a cidade, ele mudará de cidade!
 
 Ele tem uma visão além do alcance, mas não se ocupa com microgestão. Ele vê o futuro, constrói o necessário e segue para o próximo desafio. Delegar é uma habilidade que ele domina, assim como a capacidade de cobrar o que é preciso.
 
@@ -173,9 +173,23 @@ Se o evangelista pode ser visto em um policial, o Mestre pode ser representado p
           id: 'profeta-1',
           title: 'O Ofício de Profeta',
           type: 'video' as const,
-          videoId: '1CZvtjsZ8_M',
-          subtitle: 'O Profeta: Voz de Deus',
-          description: 'O profeta é aquele que fala em nome de Deus. Eles trazem revelações, advertências e direção para a igreja. Nesta lição, você entenderá o papel do profeta e como ele se manifesta no ministério.',
+          videoId: 'GQWbfofxO_g',
+          subtitle: 'O Profeta',
+          description: `O Profeta é o artista. Aquele que enxerga a beleza do Criador de uma forma única. Ele é como Maria, que permanece aos pés de Jesus, preferindo a beleza da Sua presença aos aplausos do mundo.
+
+O ofício mais criativo, ao lado, pasmem, do Mestre!
+
+Enquanto o Mestre cria para o bem comum, com o objetivo de proporcionar uma vida excelente para todos, o Profeta transborda. Ele se expressa através de seus sentimentos, de sua adoração, de suas lutas. Sua criação vem da vulnerabilidade extrema, porque ele é, e sempre será, intenso. Extremamente completo.
+
+Se você tiver um museu, o Mestre será o museólogo ou o curador da obra que o Profeta vai expor.
+
+Como Maria, que quebrou o vaso de alabastro aos pés de Jesus, ou João Batista, que não temia falar a verdade, o Profeta é o extremo na simplicidade.
+
+Ele é o 0 e o 1000. Ele é tudo ou nada. Ele entrega o que tem de mais profundo, sem reservas.
+
+E essa entrega é tanto seu maior triunfo quanto sua maior dificuldade.
+
+O Profeta é o meu segundo ofício mais forte. Aquele que eu sou e ajo naturalmente, especialmente quando somado ao Pastoral. A combinação desses dois ofícios faz com que eu seja extremamente cuidadosa, mas também livre, amando a vida sem limites e a beleza do improviso.`,
         },
       ],
     },
