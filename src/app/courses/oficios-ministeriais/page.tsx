@@ -56,7 +56,7 @@ Tudo o que você está lendo aqui é fruto da minha caminhada com Deus, de anos 
 
 Hoje, você pode se considerar um grande evangelista e, daqui a 10 anos, descobrir que se tornou um profeta de ofício. O amadurecimento nos permite enxergar que podemos e devemos mudar.
 
-O que você está aprendendo aqui não é um horóscopo ou um teste de personalidade que te exime da responsabilidade de crescer como pessoa. Ao contrário, é um convite para se permitir ir além dos seus ofícios. Multiplique os talentos que Deus te deu e veja como Ele pode te honrar com muito mais do que você imagina. Leia Mateus 25:15-30 e medite na parábola dos talentos. Isso pode te ajudar a não temer as mudanças que podem surgir em sua vida.
+O que você está aprendendo aqui não é um horóscopo ou um teste de personalidade que te exime da responsabilidade de crescer como pessoa. Ao contrário, é um convite para se permitir ir além dos seus ofícios. Multiplique os talentos que Deus te deu e veja como Ele pode te honrar com muito mais do que você imagina. Leia Mateus 25:15-30 e medite na parábola dos talentos. Isso pode te ajudar a não temer as mudanças que podem surgir in sua vida.
 
 E COMO EU DESCUBRO?
 
@@ -70,48 +70,6 @@ Aproveite estes dias de curso para refletir e escrever sobre como você se sente
           type: 'resource' as const,
           subtitle: 'Sobre o Livro de Apoio',
           description: 'Acesse e baixe o material de apoio principal do curso. Este livro é a base da nossa jornada, aprofundando os temas abordados nas aulas e oferecendo exercícios práticos para cada ofício.',
-        },
-      ],
-    },
-    {
-      id: 'modulo-apostolo',
-      title: 'Apóstolo',
-      lessons: [
-        {
-          id: 'apostolo-1',
-          title: 'O Ofício de Apóstolo',
-          type: 'video' as const,
-          videoId: 'QEx5SiEROtg',
-          subtitle: 'O Apóstolo: Fundador e Estabelecedor',
-          description: 'O apóstolo é um dos ofícios mais importantes no corpo de Cristo. Eles são responsáveis por estabelecer novas igrejas, treinar líderes e garantir que a doutrina seja correta. Nesta lição, você aprenderá sobre o papel do apóstolo e como ele funciona no ministério.',
-        },
-      ],
-    },
-    {
-      id: 'modulo-profeta',
-      title: 'Profeta',
-      lessons: [
-        {
-          id: 'profeta-1',
-          title: 'O Ofício de Profeta',
-          type: 'video' as const,
-          videoId: '1CZvtjsZ8_M',
-          subtitle: 'O Profeta: Voz de Deus',
-          description: 'O profeta é aquele que fala em nome de Deus. Eles trazem revelações, advertências e direção para a igreja. Nesta lição, você entenderá o papel do profeta e como ele se manifesta no ministério.',
-        },
-      ],
-    },
-    {
-      id: 'modulo-evangelista',
-      title: 'Evangelista',
-      lessons: [
-        {
-          id: 'evangelista-1',
-          title: 'O Ofício de Evangelista',
-          type: 'video' as const,
-          videoId: 'w4fnk9onusU',
-          subtitle: 'O Evangelista: Pregador do Evangelho',
-          description: 'O evangelista é aquele que prega o evangelho e ganha almas para o reino de Deus. Eles são apaixonados por compartilhar a boa notícia e ver pessoas transformadas. Nesta lição, você aprenderá sobre o papel do evangelista e como ele impacta o mundo.',
         },
       ],
     },
@@ -130,6 +88,34 @@ Aproveite estes dias de curso para refletir e escrever sobre como você se sente
       ],
     },
     {
+      id: 'modulo-evangelista',
+      title: 'Evangelista',
+      lessons: [
+        {
+          id: 'evangelista-1',
+          title: 'O Ofício de Evangelista',
+          type: 'video' as const,
+          videoId: 'w4fnk9onusU',
+          subtitle: 'O Evangelista: Pregador do Evangelho',
+          description: 'O evangelista é aquele que prega o evangelho e ganha almas para o reino de Deus. Eles são apaixonados por compartilhar a boa notícia e ver pessoas transformadas. Nesta lição, você aprenderá sobre o papel do evangelista e como ele impacta o mundo.',
+        },
+      ],
+    },
+    {
+      id: 'modulo-apostolo',
+      title: 'Apóstolo',
+      lessons: [
+        {
+          id: 'apostolo-1',
+          title: 'O Ofício de Apóstolo',
+          type: 'video' as const,
+          videoId: 'QEx5SiEROtg',
+          subtitle: 'O Apóstolo: Fundador e Estabelecedor',
+          description: 'O apóstolo é um dos ofícios mais importantes no corpo de Cristo. Eles são responsáveis por estabelecer novas igrejas, treinar líderes e garantir que a doutrina seja correta. Nesta lição, você aprenderá sobre o papel do apóstolo e como ele funciona no ministério.',
+        },
+      ],
+    },
+    {
       id: 'modulo-mestre',
       title: 'Mestre',
       lessons: [
@@ -144,8 +130,22 @@ Aproveite estes dias de curso para refletir e escrever sobre como você se sente
       ],
     },
     {
+      id: 'modulo-profeta',
+      title: 'Profeta',
+      lessons: [
+        {
+          id: 'profeta-1',
+          title: 'O Ofício de Profeta',
+          type: 'video' as const,
+          videoId: '1CZvtjsZ8_M',
+          subtitle: 'O Profeta: Voz de Deus',
+          description: 'O profeta é aquele que fala em nome de Deus. Eles trazem revelações, advertências e direção para a igreja. Nesta lição, você entenderá o papel do profeta e como ele se manifesta no ministério.',
+        },
+      ],
+    },
+    {
       id: 'modulo-conclusao',
-      title: 'Conclusão',
+      title: 'Encerramento',
       lessons: [
         {
           id: 'conclusao-1',
