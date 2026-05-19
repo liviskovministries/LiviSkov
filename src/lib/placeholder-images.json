@@ -47,6 +47,12 @@
       "description": "Mulher pensativa em noite urbana, banner para o Devocional 2026.",
       "imageUrl": "/images/mulher-pensativa-noite-urbana.png",
       "imageHint": "thoughtful woman urban night"
+    },
+    {
+      "id": "oficios-ministeriais-logo",
+      "description": "Logo do curso Os 5 Ofícios Ministeriais.",
+      "imageUrl": "/images/logo-oficios-ministeriais.jpg",
+      "imageHint": "Os 5 Ofícios Ministeriais logo"
     }
   ]
 }

@@ -33,6 +33,15 @@ const courses = [
     imageHint: PlaceHolderImages.find(img => img.id === 'devocional-2026-banner')?.imageHint || 'devotional new year new beginning',
     stripePaymentLink: 'https://buy.stripe.com/00w5kFeE52Hyems9Rs5ZC02', // **LINK ATUALIZADO**
     enrollmentDeadline: null, // Sem data limite para este curso, ou defina uma se houver
+  },
+  {
+    id: 'oficios-ministeriais',
+    title: 'Os 5 Ofícios Ministeriais',
+    description: 'Desenvolva uma vida ministerial com os cinco ofícios do ministério: Apóstolo, Profeta, Evangelista, Pastor e Mestre.',
+    imageUrl: PlaceHolderImages.find(img => img.id === 'oficios-ministeriais-logo')?.imageUrl || '/images/logo-oficios-ministeriais.jpg',
+    imageHint: PlaceHolderImages.find(img => img.id === 'oficios-ministeriais-logo')?.imageHint || 'Os 5 Ofícios Ministeriais logo',
+    stripePaymentLink: 'https://buy.stripe.com/placeholder-oficios-ministeriais',
+    enrollmentDeadline: null,
   }
 ];
 
@@ -61,21 +70,21 @@ function CoursesPageContent() {
       setIsAccessLoading(true);
       try {
         const { data, error } = await supabase
-          .from('users')
-          .select('estacoes_espirituais_access, devocional_2026_access') // Selecionar todas as colunas de acesso
-          .eq('id', supabaseUser.id)
-          .single();
-
-        if (error) {
-          console.error('Error fetching user course access:', error);
-          setUserCoursesAccess({});
-        } else {
-          setUserCoursesAccess({
-            'estacoes-espirituais': data?.estacoes_espirituais_access || false,
-            'devocional-2026': data?.devocional_2026_access || false,
-            // Adicione outros cursos aqui conforme necessário
-          });
-        }
+                  .from('users')
+                  .select('estacoes_espirituais_access, devocional_2026_access, oficios_ministeriais_access') // Selecionar todas as colunas de acesso
+                  .eq('id', supabaseUser.id)
+                  .single();
+        
+                if (error) {
+                  console.error('Error fetching user course access:', error);
+                  setUserCoursesAccess({});
+                } else {
+                  setUserCoursesAccess({
+                    'estacoes-espirituais': data?.estacoes_espirituais_access || false,
+                    'devocional-2026': data?.devocional_2026_access || false,
+                    'oficios-ministeriais': data?.oficios_ministeriais_access || false,
+                  });
+                }
       } catch (error) {
         console.error('Error fetching user course access:', error);
         setUserCoursesAccess({});
