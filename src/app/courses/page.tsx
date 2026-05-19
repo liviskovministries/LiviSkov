@@ -198,22 +198,34 @@ function CoursesPageContent() {
                           </Button>
                         </Link>
                       ) : (
-                        <Button 
-                          onClick={() => handlePurchase(course.id, course.stripePaymentLink, course.enrollmentDeadline)} 
-                          size="lg" 
-                          className="w-full" 
-                          disabled={isPending || hasEnrollmentEnded} // Desabilitar se as inscrições encerraram
-                        >
-                          {hasEnrollmentEnded ? (
+                        course.id === 'oficios-ministeriais' ? (
+                          <Button 
+                            size="lg" 
+                            className="w-full" 
+                            disabled={true}
+                          >
                             <span className="flex items-center gap-2">
-                              <Lock className="h-5 w-5" /> Inscrições Encerradas
+                              <Lock className="h-5 w-5" /> Acesso não autorizado
                             </span>
-                          ) : (
-                            isPending 
-                              ? 'Aguarde...' 
-                              : course.id === 'devocional-2026' ? 'Comprar Devocional' : 'Comprar Curso'
-                          )}
-                        </Button>
+                          </Button>
+                        ) : (
+                          <Button 
+                            onClick={() => handlePurchase(course.id, course.stripePaymentLink, course.enrollmentDeadline)} 
+                            size="lg" 
+                            className="w-full" 
+                            disabled={isPending || hasEnrollmentEnded} // Desabilitar se as inscrições encerraram
+                          >
+                            {hasEnrollmentEnded ? (
+                              <span className="flex items-center gap-2">
+                                <Lock className="h-5 w-5" /> Inscrições Encerradas
+                              </span>
+                            ) : (
+                              isPending 
+                                ? 'Aguarde...' 
+                                : course.id === 'devocional-2026' ? 'Comprar Devocional' : 'Comprar Curso'
+                            )}
+                          </Button>
+                        )
                       )}
                     </CardFooter>
                   </div>
