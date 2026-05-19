@@ -93,7 +93,7 @@ O Pastor é o mais facilmente reconhecido pelos seus talentos e atributos. Muita
 
 No entanto, o Pastor muitas vezes comete o erro de não saber dizer não e criar limites saudáveis. Uma das maiores dificuldades desse ofício é lidar com a solidão. Uma das lições mais valiosas que aprendi, como alguém que tem o Pastor como ofício, é aprender a valorizar quando alguém verdadeiramente pergunta: "Como você está?"
 
-Não estou sendo piegas ou me vitimizando. O Pastor costuma colocar tudo e todos à frente de si, e por isso, não há muito espaço para se concentrar em suas próprias emoções. Essa é uma razões pelas quais é difícil aprender a dizer não e reconhecer a solidão que vem de assumir tantas responsabilidades.`,
+Não estou sendo piegas ou me vitimizando. O Pastor costuma colocar tudo e todos à frente de si, e por isso, não há muito espaço para se concentrar em suas próprias emoções. Essa é uma das razões pelas quais é difícil aprender a dizer não e reconhecer a solidão que vem de assumir tantas responsabilidades.`,
         },
       ],
     },
@@ -133,7 +133,7 @@ O Apóstolo é, por natureza, revolucionário. Ele nunca se contenta com o comum
 
 Ele tem uma visão além do alcance, mas não se ocupa com microgestão. Ele vê o futuro, constrói o necessário e segue para o próximo desafio. Delegar é uma habilidade que ele domina, assim como a capacidade de cobrar o que é preciso.
 
-Apóstolos são raros. Muitas vezes, a pessoa pode ter o ofício apostólico, mas é necessário passar por uma jornada de aprendizado para viver a excelência desse ofício. Isso porque, frequentemente, alguém com o ofício apostólico precisa aprender a fluir em outros ofícios antes de poder operar plenamente no seu próprio, e para aceitar-se por completo como é.
+Apóstolos são raros. Muitas vezes, a pessoa pode ter o ofício apostólico, mas é necessário passar por uma jornada de aprendizado para viver a excelência desse ofício. Isso porque, frequentemente, alguém com o ofício apostólico precisa aprender a fluir in outros ofícios antes de poder operar plenamente no seu próprio, e para aceitar-se por completo como é.
 
 Jesus é o Apóstolo supremo, e Ele é a referência que temos do verdadeiro apostolado (Efésios 3:1).`,
         },
@@ -364,7 +364,7 @@ export default function OficiosMinisteriaisPage() {
       console.log("[OficiosMinisteriaisPage] Downloading watermarked PDF for:", { firstName, lastName, email });
 
       // Use the generic watermark-pdf function with dynamic parameters for this course
-      const response = await fetch('https://rxvcxqfnkv/functions/v1/watermark-pdf', {
+      const response = await fetch('https://rxvcxqfnkvqfxwzbujka.supabase.co/functions/v1/watermark-pdf', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -373,7 +373,7 @@ export default function OficiosMinisteriaisPage() {
           firstName,
           lastName,
           email,
-          bucketName: 'Oficios Ministeriais', // Specific bucket name for this course
+          bucketName: 'Os 5 Oficios Ministeriais', // Specific bucket name for this course
           filePath: 'Livi-Skov-Os-5-Oficios-Ministeriais.pdf', // Specific file path for this course
           outputFileName: `Livi-Skov-Os-5-Oficios-Ministeriais-${firstName}-${lastName}.pdf`,
         }),
