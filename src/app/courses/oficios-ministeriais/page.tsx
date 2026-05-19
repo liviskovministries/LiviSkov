@@ -39,7 +39,7 @@ No meu caso, por exemplo, tenho o dom de profetizar. Já vivi grandes experiênc
 
 Neste momento, estou ensinando, o que é uma das ações presentes nos 5 ministérios. Mas a diferença está no PORQUÊ eu ensino. À medida que você ler os capítulos e assistir às aulas, entenderá de onde vem meu desejo de capacitar outras pessoas.
 
-Existe uma grande diferença entre ter um ofício e exercê-lo. Como assim? Todos nós temos um ofício que exercemos de maneira natural, sem esforço, porque ele faz parte da nossa identidade. Por exemplo, há algumas semanas, soube que quatro moças estavam sem lugar para ficar por conta de um problema no hotel. Eu as acolhi em minha casa, preparei a mesa, organizei os quartos e cuidei delas, oferecendo tudo o que precisavam. Agir assim é algo que vem naturalmente, sem pensar duas vezes. Exercer os dons de profetizar, ensinar, pastorear, evangelizar e discipular (apostolado) é algo para todos nós!`,
+Existe uma grande diferença entre ter um ofício e exercê-lo. Como assim? Todos nós temos um ofício que exercemos de maneira natural, sem espaço, porque ele faz parte da nossa identidade. Por exemplo, há algumas semanas, soube que quatro moças estavam sem lugar para ficar por conta de um problema no hotel. Eu as acolhi em minha casa, preparei a mesa, organizei os quartos e cuidei delas, oferecendo tudo o que precisavam. Agir assim é algo que vem naturalmente, sem pensar duas vezes. Exercer os dons de profetizar, ensinar, pastorear, evangelizar e discipular (apostolado) é algo para todos nós!`,
         },
         {
           id: 'intro-2',
@@ -112,7 +112,7 @@ Não estou sendo piegas ou me vitimizando. O Pastor costuma colocar tudo e todos
 
 Por enxergar fora da caixa, acaba sendo visto como alguém “chato”, porque acredita tanto na sua causa que tenta provar seu ponto de vista para todos ao seu redor. O evangelista enfrenta muitas lutas internas por ser desmerecido por pessoas que não entendem o valor do seu trabalho, sentindo-se desmotivado pela falta de honra daqueles que não enxergam seu esforço.
 
-Para o evangelista, o effort é a prova do seu caráter. O esforço está acima do talento. Se você disser a um evangelista que ele não consegue fazer algo, ou que é inadequado para determinada atividade, é exatamente aí que ele vai querer provar que consegue. Ainda que não haja custo-benefício, o importante para ele é demonstrar que estava certo desde o início.
+Para o evangelista, o esforço é a prova do seu caráter. O esforço está acima do talento. Se você disser a um evangelista que ele não consegue fazer algo, ou que é inadequado para determinada atividade, é exatamente aí que ele vai querer provar que consegue. Ainda que não haja custo-benefício, o importante para ele é demonstrar que estava certo desde o início.
 
 Muitas pessoas nesse ofício têm facilidade para fazer planos, mas encontram dificuldade para sonhar. Isso porque “sonhar” depende de pessoas, depende de Deus e de acreditar em algo que não se faz sozinho. São pessoas de natureza visionária, mas não necessariamente sonhadoras.`,
         },
@@ -160,7 +160,7 @@ Ele é preto no branco, não se permitindo os 500 milhões de tons de cinza. Iss
 
 Todas as profissões exatas estão profundamente conectadas ao dom do Mestre, porque a verdade precisa ser absoluta. Se na engenharia o cálculo estiver errado, a ponte cai. Apesar de muitas vezes não valorizarmos a beleza daqueles que amam as exatas, precisamos deles para que as coisas aconteçam de maneira linear e contínua. E é nesse lugar que o Mestre revela sua beleza criativa.
 
-Ele é criativo, mas essa criatividade é direcionada para o bem comum. Ama a arte e se torna o curador de um museu, o paleontólogo que estuda dinossauros ou o museólogo que transforma a experiência das pessoas ao visitarem o museu. Ele usa seu talento logístico e, quando somado à sua criatividade, transborda para além das ciências exatas.
+Ele é criativo, mas essa criatividade é direcionada para o bem comum. Ama a arte e se torna o curador de um museum, o paleontólogo que estuda dinossauros ou o museólogo que transforma a experiência das pessoas ao visitarem o museu. Ele usa seu talento logístico e, quando somado à sua criatividade, transborda para além das ciências exatas.
 
 Se o evangelista pode ser visto em um policial, o Mestre pode ser representado por um advogado ou até mesmo um juiz, pois um executa a lei que o outro decreta. São ofícios complementares — um fortalecendo o outro, para alcançar a excelência de todos.`,
         },
@@ -516,7 +516,7 @@ export default function OficiosMinisteriaisPage() {
         handleDownloadResource={handleDownloadWatermarkedPdf}
         handleLogout={handleLogout}
         courseLogoPath="/images/logo-oficios-ministeriais.png"
-        resourceCoverPath={PlaceHolderImages.find(img => img.id === 'oficios-ministeriais-cover')?.imageUrl || '/images/capa_devocional_2026.jpg'}
+        resourceCoverPath={PlaceHolderImages.find(img => img.id === 'oficios-ministeriais-cover')?.imageUrl || '/images/capa-5-oficios.jpg'}
         sidebarContent={sidebarContent}
       />
     </SidebarProvider>

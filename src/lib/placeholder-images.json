@@ -49,10 +49,16 @@
       "imageHint": "thoughtful woman urban night"
     },
     {
-          "id": "oficios-ministeriais-logo",
-          "description": "Logo do curso Os 5 Ofícios Ministeriais.",
-          "imageUrl": "/images/logo-oficios-ministeriais.png",
-          "imageHint": "Os 5 Ofícios Ministeriais logo"
-        }
+      "id": "oficios-ministeriais-logo",
+      "description": "Logo do curso Os 5 Ofícios Ministeriais.",
+      "imageUrl": "/images/logo-oficios-ministeriais.png",
+      "imageHint": "Os 5 Ofícios Ministeriais logo"
+    },
+    {
+      "id": "oficios-ministeriais-cover",
+      "description": "Capa da apostila Os 5 Ofícios Ministeriais.",
+      "imageUrl": "/images/capa-5-oficios.jpg",
+      "imageHint": "Os 5 Ofícios Ministeriais cover"
+    }
   ]
 }
