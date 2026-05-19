@@ -39,11 +39,27 @@ No meu caso, por exemplo, tenho o dom de profetizar. Já vivi grandes experiênc
 
 Neste momento, estou ensinando, o que é uma das ações presentes nos 5 ministérios. Mas a diferença está no PORQUÊ eu ensino. À medida que você ler os capítulos e assistir às aulas, entenderá de onde vem meu desejo de capacitar outras pessoas.
 
-Existe uma grande diferença entre ter um ofício e exercê-lo. Como assim? Todos nós temos um ofício que exercemos de maneira natural, sem espaço, porque ele faz parte da nossa identidade. Por exemplo, há algumas semanas, soube que quatro moças estavam sem lugar para ficar por conta de um problema no hotel. Eu as acolhi em minha casa, preparei a mesa, organizei os quartos e cuidei delas, oferecendo tudo o que precisavam. Agir assim é algo que vem naturalmente, sem pensar duas vezes. Exercer os dons de profetizar, ensinar, pastorear, evangelizar e discipular (apostolado) é algo para todos nós!`,
+Existe uma grande diferença entre ter um ofício e exercê-lo. Como assim? Todos nós temos um ofício que exercemos de maneira natural, sem esforço, porque ele faz parte da nossa identidade. Por exemplo, há algumas semanas, soube que quatro moças estavam sem lugar para ficar por conta de um problema no hotel. Eu as acolhi em minha casa, preparei a mesa, organizei os quartos e cuidei delas, oferecendo tudo o que precisavam. Agir assim é algo que vem naturalmente, sem pensar duas vezes. Exercer os dons de profetizar, ensinar, pastorear, evangelizar e discipular (apostolado) é algo para todos nós!`,
         },
         {
           id: 'intro-2',
-          title: 'Os 5 Ofícios Ministeriais',
+          title: 'O que são os Ofícios Ministeriais?',
+          type: 'video' as const,
+          videoId: '0sW_n79aHsk',
+          subtitle: 'Entendendo o Conceito',
+          description: `Este curso é uma jornada profunda para compreender os cinco dons de Cristo descritos em Efésios 4:11: Apóstolos, Profetas, Evangelistas, Pastores e Mestres.
+
+🔍 O que você vai aprender?
+
+✔️ Como identificar o seu ofício principal (o seu "ponto neutro").
+✔️ Como cada um dos cinco ministérios opera e se complementa.
+✔️ Como ativar o seu chamado para servir ao corpo de Cristo com liberdade e clareza.
+
+Que esta caminhada traga revelação, alinhamento e ativação para o seu propósito! 🙏`,
+        },
+        {
+          id: 'intro-3',
+          title: 'Livro Os 5 Ofícios Ministeriais',
           type: 'resource' as const,
           subtitle: 'Sobre o Livro de Apoio',
           description: 'Acesse e baixe o material de apoio principal do curso. Este livro é a base da nossa jornada, aprofundando os temas abordados nas aulas e oferecendo exercícios práticos para cada ofício.',
@@ -282,7 +298,7 @@ export default function OficiosMinisteriaisPage() {
       console.log("[OficiosMinisteriaisPage] Downloading watermarked PDF for:", { firstName, lastName, email });
 
       // Use the generic watermark-pdf function with dynamic parameters for this course
-      const response = await fetch('https://rxvcxqfnkvqfxwzbujka.supabase.co/functions/v1/watermark-pdf', {
+      const response = await fetch('https://rxvcxqfnkv/functions/v1/watermark-pdf', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
