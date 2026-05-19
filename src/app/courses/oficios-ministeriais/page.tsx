@@ -39,7 +39,7 @@ No meu caso, por exemplo, tenho o dom de profetizar. Já vivi grandes experiênc
 
 Neste momento, estou ensinando, o que é uma das ações presentes nos 5 ministérios. Mas a diferença está no PORQUÊ eu ensino. À medida que você ler os capítulos e assistir às aulas, entenderá de onde vem meu desejo de capacitar outras pessoas.
 
-Existe uma grande diferença entre ter um ofício e exercê-lo. Como assim? Todos nós temos um ofício que exercemos de maneira natural, sem espaço, porque ele faz parte da nossa identidade. Por exemplo, há algumas semanas, soube que quatro moças estavam sem lugar para ficar por conta de um problema no hotel. Eu as acolhi em minha casa, preparei a mesa, organizei os quartos e cuidei delas, oferecendo tudo o que precisavam. Agir assim é algo que vem naturalmente, sem pensar duas vezes. Exercer os dons de profetizar, ensinar, pastorear, evangelizar e discipular (apostolado) é algo para todos nós!`,
+Existe uma grande diferença entre ter um ofício e exercê-lo. Como assim? Todos nós temos um ofício que exercemos de maneira natural, sem esforço, porque ele faz parte da nossa identidade. Por exemplo, há algumas semanas, soube que quatro moças estavam sem lugar para ficar por conta de um problema no hotel. Eu as acolhi em minha casa, preparei a mesa, organizei os quartos e cuidei delas, oferecendo tudo o que precisavam. Agir assim é algo que vem naturalmente, sem pensar duas vezes. Exercer os dons de profetizar, ensinar, pastorear, evangelizar e discipular (apostolado) é algo para todos nós!`,
         },
         {
           id: 'intro-2',
@@ -105,9 +105,15 @@ Não estou sendo piegas ou me vitimizando. O Pastor costuma colocar tudo e todos
           id: 'evangelista-1',
           title: 'O Ofício de Evangelista',
           type: 'video' as const,
-          videoId: 'w4fnk9onusU',
-          subtitle: 'O Evangelista: Pregador do Evangelho',
-          description: 'O evangelista é aquele que prega o evangelho e ganha almas para o reino de Deus. Eles são apaixonados por compartilhar a boa notícia e ver pessoas transformadas. Nesta lição, você aprenderá sobre o papel do evangelista e como ele impacta o mundo.',
+          videoId: '5K4_bXZW_PM',
+          subtitle: 'O Evangelista',
+          description: `O Ofício do Evangelista, assim como o mestre, é muitas vezes julgado incorretamente pelas pessoas. Erroneamente, achamos que ele é o que fala mais alto, sendo que, na verdade, o destaque faz parte da sua natureza. É o mais arrojado de todos os ofícios e, por isso, frequentemente não é compreendido pela sociedade que o cerca.
+
+Por enxergar fora da caixa, acaba sendo visto como alguém “chato”, porque acredita tanto na sua causa que tenta provar seu ponto de vista para todos ao seu redor. O evangelista enfrenta muitas lutas internas por ser desmerecido por pessoas que não entendem o valor do seu trabalho, sentindo-se desmotivado pela falta de honra daqueles que não enxergam seu esforço.
+
+Para o evangelista, o esforço é a prova do seu caráter. O esforço está acima do talento. Se você disser a um evangelista que ele não consegue fazer algo, ou que é inadequado para determinada atividade, é exatamente aí que ele vai querer provar que consegue. Ainda que não haja custo-benefício, o importante para ele é demonstrar que estava certo desde o início.
+
+Muitas pessoas nesse ofício têm facilidade para fazer planos, mas encontram dificuldade para sonhar. Isso porque “sonhar” depende de pessoas, depende de Deus e de acreditar em algo que não se faz sozinho. São pessoas de natureza visionária, mas não necessariamente sonhadoras.`,
         },
       ],
     },
