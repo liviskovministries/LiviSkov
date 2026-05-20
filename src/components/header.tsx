@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { LogOut, UserCircle, Menu } from 'lucide-react';
+import { LogOut, UserCircle, Menu, ChevronDown } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -77,6 +77,9 @@ export function SiteHeader() {
 
   const showAuthButtons = !isUserLoading && !user && pathname !== '/login' && pathname !== '/signup';
 
+  // Obter o primeiro nome do usuário ou usar um fallback amigável
+  const userFirstName = user?.user_metadata?.first_name || user?.email?.split('@')[0] || 'Aluno';
+
   return (
     <header className={cn(
       "sticky top-0 z-50 w-full text-primary-foreground transition-colors duration-300",
@@ -108,17 +111,20 @@ export function SiteHeader() {
                 {!isUserLoading && user ? (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary-foreground/10">
-                          <UserCircle className="h-5 w-5 text-white" />
-                          <span className="sr-only">Toggle user menu</span>
+                        <Button variant="ghost" className="text-white hover:bg-primary-foreground/10 flex items-center gap-2 px-4 py-2 rounded-full transition-all">
+                          <UserCircle className="h-5 w-5" />
+                          <span className="font-semibold text-sm">Olá, {userFirstName}</span>
+                          <ChevronDown className="h-4 w-4 opacity-70" />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
+                      <DropdownMenuContent align="end" className="w-56">
                         <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={() => router.push('/courses')}>Área de Membros</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => router.push('/courses')} className="cursor-pointer font-medium">
+                          Área de Membros
+                        </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={handleLogout}>
+                        <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-destructive focus:text-destructive">
                             <LogOut className="mr-2 h-4 w-4" />
                             <span>Sair</span>
                         </DropdownMenuItem>
