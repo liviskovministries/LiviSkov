@@ -111,7 +111,7 @@ export function SiteHeader() {
                 {!isUserLoading && user ? (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="text-white hover:bg-primary-foreground/10 flex items-center gap-2 px-4 py-2 rounded-full transition-all">
+                        <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white flex items-center gap-2 px-4 py-2 rounded-full transition-all">
                           <UserCircle className="h-5 w-5" />
                           <span className="font-semibold text-sm">Olá, {userFirstName}</span>
                           <ChevronDown className="h-4 w-4 opacity-70" />
