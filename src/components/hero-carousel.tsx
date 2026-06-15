@@ -98,7 +98,7 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
                         href={slide.buttonHref}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="font-mono text-stone-800 hover:text-stone-600 text-xs sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold tracking-wider transition-all duration-200 hover:scale-105 px-4 py-1 sm:px-6 sm:py-2 rounded bg-transparent cursor-pointer text-center whitespace-nowrap"
+                        className="font-mono text-stone-800 hover:text-stone-600 text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold tracking-wider transition-all duration-200 hover:scale-105 px-4 py-1 sm:px-6 sm:py-2 rounded bg-transparent cursor-pointer text-center whitespace-nowrap"
                         style={{ fontFamily: 'Courier New, Courier, monospace, serif' }}
                       >
                         {slide.buttonText}
