@@ -88,7 +88,7 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
 
                 {isMentoria ? (
                   /* Layout especial para o banner de mentoria */
-                  <div className="absolute bottom-[7%] sm:bottom-[8%] md:bottom-[9%] lg:bottom-[10%] xl:bottom-[11%] left-1/2 -translate-x-1/2 z-10 w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl flex justify-center px-4">
+                  <div className="absolute bottom-[13%] sm:bottom-[13%] md:bottom-[11%] lg:bottom-[10%] xl:bottom-[11%] left-1/2 -translate-x-1/2 z-10 w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl flex justify-center px-4">
                     {/* Textos ocultos apenas para leitores de tela (SEO/Acessibilidade) */}
                     <h1 className="sr-only">{slide.title}</h1>
                     <p className="sr-only">{slide.description}</p>
