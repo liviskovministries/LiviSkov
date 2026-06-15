@@ -67,6 +67,7 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
           {slides.map((slide) => {
             const hasEnrollmentEnded = slide.enrollmentDeadline ? new Date() > slide.enrollmentDeadline : false;
             const showLoginSignup = slide.showAuthButtons && !isUserLoading && !user;
+            const isMentoria = slide.id === 'mentoria-banner';
 
             return (
               <div className="embla__slide relative flex-[0_0_100%] h-full" key={slide.id}>
@@ -81,40 +82,65 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
                   priority
                   data-ai-hint={slide.imageHint}
                 />
-                <div className="absolute inset-0 bg-black/50" />
-                <div className="container relative z-10 flex h-full flex-col items-center justify-center text-center px-4">
-                  <h1 className="text-3xl font-bold md:text-6xl">
-                    {slide.title}
-                  </h1>
-                  <p className="mt-4 max-w-2xl text-base md:text-xl px-2">
-                    {slide.description}
-                  </p>
+                
+                {/* Overlay escuro apenas para os outros banners, mantendo o de mentoria mais natural */}
+                {!isMentoria && <div className="absolute inset-0 bg-black/50" />}
 
-                  {showLoginSignup ? (
-                    <div className="mt-6 md:mt-8 flex flex-row gap-3 md:gap-4"> {/* Alterado para flex-row */}
-                      <Button asChild size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 text-sm md:text-base">
-                        <Link href="/login">Login</Link>
-                      </Button>
-                      <Button asChild variant="outline" size="lg" className="border-primary-foreground/50 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground text-sm md:text-base">
-                        <Link href="/signup">Cadastre-se</Link>
-                      </Button>
-                    </div>
-                  ) : slide.showEnrollmentMessage && hasEnrollmentEnded ? (
-                    <div className="mt-6 md:mt-8 max-w-2xl text-base md:text-lg text-white bg-red-600/80 p-4 rounded-lg shadow-lg">
-                      <p className="font-bold flex items-center justify-center gap-2">
-                        <Lock className="h-5 w-5 md:h-6 md:w-6" /> Inscrições Encerradas
-                      </p>
-                    </div>
-                  ) : (
-                    slide.buttonText && slide.buttonHref && (
-                      <Link href={slide.buttonHref}>
-                        <Button size="lg" className="mt-6 md:mt-8 bg-primary hover:bg-primary/90 text-primary-foreground text-sm md:text-base">
-                          {slide.buttonText}
-                        </Button>
+                {isMentoria ? (
+                  /* Layout especial para o banner de mentoria */
+                  <div className="absolute inset-0 flex flex-col items-center justify-end pb-[7%] sm:pb-[8%] md:pb-[9%] lg:pb-[10%] z-10 px-4">
+                    {/* Textos ocultos apenas para leitores de tela (SEO/Acessibilidade) */}
+                    <h1 className="sr-only">{slide.title}</h1>
+                    <p className="sr-only">{slide.description}</p>
+                    
+                    {slide.buttonText && slide.buttonHref && (
+                      <Link 
+                        href={slide.buttonHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-mono text-stone-800 hover:text-stone-600 text-sm sm:text-lg md:text-2xl lg:text-3xl font-bold tracking-wider transition-all duration-200 hover:scale-105 px-4 py-1 sm:px-6 sm:py-2 rounded bg-transparent cursor-pointer text-center"
+                        style={{ fontFamily: 'Courier New, Courier, monospace, serif' }}
+                      >
+                        {slide.buttonText}
                       </Link>
-                    )
-                  )}
-                </div>
+                    )}
+                  </div>
+                ) : (
+                  /* Layout padrão para os outros banners */
+                  <div className="container relative z-10 flex h-full flex-col items-center justify-center text-center px-4">
+                    <h1 className="text-3xl font-bold md:text-6xl">
+                      {slide.title}
+                    </h1>
+                    <p className="mt-4 max-w-2xl text-base md:text-xl px-2">
+                      {slide.description}
+                    </p>
+
+                    {showLoginSignup ? (
+                      <div className="mt-6 md:mt-8 flex flex-row gap-3 md:gap-4">
+                        <Button asChild size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 text-sm md:text-base">
+                          <Link href="/login">Login</Link>
+                        </Button>
+                        <Button asChild variant="outline" size="lg" className="border-primary-foreground/50 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground text-sm md:text-base">
+                          <Link href="/signup">Cadastre-se</Link>
+                        </Button>
+                      </div>
+                    ) : slide.showEnrollmentMessage && hasEnrollmentEnded ? (
+                      <div className="mt-6 md:mt-8 max-w-2xl text-base md:text-lg text-white bg-red-600/80 p-4 rounded-lg shadow-lg">
+                        <p className="font-bold flex items-center justify-center gap-2">
+                          <Lock className="h-5 w-5 md:h-6 md:w-6" /> Inscrições Encerradas
+                        </p>
+                      </div>
+                    ) : (
+                      slide.buttonText && slide.buttonHref && (
+                        <Link href={slide.buttonHref}>
+                          <Button size="lg" className="mt-6 md:mt-8 bg-primary hover:bg-primary/90 text-primary-foreground text-sm md:text-base">
+                            {slide.buttonText}
+                          </Button>
+                        </Link>
+                      )
+                    )}
+                  </div>
+                )}
               </div>
             );
           })}

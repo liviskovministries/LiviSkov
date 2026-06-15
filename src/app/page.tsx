@@ -33,6 +33,15 @@ export default function Home() {
 
   const heroSlides = [
     {
+      id: 'mentoria-banner',
+      imageUrl: '/images/livi-banner.png',
+      imageHint: 'Mentoria com Livi Skov',
+      title: 'Mentoria com Livi Skov - Inscrições Abertas',
+      description: 'Formulário de inscrição para a mentoria com Livi Skov. Início em 01 de julho.',
+      buttonText: 'Formulário de Inscrição',
+      buttonHref: 'https://docs.google.com/forms/d/e/1FAIpQLSdd6fx7MURdLjA5MsceAXP4MkWVxHD2LZzNZ9LOFLLkxcWl8w/viewform',
+    },
+    {
       id: 'welcome-banner',
       imageUrl: '/images/livi-skov-welcome-banner.png',
       imageHint: 'Livi Skov welcome banner',
