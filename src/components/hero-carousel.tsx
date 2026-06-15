@@ -61,7 +61,7 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
   }, [emblaApi]);
 
   return (
-    <section id="inicio" className="relative h-[60vh] min-h-[400px] w-full text-white overflow-hidden">
+    <section id="inicio" className="relative h-[45vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh] xl:h-[85vh] min-h-[350px] w-full text-white overflow-hidden">
       <div className="embla h-full w-full" ref={emblaRef}>
         <div className="embla__container flex h-full">
           {slides.map((slide) => {
@@ -88,7 +88,7 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
 
                 {isMentoria ? (
                   /* Layout especial para o banner de mentoria */
-                  <div className="absolute inset-0 flex flex-col items-center justify-end pb-[7%] sm:pb-[8%] md:pb-[9%] lg:pb-[10%] z-10 px-4">
+                  <div className="absolute bottom-[11%] sm:bottom-[12%] md:bottom-[13%] lg:bottom-[14%] xl:bottom-[15%] left-1/2 -translate-x-1/2 z-10 w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl flex justify-center px-4">
                     {/* Textos ocultos apenas para leitores de tela (SEO/Acessibilidade) */}
                     <h1 className="sr-only">{slide.title}</h1>
                     <p className="sr-only">{slide.description}</p>
@@ -98,7 +98,7 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
                         href={slide.buttonHref}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="font-mono text-stone-800 hover:text-stone-600 text-sm sm:text-lg md:text-2xl lg:text-3xl font-bold tracking-wider transition-all duration-200 hover:scale-105 px-4 py-1 sm:px-6 sm:py-2 rounded bg-transparent cursor-pointer text-center"
+                        className="font-mono text-stone-800 hover:text-stone-600 text-xs sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold tracking-wider transition-all duration-200 hover:scale-105 px-4 py-1 sm:px-6 sm:py-2 rounded bg-transparent cursor-pointer text-center whitespace-nowrap"
                         style={{ fontFamily: 'Courier New, Courier, monospace, serif' }}
                       >
                         {slide.buttonText}
