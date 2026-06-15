@@ -38,7 +38,7 @@ export default function Home() {
       imageHint: 'Mentoria com Livi Skov',
       title: 'Mentoria com Livi Skov - Inscrições Abertas',
       description: 'Formulário de inscrição para a mentoria com Livi Skov. Início em 01 de julho.',
-      buttonText: 'Formulário de Inscrição',
+      buttonText: 'CLIQUE AQUI PARA SE INSCREVER',
       buttonHref: 'https://docs.google.com/forms/d/e/1FAIpQLSdd6fx7MURdLjA5MsceAXP4MkWVxHD2LZzNZ9LOFLLkxcWl8w/viewform',
     },
     {
@@ -82,7 +82,7 @@ export default function Home() {
                   <AvatarFallback>BL</AvatarFallback>
                 </Avatar>
                 <CardContent className="mt-4 p-0">
-                  <p className="italic text-muted-foreground">"Compartilho sobre a experiência no Curso Estações com Livi Skov onde aprendi a importância de viver cada etapa da vida de forma leve e com a mente aberta para aprender algo novo na jornada da vida,seja renunciar algo que te trouxe até esse ponto X da sua vida atual,sendo esse processo de renuncia e entrega uma jornada de conhecimento na base da confiança no processo de Deus na sua vida e saber que tudo é movido por estações e tempo ."</p>
+                  <p className="italic text-muted-foreground">"Compartilho sobre a experiência no Curso Estações com Livi Skov onde aprendi a importância de viver cada etapa da vida de forma leve e com a mente aberta para aprender algo novo na jornada da vida,seja renunciar algo que te trouxe até esse ponto X da sua vida atual,sendo esse processo de renuncia and entrega uma jornada de conhecimento na base da confiança no processo de Deus na sua vida e saber que tudo é movido por estações e tempo ."</p>
                   <p className="mt-4 font-semibold text-primary">- Bianca Lima</p>
                 </CardContent>
               </Card>
