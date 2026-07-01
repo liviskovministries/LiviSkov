@@ -85,8 +85,8 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
 
                 {isMentoria ? (
                   <>
-                    {/* Aviso vermelho no topo - Inscrições Encerradas */}
-                    <div className="absolute top-0 left-0 right-0 z-20 bg-red-600 py-2 px-4">
+                    {/* Aviso vermelho no centro - Inscrições Encerradas */}
+                    <div className="absolute top-1/2 left-0 right-0 z-20 -translate-y-1/2 bg-red-600 py-2 px-4">
                       <p className="text-white font-bold text-center text-sm sm:text-base md:text-lg tracking-wider">
                         INSCRIÇÕES ENCERRADAS
                       </p>
@@ -120,7 +120,7 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
                             <Link href="/login">Login</Link>
                           </Button>
                           <Button asChild variant="outline" size="lg" className="border-primary-foreground/50 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground text-sm md:text-base">
-                            <Link href="/signup">Cadastre-se">Cadastre-se</Link>
+                            <Link href="/signup">Cadastre-se</Link>
                           </Button>
                         </div>
                       ) : slide.showEnrollmentMessage && hasEnrollmentEnded ? (
