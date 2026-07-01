@@ -77,7 +77,8 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
                   fill
                   className={cn(
                     "object-cover",
-                    slide.id === 'welcome-banner' && "lg:object-center-top-10"
+                    slide.id === 'welcome-banner' && "lg:object-center-top-10",
+                    isMentoria && "grayscale"
                   )}
                   priority
                   data-ai-hint={slide.imageHint}
@@ -88,23 +89,29 @@ export function HeroCarousel({ slides, interval = 7000 }: HeroCarouselProps) {
 
                 {isMentoria ? (
                   /* Layout especial para o banner de mentoria */
-                  <div className="absolute bottom-[13%] sm:bottom-[13%] md:bottom-[11%] lg:bottom-[10%] xl:bottom-[11%] left-1/2 -translate-x-1/2 z-10 w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl flex justify-center px-4">
-                    {/* Textos ocultos apenas para leitores de tela (SEO/Acessibilidade) */}
-                    <h1 className="sr-only">{slide.title}</h1>
-                    <p className="sr-only">{slide.description}</p>
+                  <>
+                    {/* Aviso vermelho no topo - Inscrições Encerradas */}
+                    <div className="absolute top-0 left-0 right-0 z-20 bg-red-600 py-2 px-4">
+                      <p className="text-white font-bold text-center text-sm sm:text-base md:text-lg tracking-wider">
+                        INSCRIÇÕES ENCERRADAS
+                      </p>
+                    </div>
                     
-                    {slide.buttonText && slide.buttonHref && (
-                      <Link 
-                        href={slide.buttonHref}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="font-mono text-stone-800 hover:text-stone-600 text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold tracking-wider transition-all duration-200 hover:scale-105 px-4 py-1 sm:px-6 sm:py-2 rounded bg-transparent cursor-pointer text-center whitespace-nowrap"
-                        style={{ fontFamily: 'Courier New, Courier, monospace, serif' }}
-                      >
-                        {slide.buttonText}
-                      </Link>
-                    )}
-                  </div>
+                    <div className="absolute bottom-[13%] sm:bottom-[13%] md:bottom-[11%] lg:bottom-[10%] xl:bottom-[11%] left-1/2 -translate-x-1/2 z-10 w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl flex justify-center px-4">
+                      {/* Textos ocultos apenas para leitores de tela (SEO/Acessibilidade) */}
+                      <h1 className="sr-only">{slide.title}</h1>
+                      <p className="sr-only">{slide.description}</p>
+                      
+                      {slide.buttonText && slide.buttonHref && (
+                        <span 
+                          className="font-mono text-stone-800 text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold tracking-wider px-4 py-1 sm:px-6 sm:py-2 rounded bg-transparent cursor-not-allowed text-center whitespace-nowrap opacity-50"
+                          style={{ fontFamily: 'Courier New, Courier, monospace, serif' }}
+                        >
+                          {slide.buttonText}
+                        </span>
+                      )}
+                    </div>
+                  </>
                 ) : (
                   /* Layout padrão para os outros banners */
                   <div className="container relative z-10 flex h-full flex-col items-center justify-center text-center px-4">
