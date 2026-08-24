@@ -12,6 +12,52 @@ import { Mail, MessageSquare } from 'lucide-react';
 
 import { HeroCarousel } from '@/components/hero-carousel';
 
+// Definir os eventos da agenda com datas
+const agendaEvents = [
+  {
+    id: 'setembro-06',
+    month: 'Setembro',
+    date: '06/09',
+    description: 'Igreja Batista Blessing, São Paulo/SP',
+    fullDate: new Date('2024-09-06'),
+  },
+  {
+    id: 'setembro-11-12',
+    month: 'Setembro',
+    date: '11-12/09',
+    description: 'Conferência florescer na Igreja Batista Nacional em Brasnorte/MT',
+    fullDate: new Date('2024-09-11'),
+  },
+  {
+    id: 'outubro-11',
+    month: 'Outubro',
+    date: '11/10',
+    description: 'Igreja Batista Blessing',
+    fullDate: new Date('2024-10-11'),
+  },
+  {
+    id: 'outubro-25',
+    month: 'Outubro',
+    date: '25/10',
+    description: 'Igreja Cabo Verde São Paulo/SP',
+    fullDate: new Date('2024-10-25'),
+  },
+  {
+    id: 'novembro-06-08',
+    month: 'Novembro',
+    date: '06-08/11',
+    description: 'Conferência Sinfônica - Curitiba/PR',
+    fullDate: new Date('2024-11-06'),
+  },
+  {
+    id: 'dezembro-13',
+    month: 'Dezembro',
+    date: '13/12',
+    description: 'Igreja Batista Blessing',
+    fullDate: new Date('2024-12-13'),
+  },
+];
+
 export default function Home() {
   const heroImage = PlaceHolderImages.find(img => img.id === 'hero-background');
   const testimonialImage = PlaceHolderImages.find(img => img.id === 'testimonial-1');
@@ -59,6 +105,21 @@ export default function Home() {
       showAuthButtons: true, // Mostrar botões de login/cadastramento
     },
   ];
+
+  // Filtrar eventos que ainda não passaram
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Zera as horas para comparar apenas as datas
+  
+  const upcomingEvents = agendaEvents.filter(event => event.fullDate >= today);
+  
+  // Agrupar eventos por mês
+  const eventsByMonth = upcomingEvents.reduce((acc, event) => {
+    if (!acc[event.month]) {
+      acc[event.month] = [];
+    }
+    acc[event.month].push(event);
+    return acc;
+  }, {} as Record<string, typeof agendaEvents>);
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -124,49 +185,35 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Agenda Section - UPDATED WITH NEW DATES */}
+        {/* Agenda Section - With automatic date filtering */}
         <section id="agenda" className="bg-secondary py-20">
           <div className="container text-center">
             <h2 className="text-3xl font-bold text-primary">Agenda</h2>
             <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
               Confira os próximos eventos e workshops.
             </p>
-            <div className="mt-12 grid grid-cols-1 gap-8 text-left md:grid-cols-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-primary">Setembro</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p><strong>06/09</strong> - Igreja Batista Blessing, São Paulo/SP</p>
-                  <p><strong>11-12/09</strong> - Conferência florescer na Igreja Batista Nacional em Brasnorte/MT</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-primary">Outubro</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p><strong>11/10</strong> - Igreja Batista Blessing</p>
-                  <p><strong>25/10</strong> - Igreja Cabo Verde São Paulo/SP</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-primary">Novembro</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p><strong>06-08/11</strong> - Conferência Sinfônica - Curitiba/PR</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-primary">Dezembro</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p><strong>13/12</strong> - Igreja Batista Blessing</p>
-                </CardContent>
-              </Card>
-            </div>
+            {upcomingEvents.length > 0 ? (
+              <div className="mt-12 grid grid-cols-1 gap-8 text-left md:grid-cols-2">
+                {Object.entries(eventsByMonth).map(([month, events]) => (
+                  <Card key={month}>
+                    <CardHeader>
+                      <CardTitle className="text-primary">{month}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      {events.map(event => (
+                        <p key={event.id}><strong>{event.date}</strong> - {event.description}</p>
+                      ))}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="mt-12 text-center">
+                <p className="text-lg text-muted-foreground">
+                  Nenhum evento programado no momento. Volte em breve!
+                </p>
+              </div>
+            )}
             <div className="mt-12 text-center">
               <p className="text-lg text-muted-foreground">
                 Caso deseje saber mais sobre os eventos ou mesmo marcar uma agenda com a Livi, entre em contato conosco.
