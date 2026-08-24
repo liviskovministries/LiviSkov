@@ -39,7 +39,7 @@ const agendaEvents = [
     id: 'outubro-25',
     month: 'Outubro',
     date: '25/10',
-    description: 'Igreja Cabo Verde São Paulo/SP',
+    description: 'Igreja Cabo Verde, São Paulo/SP',
     fullDate: new Date('2026-10-25'),
   },
   {
