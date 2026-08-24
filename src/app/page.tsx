@@ -12,49 +12,49 @@ import { Mail, MessageSquare } from 'lucide-react';
 
 import { HeroCarousel } from '@/components/hero-carousel';
 
-// Definir os eventos da agenda com datas
+// Definir os eventos da agenda com datas em 2026
 const agendaEvents = [
   {
     id: 'setembro-06',
     month: 'Setembro',
     date: '06/09',
     description: 'Igreja Batista Blessing, São Paulo/SP',
-    fullDate: new Date('2024-09-06'),
+    fullDate: new Date('2026-09-06'),
   },
   {
     id: 'setembro-11-12',
     month: 'Setembro',
     date: '11-12/09',
     description: 'Conferência florescer na Igreja Batista Nacional em Brasnorte/MT',
-    fullDate: new Date('2024-09-11'),
+    fullDate: new Date('2026-09-11'),
   },
   {
     id: 'outubro-11',
     month: 'Outubro',
     date: '11/10',
     description: 'Igreja Batista Blessing',
-    fullDate: new Date('2024-10-11'),
+    fullDate: new Date('2026-10-11'),
   },
   {
     id: 'outubro-25',
     month: 'Outubro',
     date: '25/10',
     description: 'Igreja Cabo Verde São Paulo/SP',
-    fullDate: new Date('2024-10-25'),
+    fullDate: new Date('2026-10-25'),
   },
   {
     id: 'novembro-06-08',
     month: 'Novembro',
     date: '06-08/11',
     description: 'Conferência Sinfônica - Curitiba/PR',
-    fullDate: new Date('2024-11-06'),
+    fullDate: new Date('2026-11-06'),
   },
   {
     id: 'dezembro-13',
     month: 'Dezembro',
     date: '13/12',
     description: 'Igreja Batista Blessing',
-    fullDate: new Date('2024-12-13'),
+    fullDate: new Date('2026-12-13'),
   },
 ];
 
