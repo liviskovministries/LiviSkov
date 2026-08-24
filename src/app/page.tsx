@@ -1,8 +1,11 @@
+import { SiteHeader } from '@/components/header';
+import { SiteFooter } from '@/components/footer';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
 export default function Page() {
   return (
     <>
+      <SiteHeader />
       {/* Agenda Section */}
       <section id="agenda" className="bg-secondary py-20">
         <div className="container text-center">
@@ -53,6 +56,7 @@ export default function Page() {
           </div>
         </div>
       </section>
+      <SiteFooter />
     </>
   );
 }
