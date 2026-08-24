@@ -56,7 +56,7 @@ export default function Home() {
       imageHint: devocionalBannerImage?.imageHint || 'thoughtful woman urban night',
       title: 'Devocional 2026 - Um novo ano, um recomeço',
       description: 'Adquira já o e-book e tenha acesso aos 31 vídeos que acompanham você nessa jornada. Tudo por apenas R$35,00. Cadastre-se e adquira já!',
-      showAuthButtons: true, // Mostrar botões de login/cadastro
+      showAuthButtons: true, // Mostrar botões de login/cadastramento
     },
   ];
 
@@ -67,7 +67,6 @@ export default function Home() {
         {/* Hero Section - Agora usando HeroCarousel */}
         <HeroCarousel slides={heroSlides} />
 
-        {/* Restante do código permanece igual */}
         {/* Testimonials Section */}
         {/* <section id="testimonials" className="bg-secondary py-20">
           <div className="container text-center">
@@ -82,7 +81,7 @@ export default function Home() {
                   <AvatarFallback>BL</AvatarFallback>
                 </Avatar>
                 <CardContent className="mt-4 p-0">
-                  <p className="italic text-muted-foreground">"Compartilho sobre a experiência no Curso Estações com Livi Skov onde aprendi a importância de viver cada etapa da vida de forma leve e com a mente aberta para aprender algo novo na jornada da vida,seja renunciar algo que te trouxe até esse ponto X da sua vida atual,sendo esse processo de renuncia and entrega uma jornada de conhecimento na base da confiança no processo de Deus na sua vida e saber que tudo é movido por estações e tempo ."</p>
+                  <p className="italic text-muted-foreground">"Compartilho sobre a experiência no curso Estações com Livi Skov onde aprendi a importância de viver cada etapa da vida de forma leve e com a mente aberta para aprender algo novo na jornada da vida,seja renunciar algo que te trouxe até esse ponto X da sua vida atual,sendo esse processo de renuncia and entrega uma jornada de conhecimento na base da confiança no processo de Deus na sua vida e saber que tudo é movido por estações e tempo ."</p>
                   <p className="mt-4 font-semibold text-primary">- Bianca Lima</p>
                 </CardContent>
               </Card>
@@ -125,7 +124,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Agenda Section */}
+        {/* Agenda Section - UPDATED WITH NEW DATES */}
         <section id="agenda" className="bg-secondary py-20">
           <div className="container text-center">
             <h2 className="text-3xl font-bold text-primary">Agenda</h2>
@@ -135,20 +134,36 @@ export default function Home() {
             <div className="mt-12 grid grid-cols-1 gap-8 text-left md:grid-cols-2">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-primary">Fevereiro</CardTitle>
+                  <CardTitle className="text-primary">Setembro</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p><strong>08/02</strong> - Pregação Igreja Blessings (São Paulo)</p>
+                  <p><strong>06/09</strong> - Igreja Batista Blessing, São Paulo/SP</p>
+                  <p><strong>11-12/09</strong> - Conferência florescer na Igreja Batista Nacional em Brasnorte/MT</p>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-primary">Março</CardTitle>
+                  <CardTitle className="text-primary">Outubro</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-2">
-                  <p><strong>08/03</strong> - Igreja Blessing (São Paulo)</p>
-                  <p><strong>15/03</strong> - Igreja Cabo Verde (São Paulo)</p>
-                  <p><strong>19-21/03</strong> - Conferência de Mulheres</p>
+                <CardContent>
+                  <p><strong>11/10</strong> - Igreja Batista Blessing</p>
+                  <p><strong>25/10</strong> - Igreja Cabo Verde São Paulo/SP</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-primary">Novembro</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p><strong>06-08/11</strong> - Conferência Sinfônica - Curitiba/PR</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-primary">Dezembro</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p><strong>13/12</strong> - Igreja Batista Blessing</p>
                 </CardContent>
               </Card>
             </div>
