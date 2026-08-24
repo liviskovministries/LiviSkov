@@ -101,7 +101,7 @@ export default function Home() {
       imageUrl: devocionalBannerImage?.imageUrl || '/images/mulher-pensativa-noite-urbana.png',
       imageHint: devocionalBannerImage?.imageHint || 'thoughtful woman urban night',
       title: 'Devocional 2026 - Um novo ano, um recomeço',
-      description: 'Adquira já o e-book e tenha acesso aos 31 vídeos que acompanham você nessa jornada. Tudo por apenas R$35,00. Cadastre-se e adquira já!',
+      description: 'Adquise já o e-book e tenha acesso aos 31 vídeos que acompanham você nessa jornada. Tudo por apenas R$35,00. Cadastre-se e adquira já!',
       showAuthButtons: true, // Mostrar botões de login/cadastramento
     },
   ];
@@ -128,38 +128,6 @@ export default function Home() {
         {/* Hero Section - Agora usando HeroCarousel */}
         <HeroCarousel slides={heroSlides} />
 
-        {/* Testimonials Section */}
-        {/* <section id="testimonials" className="bg-secondary py-20">
-          <div className="container text-center">
-            <h2 className="text-3xl font-bold text-primary">O que dizem sobre o curso Estações Espirituais</h2>
-            <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-              Veja o impacto da jornada das Estações Espirituais na vida de outras pessoas.
-            </p>
-            <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
-              <Card className="flex flex-col items-center p-6 text-center">
-                <Avatar className="h-20 w-20">
-                  {testimonialImage && <AvatarImage src={testimonialImage.imageUrl} alt="Testemunho de Bianca Lima" />}
-                  <AvatarFallback>BL</AvatarFallback>
-                </Avatar>
-                <CardContent className="mt-4 p-0">
-                  <p className="italic text-muted-foreground">"Compartilho sobre a experiência no curso Estações com Livi Skov onde aprendi a importância de viver cada etapa da vida de forma leve e com a mente aberta para aprender algo novo na jornada da vida,seja renunciar algo que te trouxe até esse ponto X da sua vida atual,sendo esse processo de renuncia and entrega uma jornada de conhecimento na base da confiança no processo de Deus na sua vida e saber que tudo é movido por estações e tempo ."</p>
-                  <p className="mt-4 font-semibold text-primary">- Bianca Lima</p>
-                </CardContent>
-              </Card>
-              <Card className="flex flex-col items-center p-6 text-center">
-                <Avatar className="h-20 w-20">
-                  <AvatarImage src="/images/keteleen-rangel-testimonial.jpeg" alt="Testemunho de Keteleen Rangel" />
-                  <AvatarFallback>KR</AvatarFallback>
-                </Avatar>
-                <CardContent className="mt-4 p-0">
-                  <p className="italic text-muted-foreground">"Através do discipulado com a Livi, pude acessar ferramentas essenciais que foram fundamentais para alcançar um novo nível e uma nova estação em minha vida. Esse discipulado me conduziu a um lugar de cura, liberdade e transformação, destravando áreas da minha vida e me equipando para viver o propósito de Deus. As aulas da Livi são didáticas, profundas e repletas de chaves importantes que trazem consciência sobre as verdades do Reino de Deus. O discipulado é um espaço seguro para aprender, compartilhar a vida, ser vulnerável e crescer. A Livi transborda o amor de Deus, e todos que se sentam à mesa para aprender com ela desfrutam de uma mesa farta. Sou imensamente grata por esse discipulado e pelas sementes plantadas em minha vida através do transbordar da Livi. Caminhar ao lado dela é um privilégio. Posso afirmar que participar desse discipulado foi e tem sido essencial para o meu florescer. Sobre o curso 'Estações' ele é completo. Além das aulas, você terá acesso a um livro incrível que trará clareza, discernimento e propósito para as diferentes fases da sua vida. Compreender as estações e explorá-las à luz do Evangelho é indispensável para a jornada daqueles que escolheram se submeter ao processo de transformação. Quero te incentivar a se inscrever neste curso! Esse é um convite de Deus para você mergulhar nessa jornada incrível chamada 'Estações Espirituais'."</p>
-                  <p className="mt-4 font-semibold text-primary">- Keteleen Rangel</p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section> */}
-
         {/* Sobre Section */}
         <section id="sobre" className="bg-background py-20">
           <div className="container grid grid-cols-1 items-center gap-12 md:grid-cols-2">
@@ -169,7 +137,7 @@ export default function Home() {
                 A jornada de Livi Skov começou na adolescência, na Igreja Batista da Lagoinha, onde frequentou seu primeiro seminário (CTMDT) e serviu em ministérios como Diante do Trono e Joyce Meyer. Em 2018, concluiu o seminário da Bethel School of Supernatural Ministry (BSSM) na Califórnia e, no mesmo ano, foi consagrada pastora.
               </p>
               <p className="mt-4 text-muted-foreground">
-                Desde então, sua jornada a levou a pregar em diversas igrejas pelo Brasil, Europa, EUA e Japão. Livi também serviu por 4 anos como Assistente Pastoral no departamento internacional da BSSM. Hoje, de volta ao Brasil, ela segue o chamado de Deus, ministrando de forma ousada e criativa sobre o Reino e ajudando pessoas a florescerem na dependência d'Ele.
+                Desde então, sua jornada a levou a pregar en diversas igrejas pelo Brasil, Europa, EUA e Japão. Livi também serviu por 4 anos como Assistente Pastoral no departamento internacional da BSSM. Hoje, de volta ao Brasil, ela segue o chamado de Deus, ministrando de forma ousada e criativa sobre o Reino e ajudando pessoas a florescerem na dependência d'Ele.
               </p>
             </div>
             <div className="order-1 md:order-2">
