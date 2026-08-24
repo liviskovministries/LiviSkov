@@ -32,7 +32,7 @@ const agendaEvents = [
     id: 'outubro-11',
     month: 'Outubro',
     date: '11/10',
-    description: 'Igreja Batista Blessing',
+    description: 'Igreja Batista Blessing, São Paulo/SP',
     fullDate: new Date('2026-10-11'),
   },
   {
@@ -53,7 +53,7 @@ const agendaEvents = [
     id: 'dezembro-13',
     month: 'Dezembro',
     date: '13/12',
-    description: 'Igreja Batista Blessing',
+    description: 'Igreja Batista Blessing, São Paulo/SP',
     fullDate: new Date('2026-12-13'),
   },
 ];
