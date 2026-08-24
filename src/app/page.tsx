@@ -46,7 +46,7 @@ const agendaEvents = [
     id: 'novembro-06-08',
     month: 'Novembro',
     date: '06-08/11',
-    description: 'Conferência Sinfônica - Curitiba/PR',
+    description: 'Conferência Sinfônica na Igreja Sinfônica - Curitiba/PR',
     fullDate: new Date('2026-11-06'),
   },
   {
