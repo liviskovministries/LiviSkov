@@ -25,7 +25,7 @@ const agendaEvents = [
     id: 'setembro-11-12',
     month: 'Setembro',
     date: '11-12/09',
-    description: 'Conferência florescer na Igreja Batista Nacional em Brasnorte/MT',
+    description: 'Conferência Florescer na Igreja Batista Nacional, Brasnorte/MT',
     fullDate: new Date('2026-09-11'),
   },
   {
